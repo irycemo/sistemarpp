@@ -23,7 +23,7 @@
 
             @can('Crear usuario')
 
-                <button wire:click="abrirModalCrear" class="bg-gray-500 hover:shadow-lg hover:bg-gray-700 float-right text-sm py-2 px-4 text-white rounded-full focus:outline-none hidden md:block">
+                <button wire:click="abrirModalCrear" wire:loading.attr="disabled" class="bg-gray-500 hover:shadow-lg hover:bg-gray-700 float-right text-sm py-2 px-4 text-white rounded-full focus:outline-none hidden md:block">
                     <img wire:loading wire:target="abrirModalCrear" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
                     Agregar nuevo rol
                 </button>
@@ -195,7 +195,6 @@
                                         <button
                                             wire:click="abrirModalEditar({{$permiso}})"
                                             wire:loading.attr="disabled"
-                                            wire:target="abiriModalEditar({{$permiso}})"
                                             class="bg-blue-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-blue-700 flex focus:outline-none"
                                         >
 
@@ -215,7 +214,6 @@
                                         <button
                                             wire:click="abrirModalBorrar({{$permiso}})"
                                             wire:loading.attr="disabled"
-                                            wire:target="abrirModalBorrar({{$permiso}})"
                                             class="bg-red-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full hover:bg-red-700 flex focus:outline-none"
                                         >
 

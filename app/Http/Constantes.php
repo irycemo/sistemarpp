@@ -4,16 +4,20 @@ namespace App\Http;
 
 class Constantes{
 
-    /* Permisos */
+    /* PERMISOS */
     const AREAS = [
         'Roles',
         'Permisos',
         'Usuarios',
         'Auditoria',
-        'Logs'
+        'Logs',
+        'Distritos',
+        'Municipios',
+        'Tenencias',
+        'Ranchos'
     ];
 
-    /* Usuarios */
+    /* USUARIOS */
     const AREAS_ADSCRIPCION = [
         'Dirección de Catastro',
         'Dirección General del Instituto Registral y Catastral',

@@ -2,7 +2,7 @@
 
     <div class="mb-6">
 
-        <h1 class="text-3xl tracking-widest py-3 px-6 text-gray-600 rounded-xl border-b-2 border-gray-500 font-thin mb-6  bg-white">Permisos</h1>
+        <h1 class="text-3xl tracking-widest py-3 px-6 text-gray-600 rounded-xl border-b-2 border-gray-500 font-thin mb-6  bg-white">Municipios</h1>
 
         <div class="flex justify-between">
 
@@ -21,20 +21,22 @@
 
             </div>
 
-            <button wire:click="abrirModalCrear" wire:loading.attr="disabled" class="bg-gray-500 hover:shadow-lg hover:bg-gray-700 float-right text-sm py-2 px-4 text-white rounded-full focus:outline-none hidden md:block">
+            @can('Crear municipio')
 
-                <img wire:loading wire:target="abrirModalCrear" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
-                Agregar nuevo permiso
+                <button wire:click="abrirModalCrear" wire:loading.attr="disabled" class="bg-gray-500 hover:shadow-lg hover:bg-gray-700 float-right text-sm py-2 px-4 text-white rounded-full focus:outline-none hidden md:block">
+                    <img wire:loading wire:target="abrirModalCrear" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
+                    Agregar nuevo municipio
+                </button>
 
-            </button>
+                <button wire:click="abrirModalCrear" class="bg-gray-500 hover:shadow-lg hover:bg-gray-700 float-right text-sm py-2 px-4 text-white rounded-full focus:outline-none md:hidden">+</button>
 
-            <button wire:click="abrirModalCrear" class="bg-gray-500 hover:shadow-lg hover:bg-gray-700 float-right text-sm py-2 px-4 text-white rounded-full focus:outline-none md:hidden">+</button>
+            @endcan
 
         </div>
 
     </div>
 
-    @if($permisos->count())
+    @if($municipios->count())
 
         <div class="relative overflow-x-auto rounded-lg shadow-xl border-t-2 border-t-gray-500">
 
@@ -44,11 +46,11 @@
 
                     <tr class="text-xs font-medium text-gray-500 uppercase text-left traling-wider">
 
-                        <th wire:click="order('name')" class="cursor-pointer px-3 py-3 hidden lg:table-cell">
+                        <th wire:click="order('nombre')" class="cursor-pointer px-3 py-3 hidden lg:table-cell">
 
                             Nombre
 
-                            @if($sort == 'name')
+                            @if($sort == 'nombre')
 
                                 @if($direction == 'asc')
 
@@ -74,11 +76,11 @@
 
                         </th>
 
-                        <th wire:click="order('area')" class="cursor-pointer px-3 py-3 hidden lg:table-cell">
+                        <th wire:click="order('distrito_id')" class="cursor-pointer px-3 py-3 hidden lg:table-cell">
 
-                            Area
+                            Distrito
 
-                            @if($sort == 'area')
+                            @if($sort == 'distrito_id')
 
                                 @if($direction == 'asc')
 
@@ -172,7 +174,7 @@
 
                 <tbody class="divide-y divide-gray-200 flex-1 sm:flex-none ">
 
-                    @foreach($permisos as $permiso)
+                    @foreach($municipios as $municipio)
 
                         <tr class="text-sm font-medium text-gray-500 bg-white flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
 
@@ -180,15 +182,15 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Nombre</span>
 
-                                {{ $permiso->name }}
+                                {{ $municipio->nombre }}
 
                             </td>
 
                             <td class="px-3 py-3 w-full lg:w-auto p-3 text-gray-800 text-center lg:text-left lg:border-0 border border-b block lg:table-cell relative lg:static">
 
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Área</span>
+                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Distrito</span>
 
-                                {{ $permiso->area }}
+                                {{ $municipio->distrito->nombre }}
 
                             </td>
 
@@ -196,13 +198,13 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Registrado</span>
 
-                                @if($permiso->creadoPor != null)
+                                @if($municipio->creadoPor != null)
 
-                                    <span class="font-semibold">Registrado por: {{$permiso->creadoPor->name}}</span> <br>
+                                    <span class="font-semibold">Registrado por: {{$municipio->creadoPor->name}}</span> <br>
 
                                 @endif
 
-                                {{ $permiso->created_at }}
+                                {{ $municipio->created_at }}
 
                             </td>
 
@@ -210,13 +212,13 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Actualizado</span>
 
-                                @if($permiso->actualizadoPor != null)
+                                @if($municipio->actualizadoPor != null)
 
-                                    <span class="font-semibold">Actualizado por: {{$permiso->actualizadoPor->name}}</span> <br>
+                                    <span class="font-semibold">Actualizado por: {{$municipio->actualizadoPor->name}}</span> <br>
 
                                 @endif
 
-                                {{ $permiso->updated_at }}
+                                {{ $municipio->updated_at }}
 
                             </td>
 
@@ -226,10 +228,10 @@
 
                                 <div class="flex justify-center lg:justify-start">
 
-                                    @can('Editar permiso')
+                                    @can('Editar municipio')
 
                                         <button
-                                            wire:click="abrirModalEditar({{$permiso}})"
+                                            wire:click="abrirModalEditar({{$municipio}})"
                                             wire:loading.attr="disabled"
                                             class="bg-blue-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-blue-700 flex focus:outline-none"
                                         >
@@ -245,11 +247,10 @@
 
                                     @endcan
 
-
-                                    @can('Borrar permiso')
+                                    @can('Borrar municipio')
 
                                         <button
-                                            wire:click="abrirModalBorrar({{$permiso}})"
+                                            wire:click="abrirModalBorrar({{$municipio}})"
                                             wire:loading.attr="disabled"
                                             class="bg-red-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full hover:bg-red-700 flex focus:outline-none"
                                         >
@@ -278,7 +279,7 @@
                     <tr>
 
                         <td colspan="8" class="py-2 px-5">
-                            {{ $permisos->links()}}
+                            {{ $municipios->links()}}
                         </td>
 
                     </tr>
@@ -287,7 +288,7 @@
 
             </table>
 
-            <div class="h-full w-full rounded-lg bg-gray-200 bg-opacity-75 absolute top-0 left-0" wire:loading>
+            <div class="h-full w-full rounded-lg bg-gray-200 bg-opacity-75 absolute top-0 left-0" wire:loading >
 
                 <img class="mx-auto h-16" src="{{ asset('storage/img/loading.svg') }}" alt="">
 
@@ -305,14 +306,14 @@
 
     @endif
 
-    <x-dialog-modal wire:model="modal">
+    <x-dialog-modal wire:model="modal" maxWidth="2xl">
 
         <x-slot name="title">
 
             @if($crear)
-                Nuevo Permiso
+                Nuevo Municipio
             @elseif($editar)
-                Editar Permiso
+                Editar Municipio
             @endif
 
         </x-slot>
@@ -346,17 +347,18 @@
 
                     <div>
 
-                        <Label>Área</Label>
-
+                        <Label>Distrito</Label>
                     </div>
 
                     <div>
 
-                        <select wire:model.defer="area" class="bg-white rounded text-sm w-full">
+                        <select wire:model.defer="distrito_id" class="bg-white rounded text-sm w-full">
 
-                            @foreach ($areas as $area)
+                            <option value="" selected>Seleccione una opción</option>
 
-                                <option value="{{ $area }}">{{ $area }}</option>
+                            @foreach ($distritos as $distrito)
+
+                                <option value="{{ $distrito->id }}">{{ $distrito->nombre }}</option>
 
                             @endforeach
 
@@ -367,7 +369,7 @@
 
                     <div>
 
-                        @error('area') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+                        @error('distrito_id') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
 
                     </div>
 
@@ -427,11 +429,11 @@
     <x-confirmation-modal wire:model="modalBorrar">
 
         <x-slot name="title">
-            Eliminar Permiso
+            Eliminar Municipio
         </x-slot>
 
         <x-slot name="content">
-            ¿Esta seguro que desea eliminar el permiso? No sera posible recuperar la información.
+            ¿Esta seguro que desea eliminar al municipio? No sera posible recuperar la información.
         </x-slot>
 
         <x-slot name="footer">

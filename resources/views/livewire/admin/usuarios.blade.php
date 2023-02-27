@@ -25,7 +25,7 @@
 
                 <button wire:click="abrirModalCrear" class="bg-gray-500 hover:shadow-lg hover:bg-gray-700 float-right text-sm py-2 px-4 text-white rounded-full focus:outline-none hidden md:block">
 
-                    <img wire:loading wire:target="abrirModalCrear" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
+                    <img wire:loading wire:target="abrirModalCrear" wire:loading.attr="disabled" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
                     Agregar nuevo usuario
 
                 </button>
@@ -397,7 +397,6 @@
                                         <button
                                             wire:click="abrirModalEditar({{$user}})"
                                             wire:loading.attr="disabled"
-                                            wire:target="abiriModalEditar({{$user}})"
                                             class="md:w-full bg-blue-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-blue-700 flex justify-center focus:outline-none"
                                         >
 
@@ -417,7 +416,6 @@
                                         <button
                                             wire:click="abrirModalBorrar({{$user}})"
                                             wire:loading.attr="disabled"
-                                            wire:target="abrirModalBorrar({{$user}})"
                                             class="md:w-full bg-red-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full hover:bg-red-700 flex justify-center focus:outline-none"
                                         >
 

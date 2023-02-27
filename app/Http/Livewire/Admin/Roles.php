@@ -121,7 +121,7 @@ class Roles extends Component
 
             $this->resetearTodo();
 
-            $this->dispatchBrowserEvent('mostrarMensaje', ['success', "El role se elimino con exito."]);
+            $this->dispatchBrowserEvent('mostrarMensaje', ['success', "El role se eliminó con exito."]);
 
         } catch (\Throwable $th) {
 
