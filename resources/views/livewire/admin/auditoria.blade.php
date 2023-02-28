@@ -12,9 +12,9 @@
 
                     <option value="" selected>Seleccione un usuario</option>
 
-                    @foreach ($usuarios as $user)
+                    @foreach ($usuarios as $item)
 
-                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        <option value="{{ $item->id }}">{{ $item->name }}</option>
 
                     @endforeach
 
@@ -379,7 +379,7 @@
 
     @if($selecetedAudit)
 
-        <x-jet-dialog-modal wire:model="modal">
+        <x-dialog-modal wire:model="modal">
 
             <x-slot name="title">
 
@@ -492,7 +492,7 @@
 
             </x-slot>
 
-        </x-jet-dialog-modal>
+        </x-dialog-modal>
 
     @endif
 
