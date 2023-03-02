@@ -18,30 +18,31 @@ class Roles extends Component
 
     public $permisos;
 
-    public $nombre;
+    public Role $modelo_editar;
     public $listaDePermisos = [];
 
     protected function rules(){
         return [
-            'nombre' => 'required'
+            'modelo_editar.name' => 'required'
          ];
     }
 
-    public function resetearTodo(){
+    protected $validationAttributes  = [
+        'modelo_editar.name' => 'nombre',
+    ];
 
-        $this->reset(['modalBorrar', 'crear', 'editar', 'modal', 'nombre', 'listaDePermisos']);
-        $this->resetErrorBag();
-        $this->resetValidation();
+    public function crearModeloVacio(){
+        return Role::make();
     }
 
-    public function abrirModalEditar($modelo){
+    public function abrirModalEditar(Role $modelo){
 
         $this->resetearTodo();
         $this->modal = true;
         $this->editar = true;
 
-        $this->selected_id = $modelo['id'];
-        $this->nombre = $modelo['name'];
+        if($this->modelo_editar->isNot($modelo))
+            $this->modelo_editar = $modelo;
 
         foreach($modelo['permissions'] as $permission){
             array_push($this->listaDePermisos, (string)$permission['id']);
@@ -57,12 +58,10 @@ class Roles extends Component
 
             DB::transaction(function () {
 
-                $role = Role::create([
-                    'name' => $this->nombre,
-                    'creado_por' => auth()->user()->id
-                ]);
+                $this->modelo_editar->creado_por = auth()->user()->id;
+                $this->modelo_editar->save();
 
-                $role->permissions()->sync($this->listaDePermisos);
+                $this->modelo_editar->permissions()->sync($this->listaDePermisos);
 
                 $this->resetearTodo();
 
@@ -82,18 +81,16 @@ class Roles extends Component
 
     public function actualizar(){
 
+        $this->validate();
+
         try{
 
             DB::transaction(function () {
 
-                $rol = Role::find($this->selected_id);
+                $this->modelo_editar->actualizado_por = auth()->user()->id;
+                $this->modelo_editar->save();
 
-                $rol->update([
-                    'name' => $this->nombre,
-                    'actualizado_por' => auth()->user()->id
-                ]);
-
-                $rol->permissions()->sync($this->listaDePermisos);
+                $this->modelo_editar->permissions()->sync($this->listaDePermisos);
 
                 $this->resetearTodo();
 
@@ -119,7 +116,7 @@ class Roles extends Component
 
             $role->delete();
 
-            $this->resetearTodo();
+            $this->resetearTodo($borrado = true);
 
             $this->dispatchBrowserEvent('mostrarMensaje', ['success', "El role se eliminó con exito."]);
 
@@ -134,6 +131,10 @@ class Roles extends Component
     }
 
     public function mount(){
+
+        $this->modelo_editar = $this->crearModeloVacio();
+
+        array_push($this->fields, 'listaDePermisos');
 
         $permisos = Permission::all();
 

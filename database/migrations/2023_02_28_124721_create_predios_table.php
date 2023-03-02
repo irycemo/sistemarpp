@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('propiedads', function (Blueprint $table) {
+        Schema::create('predios', function (Blueprint $table) {
             $table->id();
             $table->unsignedTinyInteger('numero_propiedad')->comment("Número de propiedad dentro de la escritura");
             $table->unsignedDecimal('valor', 15,2);
             $table->string('tipo_moneda');
             $table->unsignedInteger('superficie_terreno');
             $table->unsignedInteger('superficie_construccion');
-            $table->text('calle');
+            $table->text('vialidad');
             $table->string('numero_exterior');
             $table->string('numero_interior');
             $table->string('colonia');
@@ -31,25 +31,30 @@ return new class extends Migration
             $table->string('ejido')->nullable();
             $table->string('parcela')->nullable();
             $table->text('linderos')->nullable();
+            $table->json('linderos')->nullable();
             $table->text('descripcion')->nullable();
             $table->string('estado');
             $table->foreignId('escritura_id')->constrained();
             $table->foreignId('distrito_id')->constrained();
-            $table->timestamps();
+            /* Comunicación con catastro */
+            $table->unsignedInteger('cc_estado');
+            $table->unsignedInteger('cc_region_catastral');
+            $table->unsignedInteger('cc_municipio');
+            $table->unsignedInteger('cc_zona_catastral');
+            $table->unsignedInteger('cc_localidad');
+            $table->unsignedInteger('cc_sector');
+            $table->unsignedInteger('cc_manzana');
+            $table->unsignedInteger('cc_predio');
+            $table->unsignedInteger('cc_edificio');
+            $table->unsignedInteger('cc_departamento');
+            $table->unsignedInteger('cp_localidad');
+            $table->unsignedInteger('cp_oficina');
+            $table->unsignedInteger('cp_tipo_predio');
+            $table->unsignedInteger('cp_numero_predio');
 
-            $table->unsignedInteger('estado');
-            $table->unsignedInteger('region_catastral');
-            $table->unsignedInteger('municipio');
-            $table->unsignedInteger('zona_catastral');
-            $table->unsignedInteger('localidad');
-            $table->unsignedInteger('sector');
-            $table->unsignedInteger('manzana');
-            $table->unsignedInteger('predio');
-            $table->unsignedInteger('edificio');
-            $table->unsignedInteger('departamento');
-            $table->unsignedInteger('clave_oficina');
-            $table->unsignedInteger('tipo_predio');
-            $table->unsignedInteger('numero_predio');
+            $table->foreignId('creado_por')->nullable()->references('id')->on('users');
+            $table->foreignId('actualizado_por')->nullable()->references('id')->on('users');
+            $table->timestamps();
         });
     }
 
@@ -58,6 +63,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('propiedads');
+        Schema::dropIfExists('predios');
     }
 };

@@ -13,23 +13,25 @@ return new class extends Migration
     {
         Schema::create('personas', function (Blueprint $table) {
             $table->id();
-            $table->stirng('tipo');
+            $table->string('tipo');
             $table->string('nombre');
             $table->string('ap_paterno');
             $table->string('ap_materno');
-            $table->string('curp');
-            $table->string('rfc');
-            $table->string('razon_social');
-            $table->string('fecha_nacimiento');
-            $table->string('nacionalidad');
-            $table->string('estado_civil');
-            $table->string('calle');
-            $table->string('numero_exterior');
-            $table->string('numero_interior');
-            $table->string('colonia');
-            $table->unsignedInteger('cp');
-            $table->string('entidad');
-            $table->string('municipio');
+            $table->string('curp')->nullable();
+            $table->string('rfc')->nullable();
+            $table->string('razon_social')->nullable();
+            $table->date('fecha_nacimiento')->nullable();
+            $table->string('nacionalidad')->nullable();
+            $table->string('estado_civil')->nullable();
+            $table->string('calle')->nullable();
+            $table->string('numero_exterior')->nullable();
+            $table->string('numero_interior')->nullable();
+            $table->string('colonia')->nullable();
+            $table->unsignedInteger('cp')->nullable();
+            $table->string('entidad')->nullable();
+            $table->string('municipio')->nullable();
+            $table->foreignId('creado_por')->nullable()->references('id')->on('users');
+            $table->foreignId('actualizado_por')->nullable()->references('id')->on('users');
             $table->timestamps();
         });
     }

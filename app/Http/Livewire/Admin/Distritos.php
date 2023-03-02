@@ -14,33 +14,27 @@ class Distritos extends Component
     use WithPagination;
     use ComponentesTrait;
 
-    public $nombre;
-    public $clave;
+    public Distrito $modelo_editar;
 
     protected function rules(){
         return [
-            'nombre' => 'required',
-            'clave' => 'required'
+            'modelo_editar.nombre' => 'required',
+            'modelo_editar.clave' => 'required'
          ];
     }
 
-    public function resetearTodo(){
-
-        $this->reset(['modalBorrar', 'crear', 'editar', 'modal', 'nombre', 'clave']);
-        $this->resetErrorBag();
-        $this->resetValidation();
+    public function crearModeloVacio(){
+        return Distrito::make();
     }
 
-    public function abrirModalEditar($modelo){
+    public function abrirModalEditar(Distrito $modelo){
 
         $this->resetearTodo();
         $this->modal = true;
         $this->editar = true;
 
-        $this->selected_id = $modelo['id'];
-        $this->nombre = $modelo['nombre'];
-        $this->clave = $modelo['clave'];
-
+        if($this->modelo_editar->isNot($modelo))
+            $this->modelo_editar = $modelo;
     }
 
     public function crear(){
@@ -49,11 +43,8 @@ class Distritos extends Component
 
         try {
 
-            Distrito::create([
-                'nombre' => $this->nombre,
-                'clave' => $this->clave,
-                'creado_por' => auth()->user()->id
-            ]);
+            $this->modelo_editar->creado_por = auth()->user()->id;
+            $this->modelo_editar->save();
 
             $this->resetearTodo();
 
@@ -71,15 +62,12 @@ class Distritos extends Component
 
     public function actualizar(){
 
+        $this->validate();
+
         try{
 
-            $distrito = Distrito::find($this->selected_id);
-
-            $distrito->update([
-                'name' => $this->nombre,
-                'clave' => $this->clave,
-                'actualizado_por' => auth()->user()->id
-            ]);
+            $this->modelo_editar->actualizado_por = auth()->user()->id;
+            $this->modelo_editar->save();
 
             $this->resetearTodo();
 
@@ -103,7 +91,7 @@ class Distritos extends Component
 
             $distrito->delete();
 
-            $this->resetearTodo();
+            $this->resetearTodo($borrado = true);
 
             $this->dispatchBrowserEvent('mostrarMensaje', ['success', "El distrito se eliminó con exito."]);
 

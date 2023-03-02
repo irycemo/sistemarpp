@@ -17,13 +17,12 @@ class Tenencias extends Component
 
     public $distritos;
 
-    public $nombre;
-    public $distrito_id;
+    public Tenencia $modelo_editar;
 
     protected function rules(){
         return [
-            'nombre' => 'required',
-            'distrito_id' => 'required'
+            'modelo_editar.nombre' => 'required',
+            'modelo_editar.distrito_id' => 'required'
          ];
     }
 
@@ -31,22 +30,18 @@ class Tenencias extends Component
         'distrito_id' => 'distrito',
     ];
 
-    public function resetearTodo(){
-
-        $this->reset(['modalBorrar', 'crear', 'editar', 'modal', 'nombre', 'distrito_id']);
-        $this->resetErrorBag();
-        $this->resetValidation();
+    public function crearModeloVacio(){
+        return Tenencia::make();
     }
 
-    public function abrirModalEditar($modelo){
+    public function abrirModalEditar(Tenencia $modelo){
 
         $this->resetearTodo();
         $this->modal = true;
         $this->editar = true;
 
-        $this->selected_id = $modelo['id'];
-        $this->nombre = $modelo['nombre'];
-        $this->distrito_id = $modelo['distrito_id'];
+        if($this->modelo_editar->isNot($modelo))
+            $this->modelo_editar = $modelo;
 
     }
 
@@ -56,11 +51,8 @@ class Tenencias extends Component
 
         try {
 
-            Tenencia::create([
-                'nombre' => $this->nombre,
-                'distrito_id' => $this->distrito_id,
-                'creado_por' => auth()->user()->id
-            ]);
+            $this->modelo_editar->creado_por = auth()->user()->id;
+            $this->modelo_editar->save();
 
             $this->resetearTodo();
 
@@ -78,15 +70,12 @@ class Tenencias extends Component
 
     public function actualizar(){
 
+        $this->validate();
+
         try{
 
-            $tenencia = Tenencia::find($this->selected_id);
-
-            $tenencia->update([
-                'nombre' => $this->nombre,
-                'distrito_id' => $this->distrito_id,
-                'actualizado_por' => auth()->user()->id
-            ]);
+            $this->modelo_editar->actualizado_por = auth()->user()->id;
+            $this->modelo_editar->save();
 
             $this->resetearTodo();
 
@@ -111,7 +100,7 @@ class Tenencias extends Component
 
             $tenencia->delete();
 
-            $this->resetearTodo();
+            $this->resetearTodo($borrado = true);
 
             $this->dispatchBrowserEvent('mostrarMensaje', ['success', "La tenencia se eliminó con exito."]);
 
@@ -126,6 +115,8 @@ class Tenencias extends Component
     }
 
     public function mount(){
+
+        $this->modelo_editar = $this->crearModeloVacio();
 
         $this->distritos = Distrito::orderBy('nombre')->get();
 

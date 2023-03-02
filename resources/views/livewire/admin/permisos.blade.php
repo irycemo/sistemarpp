@@ -229,7 +229,7 @@
                                     @can('Editar permiso')
 
                                         <button
-                                            wire:click="abrirModalEditar({{$permiso}})"
+                                            wire:click="abrirModalEditar({{$permiso->id}})"
                                             wire:loading.attr="disabled"
                                             class="bg-blue-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-blue-700 flex focus:outline-none"
                                         >
@@ -249,7 +249,7 @@
                                     @can('Borrar permiso')
 
                                         <button
-                                            wire:click="abrirModalBorrar({{$permiso}})"
+                                            wire:click="abrirModalBorrar({{$permiso->id}})"
                                             wire:loading.attr="disabled"
                                             class="bg-red-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full hover:bg-red-700 flex focus:outline-none"
                                         >
@@ -287,7 +287,7 @@
 
             </table>
 
-            <div class="h-full w-full rounded-lg bg-gray-200 bg-opacity-75 absolute top-0 left-0" wire:loading>
+            <div class="h-full w-full rounded-lg bg-gray-200 bg-opacity-75 absolute top-0 left-0" wire:loading.delay.longer>
 
                 <img class="mx-auto h-16" src="{{ asset('storage/img/loading.svg') }}" alt="">
 
@@ -330,13 +330,13 @@
 
                     <div>
 
-                        <input type="text" class="bg-white rounded text-sm w-full" wire:model.defer="nombre">
+                        <input type="text" class="bg-white rounded text-sm w-full" wire:model.defer="modelo_editar.name">
 
                     </div>
 
                     <div>
 
-                        @error('nombre') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+                        @error('modelo_editar.name') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
 
                     </div>
 
@@ -352,7 +352,7 @@
 
                     <div>
 
-                        <select wire:model.defer="area" class="bg-white rounded text-sm w-full">
+                        <select wire:model.defer="modelo_editar.area" class="bg-white rounded text-sm w-full">
 
                             @foreach ($areas as $area)
 
@@ -367,7 +367,7 @@
 
                     <div>
 
-                        @error('area') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+                        @error('modelo_editar.area') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
 
                     </div>
 

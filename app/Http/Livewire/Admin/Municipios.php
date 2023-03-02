@@ -17,37 +17,31 @@ class Municipios extends Component
 
     public $distritos;
 
-    public $nombre;
-    public $distrito_id;
+    public Municipio $modelo_editar;
 
     protected function rules(){
         return [
-            'nombre' => 'required',
-            'distrito_id' => 'required'
+            'modelo_editar.nombre' => 'required',
+            'modelo_editar.distrito_id' => 'required'
          ];
+    }
+
+    public function crearModeloVacio(){
+        return Municipio::make();
     }
 
     protected $validationAttributes  = [
         'distrito_id' => 'distrito',
     ];
 
-    public function resetearTodo(){
-
-        $this->reset(['modalBorrar', 'crear', 'editar', 'modal', 'nombre', 'distrito_id']);
-        $this->resetErrorBag();
-        $this->resetValidation();
-    }
-
-    public function abrirModalEditar($modelo){
+    public function abrirModalEditar(Municipio $modelo){
 
         $this->resetearTodo();
         $this->modal = true;
         $this->editar = true;
 
-        $this->selected_id = $modelo['id'];
-        $this->nombre = $modelo['nombre'];
-        $this->distrito_id = $modelo['distrito_id'];
-
+        if($this->modelo_editar->isNot($modelo))
+            $this->modelo_editar = $modelo;
     }
 
     public function crear(){
@@ -56,11 +50,8 @@ class Municipios extends Component
 
         try {
 
-            Municipio::create([
-                'nombre' => $this->nombre,
-                'distrito_id' => $this->distrito_id,
-                'creado_por' => auth()->user()->id
-            ]);
+            $this->modelo_editar->creado_por = auth()->user()->id;
+            $this->modelo_editar->save();
 
             $this->resetearTodo();
 
@@ -78,15 +69,12 @@ class Municipios extends Component
 
     public function actualizar(){
 
+        $this->validate();
+
         try{
 
-            $municipio = Municipio::find($this->selected_id);
-
-            $municipio->update([
-                'nombre' => $this->nombre,
-                'distrito_id' => $this->distrito_id,
-                'actualizado_por' => auth()->user()->id
-            ]);
+            $this->modelo_editar->actualizado_por = auth()->user()->id;
+            $this->modelo_editar->save();
 
             $this->resetearTodo();
 
@@ -111,7 +99,7 @@ class Municipios extends Component
 
             $municipio->delete();
 
-            $this->resetearTodo();
+            $this->resetearTodo($borrado = true);
 
             $this->dispatchBrowserEvent('mostrarMensaje', ['success', "El municipio se eliminó con exito."]);
 
@@ -126,6 +114,8 @@ class Municipios extends Component
     }
 
     public function mount(){
+
+        $this->modelo_editar = $this->crearModeloVacio();
 
         $this->distritos = Distrito::orderBy('nombre')->get();
 

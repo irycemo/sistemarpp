@@ -231,7 +231,7 @@
                                     @can('Editar distrito')
 
                                         <button
-                                            wire:click="abrirModalEditar({{$distrito}})"
+                                            wire:click="abrirModalEditar({{$distrito->id}})"
                                             wire:loading.attr="disabled"
                                             class="bg-blue-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-blue-700 flex focus:outline-none"
                                         >
@@ -250,7 +250,7 @@
                                     @can('Borrar distrito')
 
                                         <button
-                                            wire:click="abrirModalBorrar({{$distrito}})"
+                                            wire:click="abrirModalBorrar({{$distrito->id}})"
                                             wire:loading.attr="disabled"
                                             class="bg-red-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full hover:bg-red-700 flex focus:outline-none"
                                         >
@@ -288,7 +288,7 @@
 
             </table>
 
-            <div class="h-full w-full rounded-lg bg-gray-200 bg-opacity-75 absolute top-0 left-0" wire:loading >
+            <div class="h-full w-full rounded-lg bg-gray-200 bg-opacity-75 absolute top-0 left-0" wire:loading.delay.longer >
 
                 <img class="mx-auto h-16" src="{{ asset('storage/img/loading.svg') }}" alt="">
 
@@ -331,13 +331,13 @@
 
                     <div>
 
-                        <input type="text" class="bg-white rounded text-sm w-full" wire:model.defer="clave">
+                        <input type="text" class="bg-white rounded text-sm w-full" wire:model.defer="modelo_editar.clave">
 
                     </div>
 
                     <div>
 
-                        @error('clave') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+                        @error('modelo_editar.clave') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
 
                     </div>
 
@@ -352,13 +352,13 @@
 
                     <div>
 
-                        <input type="text" class="bg-white rounded text-sm w-full" wire:model.defer="nombre">
+                        <input type="text" class="bg-white rounded text-sm w-full" wire:model.defer="modelo_editar.nombre">
 
                     </div>
 
                     <div>
 
-                        @error('nombre') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+                        @error('modelo_editar.nombre') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
 
                     </div>
 

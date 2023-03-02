@@ -20,7 +20,7 @@
         @livewireStyles
 
         {{-- SweetAlert --}}
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.13/dist/sweetalert2.all.min.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         @stack('styles')
 
@@ -59,6 +59,7 @@
                     showConfirmButton: false,
                     timer: 5000,
                     timerProgressBar: true,
+                    showCloseButton :true,
                     didOpen: (toast) => {
                         toast.addEventListener('mouseenter', Swal.stopTimer)
                         toast.addEventListener('mouseleave', Swal.resumeTimer)

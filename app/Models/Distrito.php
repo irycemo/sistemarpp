@@ -7,12 +7,14 @@ use App\Models\Rancho;
 use App\Models\Tenencia;
 use App\Models\Municipio;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Distrito extends Model
+class Distrito extends Model implements Auditable
 {
     use HasFactory;
     use ModelosTrait;
+    use \OwenIt\Auditing\Auditable;
 
     protected $fillable = ['clave', 'nombre', 'creado_por', 'actualizado_por'];
 

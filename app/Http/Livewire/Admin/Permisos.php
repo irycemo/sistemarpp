@@ -17,36 +17,32 @@ class Permisos extends Component
 
     public $areas = [];
 
-    public $nombre;
-    public $area;
+    public Permission $modelo_editar;
 
     protected function rules(){
         return [
-            'nombre' => 'required',
-            'area' => 'required'
+            'modelo_editar.name' => 'required',
+            'modelo_editar.area' => 'required'
          ];
     }
 
     protected $validationAttributes  = [
+        'modelo_editar.name' => 'nombre',
         'area' => 'área',
     ];
 
-    public function resetearTodo(){
-
-        $this->reset(['modalBorrar', 'crear', 'editar', 'modal', 'nombre', 'area']);
-        $this->resetErrorBag();
-        $this->resetValidation();
+    public function crearModeloVacio(){
+        return Permission::make();
     }
 
-    public function abrirModalEditar($modelo){
+    public function abrirModalEditar(Permission $modelo){
 
         $this->resetearTodo();
         $this->modal = true;
         $this->editar = true;
 
-        $this->selected_id = $modelo['id'];
-        $this->nombre = $modelo['name'];
-        $this->area = $modelo['area'];
+        if($this->modelo_editar->isNot($modelo))
+            $this->modelo_editar = $modelo;
 
     }
 
@@ -56,11 +52,8 @@ class Permisos extends Component
 
         try {
 
-            Permission::create([
-                'name' => $this->nombre,
-                'area' => $this->area,
-                'creado_por' => auth()->user()->id
-            ]);
+            $this->modelo_editar->creado_por = auth()->user()->id;
+            $this->modelo_editar->save();
 
             $this->resetearTodo();
 
@@ -82,13 +75,8 @@ class Permisos extends Component
 
         try{
 
-            $permiso = Permission::find($this->selected_id);
-
-            $permiso->update([
-                'name' => $this->nombre,
-                'area' => $this->area,
-                'actualizado_por' => auth()->user()->id
-            ]);
+            $this->modelo_editar->actualizado_por = auth()->user()->id;
+            $this->modelo_editar->save();
 
             $this->resetearTodo();
 
@@ -112,7 +100,7 @@ class Permisos extends Component
 
             $permiso->delete();
 
-            $this->resetearTodo();
+            $this->resetearTodo($borrado = true);
 
             $this->dispatchBrowserEvent('mostrarMensaje', ['success', "El permiso se eliminó con éxito."]);
 
@@ -127,6 +115,8 @@ class Permisos extends Component
     }
 
     public function mount(){
+
+        $this->modelo_editar = $this->crearModeloVacio();
 
         $this->areas = Constantes::AREAS;
 

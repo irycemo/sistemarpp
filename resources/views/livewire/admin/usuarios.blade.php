@@ -334,19 +334,11 @@
 
                             </td>
 
-                            <td class="px-3 py-3 w-full lg:w-auto p-3 text-gray-800 text-center lg:text-left lg:border-0 border border-b block lg:table-cell relative lg:static">
+                            <td class="px-3 py-3 w-full lg:w-auto p-3 text-gray-800 text-center lg:border-0 border border-b block lg:table-cell relative lg:static">
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Status</span>
 
-                                @if($user->status == 'activo')
-
-                                    <span class="bg-green-400 py-1 px-2 rounded-full text-white">{{ ucfirst($user->status) }}</span>
-
-                                @else
-
-                                    <span class="bg-red-400 py-1 px-2 rounded-full text-white">{{ ucfirst($user->status) }}</span>
-
-                                @endif
+                                <span class="bg-{{ $user->status_color }}-400 py-1 px-2 rounded-full text-white text-xs">{{ ucfirst($user->status) }}</span>
 
                             </td>
 
@@ -395,7 +387,7 @@
                                     @can('Editar usuario')
 
                                         <button
-                                            wire:click="abrirModalEditar({{$user}})"
+                                            wire:click="abrirModalEditar({{$user->id}})"
                                             wire:loading.attr="disabled"
                                             class="md:w-full bg-blue-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-blue-700 flex justify-center focus:outline-none"
                                         >
@@ -414,7 +406,7 @@
                                     @can('Borrar usuario')
 
                                         <button
-                                            wire:click="abrirModalBorrar({{$user}})"
+                                            wire:click="abrirModalBorrar({{$user->id}})"
                                             wire:loading.attr="disabled"
                                             class="md:w-full bg-red-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full hover:bg-red-700 flex justify-center focus:outline-none"
                                         >
@@ -442,7 +434,7 @@
 
                     <tr>
 
-                        <td colspan="8" class="py-2 px-5">
+                        <td colspan="9" class="py-2 px-5">
                             {{ $usuarios->links()}}
                         </td>
 
@@ -452,7 +444,7 @@
 
             </table>
 
-            <div class="h-full w-full rounded-lg bg-gray-200 bg-opacity-75 absolute top-0 left-0" wire:loading>
+            <div class="h-full w-full rounded-lg bg-gray-200 bg-opacity-75 absolute top-0 left-0" wire:loading.delay.longer>
 
                 <img class="mx-auto h-16" src="{{ asset('storage/img/loading.svg') }}" alt="">
 
@@ -495,13 +487,13 @@
 
                     <div>
 
-                        <input type="text" class="bg-white rounded text-sm w-full" wire:model.defer="nombre">
+                        <input type="text" class="bg-white rounded text-sm w-full" wire:model.defer="modelo_editar.name">
 
                     </div>
 
                     <div>
 
-                        @error('nombre') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+                        @error('modelo_editar.name') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
 
                     </div>
 
@@ -517,13 +509,13 @@
 
                     <div>
 
-                        <input type="email" class="bg-white rounded text-sm w-full" wire:model.defer="email">
+                        <input type="email" class="bg-white rounded text-sm w-full" wire:model.defer="modelo_editar.email">
 
                     </div>
 
                     <div>
 
-                        @error('email') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+                        @error('modelo_editar.email') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
 
                     </div>
 
@@ -543,7 +535,7 @@
 
                     <div>
 
-                        <select class="bg-white rounded text-sm w-full" wire:model.defer="status">
+                        <select class="bg-white rounded text-sm w-full" wire:model.defer="modelo_editar.status">
 
                             <option value="">Seleccione una opción</option>
                             <option value="activo">Activo</option>
@@ -555,7 +547,7 @@
 
                     <div>
 
-                        @error('status') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+                        @error('modelo_editar.status') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
 
                     </div>
 
@@ -607,7 +599,7 @@
 
                     <div>
 
-                        <select class="bg-white rounded text-sm w-full" wire:model.defer="ubicacion">
+                        <select class="bg-white rounded text-sm w-full" wire:model.defer="modelo_editar.ubicacion">
                             <option selected value="">Selecciona una opción</option>
 
                             @foreach ($ubicaciones as $ubicacion)
@@ -622,7 +614,7 @@
 
                     <div>
 
-                        @error('ubicacion') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+                        @error('modelo_editar.ubicacion') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
 
                     </div>
 
@@ -637,7 +629,7 @@
 
                     <div>
 
-                        <select class="bg-white rounded text-sm w-full" wire:model.defer="area">
+                        <select class="bg-white rounded text-sm w-full" wire:model.defer="modelo_editar.area">
                             <option selected value="">Selecciona una opción</option>
 
                             @foreach ($areas_adscripcion as $ubicacion)
@@ -652,7 +644,7 @@
 
                     <div>
 
-                        @error('ubicacion') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+                        @error('modelo_editar.area') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
 
                     </div>
 

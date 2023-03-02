@@ -21,7 +21,7 @@
 
             </div>
 
-            @can('Crear usuario')
+            @can('Crear rol')
 
                 <button wire:click="abrirModalCrear" wire:loading.attr="disabled" class="bg-gray-500 hover:shadow-lg hover:bg-gray-700 float-right text-sm py-2 px-4 text-white rounded-full focus:outline-none hidden md:block">
                     <img wire:loading wire:target="abrirModalCrear" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
@@ -144,7 +144,7 @@
 
                 <tbody class="divide-y divide-gray-200 flex-1 sm:flex-none ">
 
-                    @foreach($roles as $permiso)
+                    @foreach($roles as $role)
 
                         <tr class="text-sm font-medium text-gray-500 bg-white flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
 
@@ -152,7 +152,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Nombre</span>
 
-                                {{ $permiso->name }}
+                                {{ $role->name }}
 
                             </td>
 
@@ -160,13 +160,13 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Registrado</span>
 
-                                @if($permiso->creadoPor != null)
+                                @if($role->creadoPor != null)
 
-                                    <span class="font-semibold">Registrado por: {{$permiso->creadoPor->name}}</span> <br>
+                                    <span class="font-semibold">Registrado por: {{$role->creadoPor->name}}</span> <br>
 
                                 @endif
 
-                                {{ $permiso->created_at }}
+                                {{ $role->created_at }}
 
                             </td>
 
@@ -174,13 +174,13 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Actualizado</span>
 
-                                @if($permiso->actualizadoPor != null)
+                                @if($role->actualizadoPor != null)
 
-                                    <span class="font-semibold">Actualizado por: {{$permiso->actualizadoPor->name}}</span> <br>
+                                    <span class="font-semibold">Actualizado por: {{$role->actualizadoPor->name}}</span> <br>
 
                                 @endif
 
-                                {{ $permiso->updated_at }}
+                                {{ $role->updated_at }}
 
                             </td>
 
@@ -190,10 +190,10 @@
 
                                 <div class="flex justify-center lg:justify-start">
 
-                                    @can('Editar usuario')
+                                    @can('Editar rol')
 
                                         <button
-                                            wire:click="abrirModalEditar({{$permiso}})"
+                                            wire:click="abrirModalEditar({{$role->id}})"
                                             wire:loading.attr="disabled"
                                             class="bg-blue-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-blue-700 flex focus:outline-none"
                                         >
@@ -209,10 +209,10 @@
 
                                     @endcan
 
-                                    @can('Borrar usuario')
+                                    @can('Borrar rol')
 
                                         <button
-                                            wire:click="abrirModalBorrar({{$permiso}})"
+                                            wire:click="abrirModalBorrar({{$role->id}})"
                                             wire:loading.attr="disabled"
                                             class="bg-red-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full hover:bg-red-700 flex focus:outline-none"
                                         >
@@ -250,7 +250,7 @@
 
             </table>
 
-            <div class="h-full w-full rounded-lg bg-gray-200 bg-opacity-75 absolute top-0 left-0" wire:loading >
+            <div class="h-full w-full rounded-lg bg-gray-200 bg-opacity-75 absolute top-0 left-0" wire:loading.delay.longer >
 
                 <img class="mx-auto h-16" src="{{ asset('storage/img/loading.svg') }}" alt="">
 
@@ -293,13 +293,13 @@
 
                     <div>
 
-                        <input type="text" class="bg-white rounded text-sm w-full" wire:model.defer="nombre">
+                        <input type="text" class="bg-white rounded text-sm w-full" wire:model.defer="modelo_editar.name">
 
                     </div>
 
                     <div>
 
-                        @error('nombre') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+                        @error('modelo_editar.name') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
 
                     </div>
 
@@ -325,13 +325,13 @@
 
                             <div class="mb-2 flex flex-wrap">
 
-                                @foreach ($area as $permission)
+                                @foreach ($area as $item)
 
                                     <label class="mb-2 mr-3 border border-gray-500 px-2 rounded-full py-1 text-xs cursor-pointer flex items-center">
 
-                                        <input class="bg-white rounded" type="checkbox" wire:model.defer="listaDePermisos" value="{{ $permission['id'] }}">
+                                        <input class="bg-white rounded" type="checkbox" wire:model.defer="listaDePermisos" value="{{ $item['id'] }}">
 
-                                        <p class="ml-2">{{ $permission['name'] }}</p>
+                                        <p class="ml-2">{{ $item['name'] }}</p>
 
                                     </label>
 

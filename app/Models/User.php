@@ -69,4 +69,12 @@ class User extends Authenticatable implements Auditable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function getStatusColorAttribute()
+    {
+        return [
+            'activo' => 'green',
+            'inactivo' => 'red',
+        ][$this->status] ?? 'gray';
+    }
 }
