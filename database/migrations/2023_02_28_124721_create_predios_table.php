@@ -31,7 +31,6 @@ return new class extends Migration
             $table->string('ejido')->nullable();
             $table->string('parcela')->nullable();
             $table->text('linderos')->nullable();
-            $table->json('linderos')->nullable();
             $table->text('descripcion')->nullable();
             $table->string('estado');
             $table->foreignId('escritura_id')->constrained();

@@ -31,5 +31,14 @@ class UserSeeder extends Seeder
             'password' => Hash::make('12345678'),
             'area' => 'Subdirección de Tecnologías de la Información',
         ])->assignRole('Administrador');
+
+        User::create([
+            'name' => 'Omar Alejandro Morales Arellano',
+            'ubicacion' => 'Catastro',
+            'status' => 'activo',
+            'email' => 'alex@hotmail.com',
+            'password' => Hash::make('12345678'),
+            'area' => 'Subdirección de Tecnologías de la Información',
+        ])->assignRole('Director RPP');
     }
 }

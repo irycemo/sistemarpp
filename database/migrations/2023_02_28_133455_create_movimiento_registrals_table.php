@@ -14,13 +14,18 @@ return new class extends Migration
         Schema::create('movimiento_registrals', function (Blueprint $table) {
             $table->id();
             $table->string('estado');
-            $table->foreignId('predio_id');
-            $table->unsignedInteger('tramite');
+            $table->unsignedDecimal("monto", 18, 2);
+            $table->foreignId('predio_id')->nullable();
+            $table->string("tomo")->nullable();
+            $table->boolean("tomo_bis")->nullable();
+            $table->string("registro")->nullable();
+            $table->boolean("registro_bis")->nullable();
+            $table->unsignedInteger('tramite')->unique();
             $table->timestamp('fecha_prelacion');
-            $table->string('servicio');
             $table->string('tipo_servicio');
             $table->string('solicitante');
             $table->string('seccion');
+            $table->string('distrito');
             $table->foreignId('usuario_asignado')->references('id')->on('users');
             $table->foreignId('usuario_supervisor')->references('id')->on('users');
             $table->date('fecha_entrega');

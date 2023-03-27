@@ -21,6 +21,6 @@ class LoginListener
      */
     public function handle(object $event): void
     {
-        DB::table('sessions')->where('ip_address', request()->getClientIp())->delete();
+        //DB::table('sessions')->where('ip_address', request()->getClientIp())->delete();
     }
 }

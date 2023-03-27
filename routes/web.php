@@ -10,6 +10,12 @@ use App\Http\Livewire\Admin\Distritos;
 use App\Http\Livewire\Admin\Tenencias;
 use App\Http\Livewire\Admin\Municipios;
 use App\Http\Controllers\ManualController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SetPasswordController;
+use App\Http\Livewire\Certificaciones\CopiasSimples;
+use App\Http\Livewire\Certificaciones\CopiasCertificadas;
+use App\Http\Controllers\Certificaciones\CopiasController;
+use App\Http\Controllers\ValidacionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,18 +32,9 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-});
-
-
 Route::group(['middleware' => ['auth', 'esta.activo']], function(){
+
+    Route::get('dashboard', DashboardController::class)->name('dashboard');
 
     Route::get('roles', Roles::class)->middleware('permission:Lista de roles')->name('roles');
 
@@ -55,10 +52,16 @@ Route::group(['middleware' => ['auth', 'esta.activo']], function(){
 
     Route::get('auditoria', Auditoria::class)->middleware('permission:Auditoria')->name('auditoria');
 
+    Route::get('copias_simples', CopiasSimples::class)->middleware('permission:Copias Simples')->name('copias_simples');
+
+    Route::get('copias_certificadas', CopiasCertificadas::class)->middleware('permission:Copias Certificadas')->name('copias_certificadas');
+    Route::get('copia_certificada/{certificacion}', [CopiasController::class, 'copiaCertificada'])->name('copia_certificada');
+
+    Route::get('manual', ManualController::class)->name('manual');
 
 });
 
 Route::get('setpassword/{email}', [SetPasswordController::class, 'create'])->name('setpassword');
 Route::post('setpassword', [SetPasswordController::class, 'store'])->name('setpassword.store');
 
-Route::get('manual', ManualController::class)->name('manual');
+Route::get('validacion/{id}', [ValidacionController::class, 'validar'])->name('validar.documento');

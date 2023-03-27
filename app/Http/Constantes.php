@@ -14,7 +14,8 @@ class Constantes{
         'Distritos',
         'Municipios',
         'Tenencias',
-        'Ranchos'
+        'Ranchos',
+        'Certificaciones'
     ];
 
     /* USUARIOS */
