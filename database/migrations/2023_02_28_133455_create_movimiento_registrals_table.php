@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('estado');
             $table->unsignedDecimal("monto", 18, 2);
             $table->foreignId('predio_id')->nullable();
+            $table->string("folio_real")->nullable();
             $table->string("tomo")->nullable();
             $table->boolean("tomo_bis")->nullable();
             $table->string("registro")->nullable();

@@ -16,6 +16,7 @@ class MovimientoRegistral extends Model
         'monto',
         'estado',
         'predio_id',
+        'folio_real',
         'tomo',
         'tomo_bis',
         'registro',

@@ -39,6 +39,24 @@ class UserSeeder extends Seeder
             'email' => 'alex@hotmail.com',
             'password' => Hash::make('12345678'),
             'area' => 'Subdirección de Tecnologías de la Información',
-        ])->assignRole('Director RPP');
+        ])->assignRole('Director');
+
+        User::create([
+            'name' => 'Supervisor Copias',
+            'ubicacion' => 'Catastro',
+            'status' => 'activo',
+            'email' => 'supervisor@hotmail.com',
+            'password' => Hash::make('12345678'),
+            'area' => 'Subdirección de Tecnologías de la Información',
+        ])->assignRole('Supervisor Copias');
+
+        User::create([
+            'name' => 'Certificador',
+            'ubicacion' => 'Catastro',
+            'status' => 'activo',
+            'email' => 'certificador@hotmail.com',
+            'password' => Hash::make('12345678'),
+            'area' => 'Subdirección de Tecnologías de la Información',
+        ])->assignRole('Certificador');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Certificaciones;
 
+use App\Http\Services\SistemaTramites\SistemaTramitesService;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Certificacion;
@@ -63,6 +64,8 @@ class CopiasCertificadas extends Component
             $this->modelo_editar->actualizado_por = auth()->user()->id;
 
             $this->modelo_editar->save();
+
+            (new SistemaTramitesService())->finaliarTramite($this->modelo_editar->movimientoRegistral->tramite);
 
             $this->resetearTodo();
 
@@ -136,7 +139,7 @@ class CopiasCertificadas extends Component
         if(auth()->user()->hasRole('Supervisor Copias')){
 
             $copias = Certificacion::with('movimientoRegistral', 'actualizadoPor')
-                                        ->where('servicio', 'Copias Certificadas')
+                                        ->where('servicio', 'Copias Certificadas (por página)')
                                         ->whereNull('finalizado_en')
                                         ->where(function($q){
 
@@ -155,7 +158,7 @@ class CopiasCertificadas extends Component
         }elseif(auth()->user()->hasRole('Certificador')){
 
             $copias = Certificacion::with('movimientoRegistral', 'actualizadoPor')
-                                        ->where('servicio', 'Copias Certificadas')
+                                        ->where('servicio', 'Copias Certificadas (por página)')
                                         ->whereNull('finalizado_en')
                                         ->whereNull('folio_carpeta_copias')
                                         ->where(function($q){
@@ -175,7 +178,7 @@ class CopiasCertificadas extends Component
         }else{
 
             $copias = Certificacion::with('movimientoRegistral', 'actualizadoPor')
-                                        ->where('servicio', 'Copias Certificadas')
+                                        ->where('servicio', 'Copias Certificadas (por página)')
                                         ->where(function($q){
                                             return $q->where('numero_paginas', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere(function($q){

@@ -95,7 +95,7 @@ class CopiasSimples extends Component
     {
 
         $copias = Certificacion::with('movimientoRegistral', 'actualizadoPor')
-                                    ->where('servicio', 'Copias Simples')
+                                    ->where('servicio', 'Copias Simples (por página)')
                                     ->whereNull('finalizado_en')
                                     ->where(function($q){
 

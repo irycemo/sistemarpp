@@ -22,6 +22,7 @@ class MovimientoRegistralRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'folio_real' => 'nullable',
             'monto' => 'required',
             'solicitante' => 'required',
             'tramite' => 'required',

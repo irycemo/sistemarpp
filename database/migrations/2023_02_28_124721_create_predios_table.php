@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('predios', function (Blueprint $table) {
             $table->id();
+            $table->string("folio_real")->nullbale()->unique();
             $table->unsignedTinyInteger('numero_propiedad')->comment("Número de propiedad dentro de la escritura");
             $table->unsignedDecimal('valor', 15,2);
             $table->string('tipo_moneda');

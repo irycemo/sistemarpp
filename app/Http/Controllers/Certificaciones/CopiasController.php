@@ -20,6 +20,7 @@ use Endroid\QrCode\Writer\PngWriter;
 
 class CopiasController extends Controller
 {
+
     public function copiaCertificada(Certificacion $certificacion){
 
         $certificacion->load('movimientoRegistral');

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('movimiento_registral_id');
             $table->string('servicio');
-            $table->unsignedInteger('numero_paginas');
+            $table->unsignedInteger('numero_paginas')->nullable();
             $table->unsignedInteger('folio_carpeta_copias')->unique()->nullable();
             $table->timestamp('firma')->nullable();
             $table->timestamp('finalizado_en')->nullable();
