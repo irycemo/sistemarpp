@@ -44,7 +44,7 @@ class FortifyServiceProvider extends ServiceProvider
                 if($user && $user->password == 'sistema')
                     return redirect()->route('setpassword', $request->email )->with('mensaje', 'Ingresa tu nueva contraseña.');
                 else
-                    return redirect()->back()->with('mensaje', 'Datos incorrectos.');
+                    return redirect()->back()->with('mensaje', 'El usuario ya ha registrado su contraseña.');
 
             }
 

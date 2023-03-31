@@ -2,12 +2,13 @@
 
 namespace App\Http\Livewire\Certificaciones;
 
-use App\Http\Services\SistemaTramites\SistemaTramitesService;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Certificacion;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Traits\ComponentesTrait;
+use App\Http\Services\SistemaTramites\SistemaTramitesService;
 
 class CopiasCertificadas extends Component
 {
@@ -16,6 +17,8 @@ class CopiasCertificadas extends Component
     use ComponentesTrait;
 
     public Certificacion $modelo_editar;
+    public $observaciones = "obserac";
+    public $modalRechazar;
 
     protected function rules(){
         return [
@@ -42,6 +45,17 @@ class CopiasCertificadas extends Component
 
     }
 
+    public function abrirModalRechazar(Certificacion $modelo){
+
+        $this->resetearTodo();
+        $this->modalRechazar = true;
+        $this->editar = true;
+
+        if($this->modelo_editar->isNot($modelo))
+            $this->modelo_editar = $modelo;
+
+    }
+
     public function finalizarSupervisor(Certificacion $modelo){
 
         if($this->modelo_editar->isNot($modelo))
@@ -56,20 +70,23 @@ class CopiasCertificadas extends Component
 
         try {
 
+            DB::transaction(function () use ($modelo){
 
-            $this->modelo_editar->finalizado_en = now();
+                $this->modelo_editar->finalizado_en = now();
 
-            $this->modelo_editar->firma = now();
+                $this->modelo_editar->firma = now();
 
-            $this->modelo_editar->actualizado_por = auth()->user()->id;
+                $this->modelo_editar->actualizado_por = auth()->user()->id;
 
-            $this->modelo_editar->save();
+                $this->modelo_editar->save();
 
-            (new SistemaTramitesService())->finaliarTramite($this->modelo_editar->movimientoRegistral->tramite);
+                (new SistemaTramitesService())->finaliarTramite($this->modelo_editar->movimientoRegistral->tramite);
 
-            $this->resetearTodo();
+                $this->resetearTodo();
 
-            $this->dispatchBrowserEvent('mostrarMensaje', ['success', "El trámite se finalizó con éxito."]);
+                $this->dispatchBrowserEvent('mostrarMensaje', ['success', "El trámite se finalizó con éxito."]);
+
+            });
 
         } catch (\Throwable $th) {
 
@@ -106,6 +123,34 @@ class CopiasCertificadas extends Component
 
     }
 
+    public function rechazar(){
+
+        $this->validate([
+            'observaciones' => 'required'
+        ]);
+
+        try {
+
+            DB::transaction(function (){
+
+                (new SistemaTramitesService())->rechazarTramite($this->modelo_editar->movimientoRegistral->tramite, $this->observaciones);
+
+                $this->modelo_editar->movimientoRegistral->update(['estado' => 'nuevo']);
+
+                $this->modelo_editar->actualizado_por = auth()->user()->id;
+
+                $this->modelo_editar->save();
+
+            });
+
+        } catch (\Throwable $th) {
+            Log::error("Error al rechazar trámite de copias certificadas por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th->getMessage());
+            $this->dispatchBrowserEvent('mostrarMensaje', ['error', "Ha ocurrido un error."]);
+            $this->resetearTodo();
+        }
+
+    }
+
     public function reimprimir(Certificacion $modelo){
 
         if($this->modelo_editar->isNot($modelo))
@@ -130,6 +175,14 @@ class CopiasCertificadas extends Component
             $this->resetearTodo();
 
         }
+
+    }
+
+    public function mount(){
+
+        array_push($this->fields, 'modalRechazar', 'observaciones');
+
+        $this->modelo_editar = $this->crearModeloVacio();
 
     }
 

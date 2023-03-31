@@ -2,7 +2,8 @@
 
 namespace App\Http\Services\SistemaTramites;
 
-use Illuminate\Support\Facades\Log;
+use App\Exceptions\ErrorAlEnviarTramiteConcluidoASistemaTramites;
+use App\Exceptions\ErrorAlEnviarTramiteRechazadoASistemaTramites;
 use Illuminate\Support\Facades\Http;
 
 class SistemaTramitesService{
@@ -11,40 +12,31 @@ class SistemaTramitesService{
 
         $url = 'http://127.0.0.1:8001/api/finalizar_tramite';
 
-        try {
+        $response = Http::acceptJson()->asForm()->post($url, [
+            'tramite' => $tramite
+        ]);
 
-            $response = Http::acceptJson()->asForm()->post($url, [
-                'tramite' => $tramite
-            ]);
+        if($response->status() != 200){
 
-            $data = json_decode($response, true);
+            throw new ErrorAlEnviarTramiteConcluidoASistemaTramites('Error al enviar tramite concluido al sistema trámites.' . $response);
 
-            if($data['result'] == 'error')
-                Log::error("Error al enviar tramite concluido al sistema trámites. " . $response);
-
-        } catch (\Throwable $th) {
-            Log::error("Error al enviar tramite concluido al sistema trámites. " . $th->getMessage());
         }
 
     }
 
-    public function rechazarTramite($tramite){
+    public function rechazarTramite($tramite, $observaciones){
 
         $url = 'http://127.0.0.1:8001/api/rechazar_tramite';
 
-        try {
+        $response = Http::acceptJson()->asForm()->post($url, [
+            'tramite' => $tramite,
+            'observaciones' => $observaciones,
+        ]);
 
-            $response = Http::acceptJson()->asForm()->post($url, [
-                'tramite' => $tramite
-            ]);
+        if($response->status() != 200){
 
-            $data = json_decode($response, true);
+            throw new ErrorAlEnviarTramiteRechazadoASistemaTramites('Error al enviar tramite rechazado al sistema trámites.' . $response);
 
-            if($data['result'] == 'error')
-                Log::error("Error al enviar tramite rechazado al sistema trámites. " . $response);
-
-        } catch (\Throwable $th) {
-            Log::error("Error al enviar tramite rechazado al sistema trámites. " . $th->getMessage());
         }
 
     }
