@@ -2,7 +2,7 @@
 
     <div class="mb-6">
 
-        <h1 class="text-3xl tracking-widest py-3 px-6 text-gray-600 rounded-xl border-b-2 border-gray-500 font-thin mb-6  bg-white">Copias Certificadas</h1>
+        <h1 class="text-3xl tracking-widest py-3 px-6 text-gray-600 rounded-xl border-b-2 border-gray-500 font-thin mb-6  bg-white">Copias Simples</h1>
 
         <div class="flex justify-between">
 
@@ -98,6 +98,12 @@
                             <th class="px-3 py-3 hidden lg:table-cell">
 
                                 Finalizado en
+
+                            </th>
+
+                            <th class="px-3 py-3 hidden lg:table-cell">
+
+                                Reimpreso en
 
                             </th>
 
@@ -265,6 +271,14 @@
 
                                 </td>
 
+                                <td class="px-3 py-3 w-full lg:w-auto p-3 text-gray-800 text-center lg:text-left lg:border-0 border border-b block lg:table-cell relative lg:static">
+
+                                    <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Reimpreso en</span>
+
+                                    {{ optional($copia->reimpreso_en)->format('d-m-Y H:i:s') ?? 'N/A' }}
+
+                                </td>
+
                             @endif
 
                             <td class="px-3 py-3 w-full lg:w-auto p-3 text-gray-800 text-center lg:text-left lg:border-0 border border-b block lg:table-cell relative lg:static">
@@ -295,9 +309,49 @@
 
                                     <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Acciones</span>
 
-                                    <div class="flex justify-center lg:justify-start">
+                                    <div class="flex md:flex-col justify-center lg:justify-start md:space-y-1">
 
-                                        @can('Finalizar copias simples')
+                                        @can('Reimprimir documento')
+
+                                            @if ($copia->reimpreso_en == null && $copia->folio_carpeta_copias != null)
+
+                                                <button
+                                                    wire:click="reimprimir({{ $copia->id }})"
+                                                    wire:loading.attr="disabled"
+                                                    class="md:w-full bg-red-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-red-700 flex justify-center focus:outline-none"
+                                                >
+
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-3">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z" />
+                                                    </svg>
+
+                                                    <p>Reimprimir</p>
+
+                                                </button>
+
+                                            @endif
+
+                                        @endif
+
+                                        @can('Rechazar copias certificadas')
+
+                                            <button
+                                                wire:click="abrirModalRechazar({{ $copia->id }})"
+                                                wire:loading.attr="disabled"
+                                                class="md:w-full bg-red-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-red-700 flex justify-center focus:outline-none"
+                                            >
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-3">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                                  </svg>
+
+                                                <p>Rechazar</p>
+
+                                            </button>
+
+                                        @endcan
+
+                                        @can('Finalizar copias certificadas')
 
 
                                             @if(auth()->user()->hasRole('Supervisor Copias'))
@@ -305,7 +359,7 @@
                                                 <button
                                                     wire:click="finalizarSupervisor({{ $copia->id }})"
                                                     wire:loading.attr="disabled"
-                                                    class="bg-blue-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-blue-700 flex focus:outline-none"
+                                                    class="md:w-full bg-blue-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-blue-700 flex justify-center focus:outline-none"
                                                 >
 
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 mr-3">
@@ -321,7 +375,7 @@
                                                 <button
                                                     wire:click="abrirModalEditar({{$copia->id}})"
                                                     wire:loading.attr="disabled"
-                                                    class="bg-blue-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-blue-700 flex focus:outline-none"
+                                                    class="md:w-full bg-blue-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-blue-700 flex justify-center focus:outline-none"
                                                 >
 
 
@@ -353,7 +407,7 @@
 
                     <tr>
 
-                        <td colspan="8" class="py-2 px-5">
+                        <td colspan="16" class="py-2 px-5">
                             {{ $copias->links()}}
                         </td>
 
@@ -448,4 +502,91 @@
 
     </x-dialog-modal>
 
+    <x-dialog-modal wire:model="modalRechazar" maxWidth="sm">
+
+        <x-slot name="title">
+
+            Rechazar
+
+        </x-slot>
+
+        <x-slot name="content">
+
+            <div class="flex flex-col md:flex-row justify-between md:space-x-3 mb-5">
+
+                <div class="flex-auto ">
+
+                    <div>
+
+                        <Label>Observaciones</Label>
+                    </div>
+
+                    <div>
+
+                        <textarea rows="5" class="bg-white rounded text-sm w-full" wire:model.defer="observaciones"></textarea>
+
+                    </div>
+
+                    <div>
+
+                        @error('observaciones') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </x-slot>
+
+        <x-slot name="footer">
+
+            <div class="float-righ">
+
+                <button
+                    wire:click="rechazar"
+                    wire:loading.attr="disabled"
+                    wire:target="rechazar"
+                    class="bg-blue-400 hover:shadow-lg text-white font-bold px-4 py-2 rounded-full text-sm mb-2 hover:bg-blue-700 flaot-left mr-1 focus:outline-none">
+
+                    <img wire:loading wire:target="rechazar" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
+
+                    Rechazar
+                </button>
+
+                <button
+                    wire:click="resetearTodo"
+                    wire:loading.attr="disabled"
+                    wire:target="resetearTodo"
+                    type="button"
+                    class="bg-red-400 hover:shadow-lg text-white font-bold px-4 py-2 rounded-full text-sm mb-2 hover:bg-red-700 flaot-left focus:outline-none">
+                    Cerrar
+                </button>
+
+            </div>
+
+        </x-slot>
+
+    </x-dialog-modal>
+
 </div>
+
+@push('scripts')
+
+    <script>
+
+        window.addEventListener('imprimir_documento', event => {
+
+            const documento = event.detail.documento;
+
+            var url = "{{ route('copia_simple', '')}}" + "/" + documento;
+
+            window.open(url, '_blank');
+
+            window.location.href = "{{ route('copias_simples')}}";
+
+        });
+
+    </script>
+
+@endpush

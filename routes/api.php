@@ -21,6 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('movimiento_registral', [MovimientoRegistralController::class, 'store']);
 
+Route::post('actualizar_registral', [MovimientoRegistralController::class, 'update']);
+
 Route::fallback(function(){
     return response()->json([
         'message' => 'Página no encontrada.'], 404);

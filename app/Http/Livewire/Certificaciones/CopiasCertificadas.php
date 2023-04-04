@@ -17,7 +17,7 @@ class CopiasCertificadas extends Component
     use ComponentesTrait;
 
     public Certificacion $modelo_editar;
-    public $observaciones = "obserac";
+    public $observaciones;
     public $modalRechazar;
 
     protected function rules(){
@@ -27,7 +27,7 @@ class CopiasCertificadas extends Component
     }
 
     protected $validationAttributes  = [
-        'modelo_editar.folio_carpeta_copias' => 'número de carpeta'
+        'modelo_editar.folio_carpeta_copias' => 'folio de carpeta'
     ];
 
     public function crearModeloVacio(){
@@ -133,13 +133,21 @@ class CopiasCertificadas extends Component
 
             DB::transaction(function (){
 
-                (new SistemaTramitesService())->rechazarTramite($this->modelo_editar->movimientoRegistral->tramite, $this->observaciones);
+                $observaciones = auth()->user()->name . ' rechaza el ' . now() . ', con motivo: ' . $this->observaciones . '<|>';
 
-                $this->modelo_editar->movimientoRegistral->update(['estado' => 'nuevo']);
+                (new SistemaTramitesService())->rechazarTramite($this->modelo_editar->movimientoRegistral->tramite, $observaciones);
+
+                $this->modelo_editar->movimientoRegistral->update(['estado' => 'rechazado']);
 
                 $this->modelo_editar->actualizado_por = auth()->user()->id;
 
+                $this->modelo_editar->observaciones = $this->modelo_editar->observaciones . $observaciones;
+
                 $this->modelo_editar->save();
+
+                $this->dispatchBrowserEvent('mostrarMensaje', ['success', "El trámite se rechazó con éxito."]);
+
+                $this->resetearTodo();
 
             });
 
@@ -192,6 +200,9 @@ class CopiasCertificadas extends Component
         if(auth()->user()->hasRole('Supervisor Copias')){
 
             $copias = Certificacion::with('movimientoRegistral', 'actualizadoPor')
+                                        ->whereHas('movimientoRegistral', function($q){
+                                            $q->where('estado', 'nuevo');
+                                        })
                                         ->where('servicio', 'Copias Certificadas (por página)')
                                         ->whereNull('finalizado_en')
                                         ->where(function($q){
@@ -211,6 +222,9 @@ class CopiasCertificadas extends Component
         }elseif(auth()->user()->hasRole('Certificador')){
 
             $copias = Certificacion::with('movimientoRegistral', 'actualizadoPor')
+                                        ->whereHas('movimientoRegistral', function($q){
+                                            $q->where('estado', 'nuevo');
+                                        })
                                         ->where('servicio', 'Copias Certificadas (por página)')
                                         ->whereNull('finalizado_en')
                                         ->whereNull('folio_carpeta_copias')
@@ -231,6 +245,9 @@ class CopiasCertificadas extends Component
         }else{
 
             $copias = Certificacion::with('movimientoRegistral', 'actualizadoPor')
+                                        ->whereHas('movimientoRegistral', function($q){
+                                            $q->where('estado', 'nuevo');
+                                        })
                                         ->where('servicio', 'Copias Certificadas (por página)')
                                         ->where(function($q){
                                             return $q->where('numero_paginas', 'LIKE', '%' . $this->search . '%')

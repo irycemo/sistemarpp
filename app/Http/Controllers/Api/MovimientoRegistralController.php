@@ -29,7 +29,50 @@ class MovimientoRegistralController extends Controller
 
                     Certificacion::create($this->requestTramtie($request) + ['movimiento_registral_id' => $movimiento_registral->id]);
 
-                    $movimiento_registral->load('certificaciones');
+                    $movimiento_registral->load('certificacion');
+
+                }
+
+                $data = $movimiento_registral;
+
+            });
+
+            return response()->json([
+                'result' => 'success',
+                'data' => $data
+            ], 200);
+
+        } catch (\Throwable $th) {
+
+            return response()->json([
+                'result' => 'error',
+                'data' => $th->getMessage(),
+            ], 500);
+
+        }
+
+    }
+
+    public function update(MovimientoRegistralRequest $request){
+
+        try {
+
+            $data = null;
+
+            DB::transaction(function () use($request, &$data){
+
+
+                $movimiento_registral = MovimientoRegistral::findOrFail($request->movimiento_registral);
+
+                $movimiento_registral->update(['estado' => 'nuevo']);
+
+                if($request->categoria_servicio == 'Certificaciones'){
+
+                    $movimiento_registral->certificacion->update([
+                        'numero_paginas' => $movimiento_registral->certificacion->numero_paginas + $request->numero_paginas
+                    ]);
+
+                    $movimiento_registral->load('certificacion');
 
                 }
 

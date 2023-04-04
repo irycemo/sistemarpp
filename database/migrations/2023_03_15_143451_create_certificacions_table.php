@@ -21,6 +21,7 @@ return new class extends Migration
             $table->timestamp('finalizado_en')->nullable();
             $table->timestamp('reimpreso_en')->nullable();
             $table->foreignId('actualizado_por')->nullable()->references('id')->on('users');
+            $table->text('observaciones')->nullable();
             $table->timestamps();
         });
     }

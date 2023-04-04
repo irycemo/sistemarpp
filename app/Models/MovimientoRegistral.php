@@ -38,8 +38,8 @@ class MovimientoRegistral extends Model
         'fecha_prelacion' => 'datetime'
     ];
 
-    public function certificaciones(){
-        return $this->hasMany(Certificacion::class);
+    public function certificacion(){
+        return $this->hasOne(Certificacion::class);
     }
 
     public function supervisor(){
