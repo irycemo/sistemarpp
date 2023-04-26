@@ -144,12 +144,12 @@
                     DEL TOMO <strong>{{ $tomo }}</strong> <strong>({{ $tomo_letras }})</strong> DEL LIBRO DE <STRONG>{{ $seccion }}</STRONG> CORRESPONDIENTE AL
                     DISTRITO DE <strong>{{ $distrito }}</strong>, Y SE COMPULSA
                     EN <strong>{{ $paginas }}</strong> <strong>({{ $paginas_letras }})</strong>  PAGINA(S) UTILES DEBIDAMENTE COTEJADAS
-                    PARA ENTREGARSE EN <strong>CARPETA CON FOLIO NO. {{ $folio_carpeta }}</strong> A LA ORDEN DE: <strong>{{ $solicitante }}</strong>, DOY FE.-
+                    EN <strong>CARPETA CON FOLIO NO. {{ $folio_carpeta }}</strong> PARA ENTREGARSE A LA ORDEN DE: <strong>{{ $solicitante }}</strong>, DOY FE.-
                 </p>
 
                 <p class="parrafo">
                     SE HACE LA SIGUIENTE CERTIFICACIÓN EN MORELIA MICHOACÁN, A LAS {{ $hora }} ({{ $hora_letras }}) HORAS {{ $minutos }} ({{ $minutos_letras }})
-                    MINUTOS DEL DÍA {{ $dia }} ({{ $dia_letras }}) DE {{ $mes }} DEL {{ $año }} ({{ $año_letras }})
+                    MINUTOS DEL DÍA {{ $dia }} ({{ $dia_letras }}) DE {{ $mes }} DEL {{ $año }} ({{ $año_letras }}).
                 </p>
 
             </div>

@@ -10,7 +10,7 @@ class SistemaTramitesService{
 
     public function finaliarTramite($tramite){
 
-        $url = 'http://127.0.0.1:8001/api/finalizar_tramite';
+        $url = env('SISTEMA_TRAMITES_FINALIZAR');
 
         $response = Http::acceptJson()->asForm()->post($url, [
             'tramite' => $tramite
@@ -26,7 +26,7 @@ class SistemaTramitesService{
 
     public function rechazarTramite($tramite, $observaciones){
 
-        $url = 'http://127.0.0.1:8001/api/rechazar_tramite';
+        $url = env('SISTEMA_TRAMITES_RECHAZAR');
 
         $response = Http::acceptJson()->asForm()->post($url, [
             'tramite' => $tramite,
