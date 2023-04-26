@@ -23,7 +23,7 @@ class VerLogsMiddlware
 
         }
 
-        abort(401, 'Unauthorised');
+        abort(401, 'Unauthorized');
 
     }
 

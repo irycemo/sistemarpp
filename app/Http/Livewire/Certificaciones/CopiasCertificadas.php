@@ -247,7 +247,7 @@ class CopiasCertificadas extends Component
 
             $copias = Certificacion::with('movimientoRegistral', 'actualizadoPor')
                                         ->whereHas('movimientoRegistral', function($q){
-                                            $q->where('estado', 'nuevo');
+                                            $q->whereIn('estado', ['nuevo', 'rechazado']);
                                         })
                                         ->where('servicio', 'Copias Certificadas (por página)')
                                         ->where(function($q){

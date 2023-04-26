@@ -24,9 +24,14 @@ class AppServiceProvider extends ServiceProvider
 
         Model::shouldBeStrict();
 
-        /* LogViewer::auth(function ($request) {
-            return auth()->user()->hasRole('Administrador');
-        }); */
+        LogViewer::auth(function ($request) {
+
+            if(auth()->user()->hasRole('Administrador'))
+                return true;
+            else
+                abort(401, 'Unauthorized');
+
+        });
 
     }
 }
