@@ -4,10 +4,10 @@ namespace App\Http\Livewire\Admin;
 
 use Livewire\Component;
 use App\Http\Constantes;
+use App\Models\Permission;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Log;
 use App\Http\Traits\ComponentesTrait;
-use Spatie\Permission\Models\Permission;
 
 class Permisos extends Component
 {
