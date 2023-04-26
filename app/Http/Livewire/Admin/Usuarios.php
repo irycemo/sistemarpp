@@ -63,7 +63,7 @@ class Usuarios extends Component
 
         if(User::where('name', $this->modelo_editar->name)->first()){
 
-            $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El usuario " . $this->nombre . " ya esta registrado."]);
+            $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El usuario " . $this->modelo_editar->name . " ya esta registrado."]);
 
             $this->resetearTodo();
 

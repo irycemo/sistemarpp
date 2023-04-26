@@ -38,6 +38,15 @@ class MovimientoRegistral extends Model
         'fecha_prelacion' => 'datetime'
     ];
 
+    public function getEstadoColorAttribute()
+    {
+        return [
+            'nuevo' => 'blue-400',
+            'concluido' => 'gray-400',
+            'rechazado' => 'red-400',
+        ][$this->estado] ?? 'gray-400';
+    }
+
     public function certificacion(){
         return $this->hasOne(Certificacion::class);
     }

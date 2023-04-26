@@ -41,6 +41,16 @@
 
                         </th>
 
+                        @if (auth()->user()->hasRole('Administrador'))
+
+                            <th class="px-3 py-3 hidden lg:table-cell">
+
+                                Estado
+
+                            </th>
+
+                        @endif
+
                         <th class="px-3 py-3 hidden lg:table-cell">
 
                             Solicitante
@@ -186,6 +196,18 @@
                                 {{ $copia->movimientoRegistral->tramite }}
 
                             </td>
+
+                            @if (auth()->user()->hasRole('Administrador'))
+
+                                <td class="px-3 py-3 w-full lg:w-auto p-3 text-gray-800 text-center  lg:border-0 border border-b block lg:table-cell relative lg:static">
+
+                                    <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Estado</span>
+
+                                    <span class="bg-{{ $copia->movimientoRegistral->estado_color }} py-1 px-2 rounded-full text-white text-xs">{{ ucfirst($copia->movimientoRegistral->estado) }}</span>
+
+                                </td>
+
+                            @endif
 
                             <td class="px-3 py-3 w-full lg:w-auto p-3 text-gray-800 text-center lg:text-left lg:border-0 border border-b block lg:table-cell relative lg:static">
 

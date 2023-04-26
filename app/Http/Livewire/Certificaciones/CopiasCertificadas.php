@@ -104,6 +104,7 @@ class CopiasCertificadas extends Component
 
         try{
 
+            $this->modelo_editar->movimientoRegistral->update(['estado' => 'concluido']);
             $this->modelo_editar->actualizado_por = auth()->user()->id;
 
             $this->modelo_editar->save();
@@ -133,7 +134,7 @@ class CopiasCertificadas extends Component
 
             DB::transaction(function (){
 
-                $observaciones = auth()->user()->name . ' rechaza el ' . now() . ', con motivo: ' . $this->observaciones . '<|>';
+                $observaciones = auth()->user()->name . ' rechaza el ' . now() . ', con motivo: ' . '<|>' . $this->observaciones ;
 
                 (new SistemaTramitesService())->rechazarTramite($this->modelo_editar->movimientoRegistral->tramite, $observaciones);
 
