@@ -165,6 +165,7 @@ class MovimientoRegistralController extends Controller
             'distrito',
             'fecha_entrega',
             'categoria_servicio',
+            'numero_notaria',
             'tomo',
             'tomo_bis',
             'registro',
