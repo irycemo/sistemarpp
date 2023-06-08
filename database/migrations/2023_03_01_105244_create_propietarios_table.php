@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('persona_id')->constrained();
             $table->foreignId('predio_id')->constrained();
-            $table->unsignedDecimal('usufructo', 15,2)->nullable();
-            $table->unsignedDecimal('nuda', 15,2)->nullable();
+            $table->string('tipo');
+            $table->unsignedDecimal('porcentaje', 15,2);
+            $table->foreignId('creado_por')->nullable()->references('id')->on('users');
+            $table->foreignId('actualizado_por')->nullable()->references('id')->on('users');
             $table->timestamps();
         });
     }

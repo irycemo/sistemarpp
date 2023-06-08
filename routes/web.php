@@ -16,6 +16,7 @@ use App\Http\Livewire\Certificaciones\CopiasSimples;
 use App\Http\Livewire\Certificaciones\CopiasCertificadas;
 use App\Http\Controllers\Certificaciones\CopiasController;
 use App\Http\Controllers\ValidacionController;
+use App\Http\Livewire\Certificaciones\Consultas;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +59,7 @@ Route::group(['middleware' => ['auth', 'esta.activo']], function(){
     Route::get('copias_certificadas', CopiasCertificadas::class)->middleware('permission:Copias Certificadas')->name('copias_certificadas');
     Route::get('copia_certificada/{certificacion}', [CopiasController::class, 'copiaCertificada'])->name('copia_certificada');
 
+    Route::get('consultas', Consultas::class)->middleware('permission:Consultas')->name('consultas');
 
     Route::get('manual', ManualController::class)->name('manual');
 

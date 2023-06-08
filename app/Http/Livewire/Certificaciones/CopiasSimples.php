@@ -70,10 +70,11 @@ class CopiasSimples extends Component
 
         try {
 
-
             $this->modelo_editar->finalizado_en = now();
 
             $this->modelo_editar->actualizado_por = auth()->user()->id;
+
+            $this->modelo_editar->movimientoRegistral->estado->concluido;
 
             $this->modelo_editar->save();
 
@@ -85,7 +86,7 @@ class CopiasSimples extends Component
 
         } catch (\Throwable $th) {
 
-            Log::error("Error al finalizar trámite de copias simples por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th->getMessage());
+            Log::error("Error al finalizar trámite de copias simples por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
             $this->dispatchBrowserEvent('mostrarMensaje', ['error', "Ha ocurrido un error."]);
             $this->resetearTodo();
 
@@ -111,7 +112,7 @@ class CopiasSimples extends Component
 
         } catch (\Throwable $th) {
 
-            Log::error("Error al finalizar trámite de copias simples por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th->getMessage());
+            Log::error("Error al finalizar trámite de copias simples por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
             $this->dispatchBrowserEvent('mostrarMensaje', ['error', "Ha ocurrido un error."]);
             $this->resetearTodo();
         }
@@ -147,7 +148,7 @@ class CopiasSimples extends Component
             });
 
         } catch (\Throwable $th) {
-            Log::error("Error al rechazar trámite de copias certificadas por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th->getMessage());
+            Log::error("Error al rechazar trámite de copias certificadas por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
             $this->dispatchBrowserEvent('mostrarMensaje', ['error', "Ha ocurrido un error."]);
             $this->resetearTodo();
         }
@@ -173,7 +174,7 @@ class CopiasSimples extends Component
 
         } catch (\Throwable $th) {
 
-            Log::error("Error al reimprimir trámite de copias certificadas por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th->getMessage());
+            Log::error("Error al reimprimir trámite de copias certificadas por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
             $this->dispatchBrowserEvent('mostrarMensaje', ['error', "Ha ocurrido un error."]);
             $this->resetearTodo();
 
@@ -198,7 +199,7 @@ class CopiasSimples extends Component
                                         ->whereHas('movimientoRegistral', function($q){
                                             $q->where('estado', 'nuevo');
                                         })
-                                        ->where('servicio', 'Copias Simples (por página)')
+                                        ->where('servicio', 'DL14')
                                         ->whereNull('finalizado_en')
                                         ->where(function($q){
 
@@ -220,7 +221,7 @@ class CopiasSimples extends Component
                                         ->whereHas('movimientoRegistral', function($q){
                                             $q->where('estado', 'nuevo');
                                         })
-                                        ->where('servicio', 'Copias Simples (por página)')
+                                        ->where('servicio', 'DL14')
                                         ->whereNull('finalizado_en')
                                         ->whereNull('folio_carpeta_copias')
                                         ->where(function($q){
@@ -240,10 +241,7 @@ class CopiasSimples extends Component
         }else{
 
             $copias = Certificacion::with('movimientoRegistral', 'actualizadoPor')
-                                        ->whereHas('movimientoRegistral', function($q){
-                                            $q->whereIn('estado', ['nuevo', 'rechazado']);
-                                        })
-                                        ->where('servicio', 'Copias Simples (por página)')
+                                        ->where('servicio', 'DL14')
                                         ->where(function($q){
                                             return $q->where('numero_paginas', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere(function($q){

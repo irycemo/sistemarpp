@@ -41,7 +41,6 @@ return new class extends Migration
             $table->unsignedInteger('cc_region_catastral');
             $table->unsignedInteger('cc_municipio');
             $table->unsignedInteger('cc_zona_catastral');
-            $table->unsignedInteger('cc_localidad');
             $table->unsignedInteger('cc_sector');
             $table->unsignedInteger('cc_manzana');
             $table->unsignedInteger('cc_predio');
@@ -50,7 +49,6 @@ return new class extends Migration
             $table->unsignedInteger('cp_localidad');
             $table->unsignedInteger('cp_oficina');
             $table->unsignedInteger('cp_tipo_predio');
-            $table->unsignedInteger('cp_numero_predio');
 
             $table->foreignId('creado_por')->nullable()->references('id')->on('users');
             $table->foreignId('actualizado_por')->nullable()->references('id')->on('users');

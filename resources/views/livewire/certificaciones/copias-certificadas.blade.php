@@ -221,7 +221,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Tomo/Bis</span>
 
-                                {{ $copia->movimientoRegistral->tomo }}{{ $copia->movimientoRegistral->tomo_bis ? ' / ' . $copia->movimientoRegistral->tomo_bis : ''}}
+                                {{ $copia->movimientoRegistral->tomo ?? 'N/A' }}{{ $copia->movimientoRegistral->tomo_bis ? ' / ' . $copia->movimientoRegistral->tomo_bis : ''}}
 
                             </td>
 
@@ -229,7 +229,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Registro/Bis</span>
 
-                                {{ $copia->movimientoRegistral->registro }}{{ $copia->movimientoRegistral->registro_bis ? ' / ' . $copia->movimientoRegistral->registro_bis : ''}}
+                                {{ $copia->movimientoRegistral->registro ?? 'N/A' }}{{ $copia->movimientoRegistral->registro_bis ? ' / ' . $copia->movimientoRegistral->registro_bis : ''}}
 
                             </td>
 

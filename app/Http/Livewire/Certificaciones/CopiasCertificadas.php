@@ -78,6 +78,8 @@ class CopiasCertificadas extends Component
 
                 $this->modelo_editar->actualizado_por = auth()->user()->id;
 
+                $this->modelo_editar->movimientoRegistral->estado->concluido;
+
                 $this->modelo_editar->save();
 
                 (new SistemaTramitesService())->finaliarTramite($this->modelo_editar->movimientoRegistral->tramite);
@@ -90,7 +92,7 @@ class CopiasCertificadas extends Component
 
         } catch (\Throwable $th) {
 
-            Log::error("Error al finalizar trámite de copias certificadas por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th->getMessage());
+            Log::error("Error al finalizar trámite de copias certificadas por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
             $this->dispatchBrowserEvent('mostrarMensaje', ['error', "Ha ocurrido un error."]);
             $this->resetearTodo();
 
@@ -104,7 +106,6 @@ class CopiasCertificadas extends Component
 
         try{
 
-            $this->modelo_editar->movimientoRegistral->update(['estado' => 'concluido']);
             $this->modelo_editar->actualizado_por = auth()->user()->id;
 
             $this->modelo_editar->save();
@@ -117,7 +118,7 @@ class CopiasCertificadas extends Component
 
         } catch (\Throwable $th) {
 
-            Log::error("Error al finalizar trámite de copias certificadas por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th->getMessage());
+            Log::error("Error al finalizar trámite de copias certificadas por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
             $this->dispatchBrowserEvent('mostrarMensaje', ['error', "Ha ocurrido un error."]);
             $this->resetearTodo();
         }
@@ -153,7 +154,7 @@ class CopiasCertificadas extends Component
             });
 
         } catch (\Throwable $th) {
-            Log::error("Error al rechazar trámite de copias certificadas por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th->getMessage());
+            Log::error("Error al rechazar trámite de copias certificadas por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
             $this->dispatchBrowserEvent('mostrarMensaje', ['error', "Ha ocurrido un error."]);
             $this->resetearTodo();
         }
@@ -179,7 +180,7 @@ class CopiasCertificadas extends Component
 
         } catch (\Throwable $th) {
 
-            Log::error("Error al reimprimir trámite de copias certificadas por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th->getMessage());
+            Log::error("Error al reimprimir trámite de copias certificadas por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
             $this->dispatchBrowserEvent('mostrarMensaje', ['error', "Ha ocurrido un error."]);
             $this->resetearTodo();
 
@@ -204,7 +205,7 @@ class CopiasCertificadas extends Component
                                         ->whereHas('movimientoRegistral', function($q){
                                             $q->where('estado', 'nuevo');
                                         })
-                                        ->where('servicio', 'Copias Certificadas (por página)')
+                                        ->where('servicio', 'DL13')
                                         ->whereNull('finalizado_en')
                                         ->where(function($q){
 
@@ -226,7 +227,7 @@ class CopiasCertificadas extends Component
                                         ->whereHas('movimientoRegistral', function($q){
                                             $q->where('estado', 'nuevo');
                                         })
-                                        ->where('servicio', 'Copias Certificadas (por página)')
+                                        ->where('servicio', 'DL13')
                                         ->whereNull('finalizado_en')
                                         ->whereNull('folio_carpeta_copias')
                                         ->where(function($q){
@@ -246,10 +247,7 @@ class CopiasCertificadas extends Component
         }else{
 
             $copias = Certificacion::with('movimientoRegistral', 'actualizadoPor')
-                                        ->whereHas('movimientoRegistral', function($q){
-                                            $q->whereIn('estado', ['nuevo', 'rechazado']);
-                                        })
-                                        ->where('servicio', 'Copias Certificadas (por página)')
+                                        ->where('servicio', 'DL13')
                                         ->where(function($q){
                                             return $q->where('numero_paginas', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere(function($q){
