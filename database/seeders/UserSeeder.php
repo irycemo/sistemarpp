@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
             'name' => 'Jesus Manriquez Vargas',
             'ubicacion' => 'Catastro',
             'status' => 'activo',
-            'email' => 'jemava86@hotmail.com',
+            'email' => 'subdirti.irycem@correo.michoacan.gob.mx',
             'password' => Hash::make('12345678'),
             'area' => 'Subdirección de Tecnologías de la Información',
         ])->assignRole('Administrador');

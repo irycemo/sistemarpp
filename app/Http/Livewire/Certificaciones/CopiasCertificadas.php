@@ -22,7 +22,7 @@ class CopiasCertificadas extends Component
 
     protected function rules(){
         return [
-            'modelo_editar.folio_carpeta_copias' => 'required|unique:certificacions,folio_carpeta_copias,' . $this->modelo_editar->id,
+            'modelo_editar.folio_carpeta_copias' => 'required|numeric|unique:certificacions,folio_carpeta_copias,' . $this->modelo_editar->id,
          ];
     }
 
@@ -68,6 +68,13 @@ class CopiasCertificadas extends Component
 
         }
 
+        if($this->modelo_editar->movimientoRegistral->fecha_entrega > now()){
+
+            $this->dispatchBrowserEvent('mostrarMensaje', ['error', "La fecha de entrega de este trámite es " . $this->modelo_editar->movimientoRegistral->fecha_entrega->format('d-m-Y')]);
+            return;
+
+        }
+
         try {
 
             DB::transaction(function () use ($modelo){
@@ -78,7 +85,9 @@ class CopiasCertificadas extends Component
 
                 $this->modelo_editar->actualizado_por = auth()->user()->id;
 
-                $this->modelo_editar->movimientoRegistral->estado->concluido;
+                $this->modelo_editar->movimientoRegistral->estado = 'concluido';
+
+                $this->modelo_editar->movimientoRegistral->save();
 
                 $this->modelo_editar->save();
 
@@ -103,6 +112,13 @@ class CopiasCertificadas extends Component
     public function finalizar(){
 
         $this->validate();
+
+        if($this->modelo_editar->movimientoRegistral->fecha_entrega > now()){
+
+            $this->dispatchBrowserEvent('mostrarMensaje', ['error', "La fecha de entrega de este trámite es " . $this->modelo_editar->movimientoRegistral->fecha_entrega->format('d-m-Y')]);
+            return;
+
+        }
 
         try{
 
@@ -166,6 +182,13 @@ class CopiasCertificadas extends Component
         if($this->modelo_editar->isNot($modelo))
             $this->modelo_editar = $modelo;
 
+        if($this->modelo_editar->movimientoRegistral->fecha_entrega > now()){
+
+            $this->dispatchBrowserEvent('mostrarMensaje', ['error', "La fecha de entrega de este trámite es " . $this->modelo_editar->movimientoRegistral->fecha_entrega->format('d-m-Y')]);
+            return;
+
+        }
+
         try {
 
             $this->dispatchBrowserEvent('imprimir_documento', ['documento' => $this->modelo_editar->id]);
@@ -203,7 +226,8 @@ class CopiasCertificadas extends Component
 
             $copias = Certificacion::with('movimientoRegistral', 'actualizadoPor')
                                         ->whereHas('movimientoRegistral', function($q){
-                                            $q->where('estado', 'nuevo');
+                                            $q->where('estado', 'nuevo')
+                                                ->whereRaw('DATE_SUB(`fecha_entrega`, INTERVAL 1 DAY) <= NOW()');
                                         })
                                         ->where('servicio', 'DL13')
                                         ->whereNull('finalizado_en')
@@ -225,7 +249,8 @@ class CopiasCertificadas extends Component
 
             $copias = Certificacion::with('movimientoRegistral', 'actualizadoPor')
                                         ->whereHas('movimientoRegistral', function($q){
-                                            $q->where('estado', 'nuevo');
+                                            $q->where('estado', 'nuevo')
+                                                ->whereRaw('DATE_SUB(`fecha_entrega`, INTERVAL 1 DAY) <= NOW()');
                                         })
                                         ->where('servicio', 'DL13')
                                         ->whereNull('finalizado_en')

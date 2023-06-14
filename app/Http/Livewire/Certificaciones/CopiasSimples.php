@@ -68,13 +68,22 @@ class CopiasSimples extends Component
 
         }
 
+        if($this->modelo_editar->movimientoRegistral->fecha_entrega > now()){
+
+            $this->dispatchBrowserEvent('mostrarMensaje', ['error', "La fecha de entrega de este trámite es " . $this->modelo_editar->movimientoRegistral->fecha_entrega->format('d-m-Y')]);
+            return;
+
+        }
+
         try {
 
             $this->modelo_editar->finalizado_en = now();
 
             $this->modelo_editar->actualizado_por = auth()->user()->id;
 
-            $this->modelo_editar->movimientoRegistral->estado->concluido;
+            $this->modelo_editar->movimientoRegistral->estado = 'concluido';
+
+            $this->modelo_editar->movimientoRegistral->save();
 
             $this->modelo_editar->save();
 
@@ -97,6 +106,13 @@ class CopiasSimples extends Component
     public function finalizar(){
 
         $this->validate();
+
+        if($this->modelo_editar->movimientoRegistral->fecha_entrega > now()){
+
+            $this->dispatchBrowserEvent('mostrarMensaje', ['error', "La fecha de entrega de este trámite es " . $this->modelo_editar->movimientoRegistral->fecha_entrega->format('d-m-Y')]);
+            return;
+
+        }
 
         try{
 
@@ -160,6 +176,13 @@ class CopiasSimples extends Component
         if($this->modelo_editar->isNot($modelo))
             $this->modelo_editar = $modelo;
 
+        if($this->modelo_editar->movimientoRegistral->fecha_entrega > now()){
+
+            $this->dispatchBrowserEvent('mostrarMensaje', ['error', "La fecha de entrega de este trámite es " . $this->modelo_editar->movimientoRegistral->fecha_entrega->format('d-m-Y')]);
+            return;
+
+        }
+
         try {
 
             $this->dispatchBrowserEvent('imprimir_documento', ['documento' => $this->modelo_editar->id]);
@@ -197,7 +220,8 @@ class CopiasSimples extends Component
 
             $copias = Certificacion::with('movimientoRegistral', 'actualizadoPor')
                                         ->whereHas('movimientoRegistral', function($q){
-                                            $q->where('estado', 'nuevo');
+                                            $q->where('estado', 'nuevo')
+                                                ->whereRaw('DATE_SUB(`fecha_entrega`, INTERVAL 1 DAY) <= NOW()');
                                         })
                                         ->where('servicio', 'DL14')
                                         ->whereNull('finalizado_en')
@@ -219,7 +243,8 @@ class CopiasSimples extends Component
 
             $copias = Certificacion::with('movimientoRegistral', 'actualizadoPor')
                                         ->whereHas('movimientoRegistral', function($q){
-                                            $q->where('estado', 'nuevo');
+                                            $q->where('estado', 'nuevo')
+                                                ->whereRaw('DATE_SUB(`fecha_entrega`, INTERVAL 1 DAY) <= NOW()');
                                         })
                                         ->where('servicio', 'DL14')
                                         ->whereNull('finalizado_en')

@@ -151,7 +151,7 @@
 
                 <tbody class="divide-y divide-gray-200 flex-1 sm:flex-none ">
 
-                    @foreach($consultas as $copia)
+                    @foreach($consultas as $consulta)
 
                         <tr class="text-sm font-medium text-gray-500 bg-white flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
 
@@ -159,7 +159,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl"># Control</span>
 
-                                {{ $copia->movimientoRegistral->tramite }}
+                                {{ $consulta->movimientoRegistral->tramite }}
 
                             </td>
 
@@ -169,7 +169,7 @@
 
                                     <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Estado</span>
 
-                                    <span class="bg-{{ $copia->movimientoRegistral->estado_color }} py-1 px-2 rounded-full text-white text-xs">{{ ucfirst($copia->movimientoRegistral->estado) }}</span>
+                                    <span class="bg-{{ $consulta->movimientoRegistral->estado_color }} py-1 px-2 rounded-full text-white text-xs">{{ ucfirst($consulta->movimientoRegistral->estado) }}</span>
 
                                 </td>
 
@@ -179,7 +179,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Solicitante</span>
 
-                                {{ $copia->movimientoRegistral->solicitante }}
+                                {{ $consulta->movimientoRegistral->solicitante }}
 
                             </td>
 
@@ -187,7 +187,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Distrito</span>
 
-                                {{ $copia->movimientoRegistral->distrito }}
+                                {{ $consulta->movimientoRegistral->distrito }}
 
                             </td>
 
@@ -195,7 +195,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Sección</span>
 
-                                {{ $copia->movimientoRegistral->seccion }}
+                                {{ $consulta->movimientoRegistral->seccion }}
 
                             </td>
 
@@ -205,7 +205,7 @@
 
                                     <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Registrado</span>
 
-                                    {{ $copia->finalizado_en->format('d-m-Y H:i:s') }}
+                                    {{ $consulta->finalizado_en ? $consulta->finalizado_en->format('d-m-Y H:i:s') : 'N/A' }}
 
                                 </td>
 
@@ -215,7 +215,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Registrado</span>
 
-                                {{ $copia->created_at }}
+                                {{ $consulta->created_at }}
 
                             </td>
 
@@ -223,13 +223,13 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Actualizado</span>
 
-                                @if($copia->actualizadoPor != null)
+                                @if($consulta->actualizadoPor != null)
 
-                                    <span class="font-semibold">Actualizado por: {{$copia->actualizadoPor->name}}</span> <br>
+                                    <span class="font-semibold">Actualizado por: {{$consulta->actualizadoPor->name}}</span> <br>
 
                                 @endif
 
-                                {{ $copia->updated_at }}
+                                {{ $consulta->updated_at }}
 
                             </td>
 
@@ -244,7 +244,7 @@
                                         @can('Finalizar consulta')
 
                                             <button
-                                                wire:click="abrirModalEditar({{$copia->id}})"
+                                                wire:click="abrirModalEditar({{$consulta->id}})"
                                                 wire:loading.attr="disabled"
                                                 class="md:w-full bg-blue-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-blue-700 flex justify-center focus:outline-none"
                                             >

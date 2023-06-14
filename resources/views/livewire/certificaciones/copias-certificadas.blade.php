@@ -464,7 +464,7 @@
 
                     <div>
 
-                        <input type="text" class="bg-white rounded text-sm w-full" wire:model.defer="modelo_editar.folio_carpeta_copias">
+                        <input type="number" class="bg-white rounded text-sm w-full" wire:model.defer="modelo_editar.folio_carpeta_copias">
 
                     </div>
 
