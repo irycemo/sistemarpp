@@ -227,6 +227,9 @@ class CopiasCertificadas extends Component
             $copias = Certificacion::with('movimientoRegistral', 'actualizadoPor')
                                         ->whereHas('movimientoRegistral', function($q){
                                             $q->where('estado', 'nuevo')
+                                                ->when(auth()->user()->ubicacion == 'Regional 2', function($q){
+                                                    $q->where('distrito', 2);
+                                                })
                                                 ->whereRaw('DATE_SUB(`fecha_entrega`, INTERVAL 1 DAY) <= NOW()');
                                         })
                                         ->where('servicio', 'DL13')
@@ -250,6 +253,9 @@ class CopiasCertificadas extends Component
             $copias = Certificacion::with('movimientoRegistral', 'actualizadoPor')
                                         ->whereHas('movimientoRegistral', function($q){
                                             $q->where('estado', 'nuevo')
+                                                ->when(auth()->user()->ubicacion == 'Regional 2', function($q){
+                                                    $q->where('distrito', 2);
+                                                })
                                                 ->whereRaw('DATE_SUB(`fecha_entrega`, INTERVAL 1 DAY) <= NOW()');
                                         })
                                         ->where('servicio', 'DL13')
