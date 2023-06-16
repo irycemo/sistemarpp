@@ -140,7 +140,7 @@
                 <p class="parrafo">
                     LA PRESENTE COPIA ES TOMADA DE LA QUE OBRE EN EL REGISTRO NÚMERO <strong>{{ $registro }}</strong> <strong>({{ $registro_letras }})</strong>
                     DEL TOMO <strong>{{ $tomo }}</strong> <strong>({{ $tomo_letras }})</strong> DEL LIBRO DE <STRONG>{{ $seccion }}</STRONG> CORRESPONDIENTE AL
-                    DISTRITO DE <strong>{{ $distrito }}</strong>, Y SE COMPULSA
+                    DISTRITO DE <strong>@if($distrito = 'URUAPAN') URUAPAN @else {{ $distrito }} @endif</strong>, Y SE COMPULSA
                     EN <strong>{{ $paginas }}</strong> <strong>({{ $paginas_letras }})</strong>  PAGINA(S) UTILES
                     PARA ENTREGARSE EN <strong>CARPETA CON FOLIO NO. {{ $folio_carpeta }}</strong> A LA ORDEN DE: <strong>{{ $solicitante }}</strong>
                     A LAS {{ $hora }} ({{ $hora_letras }}) HORAS {{ $minutos }} ({{ $minutos_letras }})
