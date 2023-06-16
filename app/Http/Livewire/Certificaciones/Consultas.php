@@ -58,7 +58,7 @@ class Consultas extends Component
         if(auth()->user()->hasRole('Administrador')){
 
             $consultas = Certificacion::with('movimientoRegistral', 'actualizadoPor')
-                                        ->whereIn('servicio', ['DC90', 'DC91', 'DC92'])
+                                        ->whereIn('servicio', ['DC90', 'DC91', 'DC92', 'DC93'])
                                         ->whereHas('movimientoRegistral', function($q){
                                             $q->when(auth()->user()->ubicacion == 'Regional 2', function($q){
                                                 $q->where('distrito', 2);
@@ -85,7 +85,7 @@ class Consultas extends Component
                                         ->whereHas('movimientoRegistral', function($q){
                                             $q->where('estado', 'nuevo');
                                         })
-                                        ->whereIn('servicio', ['DC90', 'DC91', 'DC92'])
+                                        ->whereIn('servicio', ['DC90', 'DC91', 'DC92', 'DC93'])
                                         ->whereNull('finalizado_en')
                                         ->where(function($q){
 
