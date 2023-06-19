@@ -63,7 +63,7 @@ class Consultas extends Component
             $consultas = Certificacion::with('movimientoRegistral', 'actualizadoPor')
                                         ->whereIn('servicio', ['DC90', 'DC91', 'DC92', 'DC93'])
                                         ->whereHas('movimientoRegistral', function($q){
-                                            $q->when(auth()->user()->ubicacion == 'Regional 2', function($q){
+                                            $q->when(auth()->user()->ubicacion == 'Regional 4', function($q){
                                                 $q->where('distrito', 2);
                                             });
                                         })
