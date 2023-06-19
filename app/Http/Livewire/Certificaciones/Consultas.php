@@ -7,6 +7,7 @@ use Livewire\WithPagination;
 use App\Models\Certificacion;
 use Illuminate\Support\Facades\Log;
 use App\Http\Traits\ComponentesTrait;
+use App\Http\Services\SistemaTramites\SistemaTramitesService;
 
 class Consultas extends Component
 {
@@ -40,6 +41,8 @@ class Consultas extends Component
             $this->modelo_editar->finalizado_en = now();
 
             $this->modelo_editar->save();
+
+            (new SistemaTramitesService())->finaliarTramite($this->modelo_editar->movimientoRegistral->tramite);
 
             $this->resetearTodo();
 
