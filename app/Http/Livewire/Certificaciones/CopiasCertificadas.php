@@ -227,7 +227,6 @@ class CopiasCertificadas extends Component
             $copias = Certificacion::with('movimientoRegistral.asignadoA', 'movimientoRegistral.supervisor', 'actualizadoPor')
                                         ->whereHas('movimientoRegistral', function($q){
                                             $q->where('estado', 'nuevo')
-                                                ->where('usuario_supervisor', auth()->user()->id)
                                                 ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
                                                     $q->where('distrito', 2);
                                                 })
