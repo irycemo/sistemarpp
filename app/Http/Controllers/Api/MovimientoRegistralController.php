@@ -96,9 +96,15 @@ class MovimientoRegistralController extends Controller
 
     }
 
-    public function obtenerCertificador(){
+    public function obtenerCertificador($distrito){
 
         $certificador = User::inRandomOrder()
+                                ->when($distrito == 2, function($q){
+                                    $q->where('ubicacion', 'Regional 4');
+                                })
+                                ->when($distrito != 2, function($q){
+                                    $q->where('ubicacion', '!=', 'Regional 4');
+                                })
                                 ->whereHas('roles', function($q){
                                     $q->where('name', 'Certificador');
                                 })
@@ -114,11 +120,17 @@ class MovimientoRegistralController extends Controller
 
     }
 
-    public function obtenerSupervisor(){
+    public function obtenerSupervisor($distrito){
 
-        $supervisor = User::inRandomOrder()->whereHas('roles', function($q){
-                                    $q->where('name', 'Supervisor Copias');
-                                })->first();
+        $supervisor = User::inRandomOrder()->when($distrito == 2, function($q){
+                                                $q->where('ubicacion', 'Regional 4');
+                                            })
+                                            ->when($distrito != 2, function($q){
+                                                $q->where('ubicacion', '!=', 'Regional 4');
+                                            })
+                                            ->whereHas('roles', function($q){
+                                                $q->where('name', 'Supervisor Copias');
+                                            })->first();
 
         if(!$supervisor){
 
@@ -141,8 +153,8 @@ class MovimientoRegistralController extends Controller
             'seccion' => $request->seccion,
             'distrito' => $request->distrito,
             'fecha_entrega' => $request->fecha_entrega,
-            'usuario_asignado' => $this->obtenerCertificador(),
-            'usuario_supervisor' => $this->obtenerSupervisor(),
+            'usuario_asignado' => $this->obtenerCertificador($request->distrito),
+            'usuario_supervisor' => $this->obtenerSupervisor($request->distrito),
             'estado' => 'nuevo',
             'tomo' => $request->tomo,
             'tomo_bis' => $request->tomo_bis,
