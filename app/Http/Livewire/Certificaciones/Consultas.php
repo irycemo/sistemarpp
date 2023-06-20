@@ -60,7 +60,7 @@ class Consultas extends Component
 
         if(auth()->user()->hasRole('Administrador')){
 
-            $consultas = Certificacion::with('movimientoRegistral', 'actualizadoPor')
+            $consultas = Certificacion::with('movimientoRegistral.asignadoA', 'actualizadoPor')
                                         ->whereIn('servicio', ['DC90', 'DC91', 'DC92', 'DC93'])
                                         ->whereHas('movimientoRegistral', function($q){
                                             $q->when(auth()->user()->ubicacion == 'Regional 4', function($q){
@@ -84,7 +84,7 @@ class Consultas extends Component
 
         }else{
 
-            $consultas = Certificacion::with('movimientoRegistral', 'actualizadoPor')
+            $consultas = Certificacion::with('movimientoRegistral.asignadoA', 'actualizadoPor')
                                         ->whereHas('movimientoRegistral', function($q){
                                             $q->where('estado', 'nuevo')
                                                 ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
