@@ -224,7 +224,7 @@ class CopiasCertificadas extends Component
 
         if(auth()->user()->hasRole('Supervisor Copias')){
 
-            $copias = Certificacion::with('movimientoRegistral', 'actualizadoPor')
+            $copias = Certificacion::with('movimientoRegistral.asignadoA', 'actualizadoPor')
                                         ->whereHas('movimientoRegistral', function($q){
                                             $q->where('estado', 'nuevo')
                                                 ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
@@ -250,7 +250,7 @@ class CopiasCertificadas extends Component
 
         }elseif(auth()->user()->hasRole('Certificador')){
 
-            $copias = Certificacion::with('movimientoRegistral', 'actualizadoPor')
+            $copias = Certificacion::with('movimientoRegistral.asignadoA', 'actualizadoPor')
                                         ->whereHas('movimientoRegistral', function($q){
                                             $q->where('estado', 'nuevo')
                                                 ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
@@ -277,7 +277,7 @@ class CopiasCertificadas extends Component
 
         }else{
 
-            $copias = Certificacion::with('movimientoRegistral', 'actualizadoPor')
+            $copias = Certificacion::with('movimientoRegistral.asignadoA', 'actualizadoPor')
                                         ->where('servicio', 'DL13')
                                         ->where(function($q){
                                             return $q->where('numero_paginas', 'LIKE', '%' . $this->search . '%')
