@@ -108,6 +108,7 @@ class MovimientoRegistralController extends Controller
                                 ->whereHas('roles', function($q){
                                     $q->where('name', 'Certificador');
                                 })
+                                ->where('status', 'activo')
                                 ->first();
 
         if(!$certificador){
@@ -130,7 +131,9 @@ class MovimientoRegistralController extends Controller
                                             })
                                             ->whereHas('roles', function($q){
                                                 $q->where('name', 'Supervisor Copias');
-                                            })->first();
+                                            })
+                                            ->where('status', 'activo')
+                                            ->first();
 
         if(!$supervisor){
 
