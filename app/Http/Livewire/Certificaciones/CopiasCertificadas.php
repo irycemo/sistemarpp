@@ -224,9 +224,10 @@ class CopiasCertificadas extends Component
 
         if(auth()->user()->hasRole('Supervisor Copias')){
 
-            $copias = Certificacion::with('movimientoRegistral.asignadoA', 'actualizadoPor')
+            $copias = Certificacion::with('movimientoRegistral.asignadoA', 'movimientoRegistral.supervisor', 'actualizadoPor')
                                         ->whereHas('movimientoRegistral', function($q){
                                             $q->where('estado', 'nuevo')
+                                                ->where('usuario_supervisor', auth()->user()->id)
                                                 ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
                                                     $q->where('distrito', 2);
                                                 })
@@ -250,9 +251,10 @@ class CopiasCertificadas extends Component
 
         }elseif(auth()->user()->hasRole('Certificador')){
 
-            $copias = Certificacion::with('movimientoRegistral.asignadoA', 'actualizadoPor')
+            $copias = Certificacion::with('movimientoRegistral.asignadoA', 'movimientoRegistral.supervisor', 'actualizadoPor')
                                         ->whereHas('movimientoRegistral', function($q){
                                             $q->where('estado', 'nuevo')
+                                                ->where('usuario_asignado', auth()->user()->id)
                                                 ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
                                                     $q->where('distrito', 2);
                                                 })
@@ -277,7 +279,7 @@ class CopiasCertificadas extends Component
 
         }else{
 
-            $copias = Certificacion::with('movimientoRegistral.asignadoA', 'actualizadoPor')
+            $copias = Certificacion::with('movimientoRegistral.asignadoA', 'movimientoRegistral.supervisor', 'actualizadoPor')
                                         ->where('servicio', 'DL13')
                                         ->where(function($q){
                                             return $q->where('numero_paginas', 'LIKE', '%' . $this->search . '%')
