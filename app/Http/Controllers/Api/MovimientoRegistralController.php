@@ -98,18 +98,17 @@ class MovimientoRegistralController extends Controller
 
     public function obtenerCertificador($distrito){
 
-        $certificador = User::inRandomOrder()
-                                ->when($distrito == 2, function($q){
-                                    $q->where('ubicacion', 'Regional 4');
-                                })
-                                ->when($distrito != 2, function($q){
-                                    $q->where('ubicacion', '!=', 'Regional 4');
-                                })
-                                ->whereHas('roles', function($q){
-                                    $q->where('name', 'Certificador');
-                                })
-                                ->where('status', 'activo')
-                                ->first();
+        $certificador = User::inRandomOrder()->where('status', 'activo')
+                                                ->when($distrito == 2, function($q){
+                                                    $q->where('ubicacion', 'Regional 4');
+                                                })
+                                                ->when($distrito != 2, function($q){
+                                                    $q->where('ubicacion', '!=', 'Regional 4');
+                                                })
+                                                ->whereHas('roles', function($q){
+                                                    $q->where('name', 'Certificador');
+                                                })
+                                                ->first();
 
         if(!$certificador){
 
@@ -123,7 +122,8 @@ class MovimientoRegistralController extends Controller
 
     public function obtenerSupervisor($distrito){
 
-        $supervisor = User::inRandomOrder()->when($distrito == 2, function($q){
+        $supervisor = User::inRandomOrder()->where('status', 'activo')
+                                            ->when($distrito == 2, function($q){
                                                 $q->where('ubicacion', 'Regional 4');
                                             })
                                             ->when($distrito != 2, function($q){
@@ -132,7 +132,6 @@ class MovimientoRegistralController extends Controller
                                             ->whereHas('roles', function($q){
                                                 $q->where('name', 'Supervisor Copias');
                                             })
-                                            ->where('status', 'activo')
                                             ->first();
 
         if(!$supervisor){
