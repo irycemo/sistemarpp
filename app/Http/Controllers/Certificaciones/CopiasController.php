@@ -85,35 +85,71 @@ class CopiasController extends Controller
 
         $qr = $this->generadorQr();
 
-        $pdf = Pdf::loadView('certificaciones.copiaCertificada', compact(
-            'distrito',
-            'director',
-            'registro_letras',
-            'registro',
-            'tomo',
-            'tomo_letras',
-            'paginas',
-            'paginas_letras',
-            'solicitante',
-            'hora',
-            'hora_letras',
-            'minutos',
-            'minutos_letras',
-            'dia',
-            'dia_letras',
-            'año',
-            'año_letras',
-            'mes',
-            'numero_control',
-            'superviso',
-            'elaboro',
-            'folio_carpeta',
-            'derechos',
-            'fecha_entrega',
-            'tipo_servicio',
-            'seccion',
-            'qr'
-        ));
+        if(auth()->user()->hasRole('Certificador Oficialia')){
+
+            $pdf = Pdf::loadView('certificaciones.copiaCertificadaOficialia', compact(
+                'distrito',
+                'director',
+                'registro_letras',
+                'registro',
+                'tomo',
+                'tomo_letras',
+                'paginas',
+                'paginas_letras',
+                'solicitante',
+                'hora',
+                'hora_letras',
+                'minutos',
+                'minutos_letras',
+                'dia',
+                'dia_letras',
+                'año',
+                'año_letras',
+                'mes',
+                'numero_control',
+                'superviso',
+                'elaboro',
+                'folio_carpeta',
+                'derechos',
+                'fecha_entrega',
+                'tipo_servicio',
+                'seccion',
+                'qr'
+            ));
+
+        }else{
+
+            $pdf = Pdf::loadView('certificaciones.copiaCertificada', compact(
+                'distrito',
+                'director',
+                'registro_letras',
+                'registro',
+                'tomo',
+                'tomo_letras',
+                'paginas',
+                'paginas_letras',
+                'solicitante',
+                'hora',
+                'hora_letras',
+                'minutos',
+                'minutos_letras',
+                'dia',
+                'dia_letras',
+                'año',
+                'año_letras',
+                'mes',
+                'numero_control',
+                'superviso',
+                'elaboro',
+                'folio_carpeta',
+                'derechos',
+                'fecha_entrega',
+                'tipo_servicio',
+                'seccion',
+                'qr'
+            ));
+
+        }
 
         return $pdf->stream('documento.pdf');
 

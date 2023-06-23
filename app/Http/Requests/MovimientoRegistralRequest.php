@@ -25,6 +25,7 @@ class MovimientoRegistralRequest extends FormRequest
             'folio_real' => 'nullable',
             'monto' => 'required',
             'solicitante' => 'required',
+            'nombre_solicitante' => 'required',
             'tramite' => 'required',
             'fecha_prelacion' => 'required',
             'tipo_servicio' => 'required',

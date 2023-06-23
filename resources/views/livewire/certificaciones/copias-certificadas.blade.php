@@ -389,8 +389,7 @@
 
                                         @can('Finalizar copias certificadas')
 
-
-                                            @if(auth()->user()->hasRole('Supervisor Copias'))
+                                            @if(auth()->user()->hasRole(['Supervisor Copias', 'Certificador Oficialia']))
 
                                                 <button
                                                     wire:click="finalizarSupervisor({{ $copia->id }})"
@@ -612,6 +611,18 @@
     <script>
 
         window.addEventListener('imprimir_documento', event => {
+
+            const documento = event.detail.documento;
+
+            var url = "{{ route('copia_certificada', '')}}" + "/" + documento;
+
+            window.open(url, '_blank');
+
+            window.location.href = "{{ route('copias_certificadas')}}";
+
+        });
+
+        window.addEventListener('imprimir_documento_oficialia', event => {
 
             const documento = event.detail.documento;
 

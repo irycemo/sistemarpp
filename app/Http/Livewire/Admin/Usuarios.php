@@ -71,6 +71,22 @@ class Usuarios extends Component
 
         }
 
+        $user = User::whereHas('roles', function ($q){
+                            return $q->where('name', 'Certificador Oficialia');
+                        })
+                        ->where('status', 'activo')
+                        ->first();
+
+        if($user){
+
+            $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El usuario solo puede haber 1 certificador de oficialia activo."]);
+
+            $this->resetearTodo();
+
+            return;
+
+        }
+
         try {
 
             DB::transaction(function () {
@@ -99,6 +115,22 @@ class Usuarios extends Component
     public function actualizar(){
 
         $this->validate();
+
+        $user = User::whereHas('roles', function ($q){
+                    return $q->where('name', 'Certificador Oficialia');
+                })
+                ->where('status', 'activo')
+                ->first();
+
+        if($user){
+
+        $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El usuario solo puede haber 1 certificador de oficialia activo."]);
+
+        $this->resetearTodo();
+
+        return;
+
+        }
 
         try{
 

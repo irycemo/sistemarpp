@@ -96,7 +96,19 @@ class MovimientoRegistralController extends Controller
 
     }
 
-    public function obtenerCertificador($distrito){
+    public function obtenerCertificador($distrito, $solicitante){
+
+        /* Asignar usuario de copias certificadas para tramites de Oficialia de partes*/
+        if($distrito != 2 && $solicitante == 'Oficialia de partes'){
+
+            $certificador = User::whereHas('roles', function ($q){
+                                                    return $q->where('name', 'Certificador Oficialia');
+                                                })
+                                        ->where('status', 'activo')
+                                        ->first();
+
+            return $certificador->id;
+        }
 
         $certificador = User::inRandomOrder()->where('status', 'activo')
                                                 ->when($distrito == 2, function($q){
@@ -148,14 +160,14 @@ class MovimientoRegistralController extends Controller
         return [
             'folio_real' => $request->folio_real,
             'monto' => $request->monto,
-            'solicitante' => $request->solicitante,
+            'solicitante' => $request->nombre_solicitante,
             'tramite' => $request->tramite,
             'fecha_prelacion' => $request->fecha_prelacion,
             'tipo_servicio' => $request->tipo_servicio,
             'seccion' => $request->seccion,
             'distrito' => $request->distrito,
             'fecha_entrega' => $request->fecha_entrega,
-            'usuario_asignado' => $this->obtenerCertificador($request->distrito),
+            'usuario_asignado' => $this->obtenerCertificador($request->distrito, $request->solicitante),
             'usuario_supervisor' => $this->obtenerSupervisor($request->distrito),
             'estado' => 'nuevo',
             'tomo' => $request->tomo,
@@ -172,6 +184,7 @@ class MovimientoRegistralController extends Controller
             'folio_real',
             'monto',
             'solicitante',
+            'nombre_solicitante',
             'tramite',
             'fecha_prelacion',
             'tipo_servicio',
