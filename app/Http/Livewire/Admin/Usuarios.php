@@ -126,13 +126,23 @@ class Usuarios extends Component
                 ->where('status', 'activo')
                 ->first();
 
-        if($user){
+        if($this->role == 9){
 
-        $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El usuario solo puede haber 1 certificador de oficialia activo."]);
+            $user = User::whereHas('roles', function ($q){
+                            return $q->where('name', 'Certificador Oficialia');
+                        })
+                        ->where('status', 'activo')
+                        ->first();
 
-        $this->resetearTodo();
+            if($user){
 
-        return;
+                $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El usuario solo puede haber 1 certificador de oficialia activo."]);
+
+                $this->resetearTodo();
+
+                return;
+
+            }
 
         }
 
