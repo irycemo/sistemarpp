@@ -96,13 +96,23 @@ class MovimientoRegistralController extends Controller
 
     }
 
-    public function obtenerCertificador($distrito, $solicitante){
+    public function obtenerCertificador($distrito, $solicitante, $tipo_servicio){
 
         /* Asignar usuario de copias certificadas para tramites de Oficialia de partes*/
         if($distrito != 2 && $solicitante == 'Oficialia de partes'){
 
-            $certificador = User::whereHas('roles', function ($q){
-                                                    return $q->where('name', 'Certificador Oficialia');
+            if($tipo_servicio != 'extra_urgente')
+
+                $certificador = User::whereHas('roles', function ($q){
+                                                        return $q->where('name', 'Certificador Oficialia');
+                                                    })
+                                            ->where('status', 'activo')
+                                            ->first();
+            else
+
+                $certificador = User::inRandomOrder()
+                                        ->whereHas('roles', function ($q){
+                                                    return $q->where('name', 'Certificador Juridico');
                                                 })
                                         ->where('status', 'activo')
                                         ->first();
@@ -167,7 +177,7 @@ class MovimientoRegistralController extends Controller
             'seccion' => $request->seccion,
             'distrito' => $request->distrito,
             'fecha_entrega' => $request->fecha_entrega,
-            'usuario_asignado' => $this->obtenerCertificador($request->distrito, $request->solicitante),
+            'usuario_asignado' => $this->obtenerCertificador($request->distrito, $request->solicitante, $request->tipo_servicio),
             'usuario_supervisor' => $this->obtenerSupervisor($request->distrito),
             'estado' => 'nuevo',
             'tomo' => $request->tomo,

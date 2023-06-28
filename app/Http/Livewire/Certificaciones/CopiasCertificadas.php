@@ -62,7 +62,7 @@ class CopiasCertificadas extends Component
             $this->modelo_editar = $modelo;
 
 
-        if($this->modelo_editar->folio_carpeta_copias == null && !auth()->user()->hasRole('Certificador Oficialia')){
+        if($this->modelo_editar->folio_carpeta_copias == null && !auth()->user()->hasRole(['Certificador Oficialia', 'Certificador Juridico'])){
 
             $this->dispatchBrowserEvent('mostrarMensaje', ['error', "EL campo Folio de carpeta es obligatorio."]);
             return;
@@ -94,7 +94,7 @@ class CopiasCertificadas extends Component
 
                 (new SistemaTramitesService())->finaliarTramite($this->modelo_editar->movimientoRegistral->tramite);
 
-                if(auth()->user()->hasRole('Certificador Oficialia'))
+                if(auth()->user()->hasRole(['Certificador Oficialia', 'Certificador Juridico']))
                     $this->dispatchBrowserEvent('imprimir_documento_oficialia', ['documento' => $this->modelo_editar->id]);
 
                 $this->resetearTodo();
@@ -252,7 +252,7 @@ class CopiasCertificadas extends Component
                                         ->orderBy($this->sort, $this->direction)
                                         ->paginate($this->pagination);
 
-        }elseif(auth()->user()->hasRole(['Certificador', 'Certificador Oficialia'])){
+        }elseif(auth()->user()->hasRole(['Certificador', 'Certificador Oficialia', 'Certificador Juridico'])){
 
             $copias = Certificacion::with('movimientoRegistral.asignadoA', 'movimientoRegistral.supervisor', 'actualizadoPor')
                                         ->whereHas('movimientoRegistral', function($q){
