@@ -62,19 +62,19 @@ class Consultas extends Component
         if(auth()->user()->hasRole('Administrador')){
 
             $consultas = MovimientoRegistral::with('asignadoA', 'actualizadoPor', 'certificacion')
-                                                ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
-                                                    $q->where('distrito', 2);
-                                                })
                                                 ->where(function($q){
-                                                    $q->where('solicitante', 'LIKE', '%' . $this->search . '%')
+                                                    $q->whereHas('asignadoA', function($q){
+                                                            $q->where('name', 'LIKE', '%' . $this->search . '%');
+                                                        })
+                                                        ->orWhere('solicitante', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere('tomo', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere('registro', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere('distrito', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere('seccion', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere('tramite', 'LIKE', '%' . $this->search . '%');
                                                 })
-                                                ->whereHas('asignadoA', function($q){
-                                                    $q->where('name', 'LIKE', '%' . $this->search . '%');
+                                                ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
+                                                    $q->where('distrito', 2);
                                                 })
                                                 ->whereHas('certificacion', function($q){
                                                     $q->whereIn('servicio', ['DC90', 'DC91', 'DC92', 'DC93']);
@@ -86,19 +86,19 @@ class Consultas extends Component
         }else{
 
             $consultas = MovimientoRegistral::with('asignadoA', 'actualizadoPor', 'certificacion')
-                                                ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
-                                                    $q->where('distrito', 2);
-                                                })
                                                 ->where(function($q){
-                                                    $q->where('solicitante', 'LIKE', '%' . $this->search . '%')
+                                                    $q->whereHas('asignadoA', function($q){
+                                                            $q->where('name', 'LIKE', '%' . $this->search . '%');
+                                                        })
+                                                        ->orWhere('solicitante', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere('tomo', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere('registro', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere('distrito', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere('seccion', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere('tramite', 'LIKE', '%' . $this->search . '%');
                                                 })
-                                                ->whereHas('asignadoA', function($q){
-                                                    $q->where('name', 'LIKE', '%' . $this->search . '%');
+                                                ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
+                                                    $q->where('distrito', 2);
                                                 })
                                                 ->whereHas('certificacion', function($q){
                                                     $q->whereIn('servicio', ['DC90', 'DC91', 'DC92', 'DC93'])

@@ -35,49 +35,217 @@
 
                     <tr class="text-xs font-medium text-gray-500 uppercase text-left traling-wider">
 
-                        <th class="px-3 py-3 hidden lg:table-cell">
+                        <th wire:click="order('tramite')" class="cursor-pointer px-3 py-3 hidden lg:table-cell">
 
                             # Control
+
+                            @if($sort == 'tramite')
+
+                                @if($direction == 'asc')
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
+                                    </svg>
+
+                                @else
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                                    </svg>
+
+                                @endif
+
+                            @else
+
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                </svg>
+
+                            @endif
 
                         </th>
 
                         @if (auth()->user()->hasRole('Administrador'))
 
-                            <th class="px-3 py-3 hidden lg:table-cell">
+                            <th wire:click="order('estado')" class="cursor-pointer px-3 py-3 hidden lg:table-cell">
 
                                 Estado
+
+                                @if($sort == 'estado')
+
+                                    @if($direction == 'asc')
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
+                                        </svg>
+
+                                    @else
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                                        </svg>
+
+                                    @endif
+
+                                @else
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                    </svg>
+
+                                @endif
 
                             </th>
 
                         @endif
 
-                        <th class="px-3 py-3 hidden lg:table-cell">
+                        <th wire:click="order('solicitante')" class="cursor-pointer px-3 py-3 hidden lg:table-cell">
 
                             Solicitante
 
+                            @if($sort == 'solicitante')
+
+                                @if($direction == 'asc')
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
+                                    </svg>
+
+                                @else
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                                    </svg>
+
+                                @endif
+
+                            @else
+
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                </svg>
+
+                            @endif
+
                         </th>
 
-                        <th class="px-3 py-3 hidden lg:table-cell">
+                        <th wire:click="order('tomo')" class="cursor-pointer px-3 py-3 hidden lg:table-cell">
 
                             Tomo / Bis
 
+                            @if($sort == 'tomo')
+
+                                @if($direction == 'asc')
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
+                                    </svg>
+
+                                @else
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                                    </svg>
+
+                                @endif
+
+                            @else
+
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                </svg>
+
+                            @endif
+
                         </th>
 
-                        <th class="px-3 py-3 hidden lg:table-cell">
+                        <th wire:click="order('registro')" class="cursor-pointer px-3 py-3 hidden lg:table-cell">
 
                             Registro / Bis
 
+                            @if($sort == 'registro')
+
+                                @if($direction == 'asc')
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
+                                    </svg>
+
+                                @else
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                                    </svg>
+
+                                @endif
+
+                            @else
+
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                </svg>
+
+                            @endif
+
                         </th>
 
-                        <th class="px-3 py-3 hidden lg:table-cell">
+                        <th wire:click="order('distrito')" class="cursor-pointer px-3 py-3 hidden lg:table-cell">
 
                             Distrito
 
+                            @if($sort == 'distrito')
+
+                                @if($direction == 'asc')
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
+                                    </svg>
+
+                                @else
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                                    </svg>
+
+                                @endif
+
+                            @else
+
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                </svg>
+
+                            @endif
+
                         </th>
 
-                        <th class="px-3 py-3 hidden lg:table-cell">
+                        <th wire:click="order('seccion')" class="cursor-pointer px-3 py-3 hidden lg:table-cell">
 
                             Sección
+
+                            @if($sort == 'seccion')
+
+                                @if($direction == 'asc')
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
+                                    </svg>
+
+                                @else
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                                    </svg>
+
+                                @endif
+
+                            @else
+
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                </svg>
+
+                            @endif
 
                         </th>
 
@@ -95,9 +263,33 @@
 
                             </th>
 
-                            <th class="px-3 py-3 hidden lg:table-cell">
+                            <th wire:click="order('usuario_asignado')" class="cursor-pointer px-3 py-3 hidden lg:table-cell">
 
                                 Asignado a
+
+                                @if($sort == 'usuario_asignado')
+
+                                    @if($direction == 'asc')
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
+                                        </svg>
+
+                                    @else
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                                        </svg>
+
+                                    @endif
+
+                                @else
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                    </svg>
+
+                                @endif
 
                             </th>
 
@@ -117,9 +309,33 @@
 
                             </th>
 
-                            <th class="px-3 py-3 hidden lg:table-cell">
+                            <th wire:click="order('fecha_entrega')" class="cursor-pointer px-3 py-3 hidden lg:table-cell">
 
                                 Fecha de entrega
+
+                                @if($sort == 'fecha_entrega')
+
+                                    @if($direction == 'asc')
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
+                                        </svg>
+
+                                    @else
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                                        </svg>
+
+                                    @endif
+
+                                @else
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                    </svg>
+
+                                @endif
 
                             </th>
 
@@ -205,7 +421,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl"># Control</span>
 
-                                {{ $copia->movimientoRegistral->tramite }}
+                                {{ $copia->tramite }}
 
                             </td>
 
@@ -215,7 +431,7 @@
 
                                     <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Estado</span>
 
-                                    <span class="bg-{{ $copia->movimientoRegistral->estado_color }} py-1 px-2 rounded-full text-white text-xs">{{ ucfirst($copia->movimientoRegistral->estado) }}</span>
+                                    <span class="bg-{{ $copia->estado_color }} py-1 px-2 rounded-full text-white text-xs">{{ ucfirst($copia->estado) }}</span>
 
                                 </td>
 
@@ -225,7 +441,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Solicitante</span>
 
-                                {{ $copia->movimientoRegistral->solicitante }}
+                                {{ $copia->solicitante }}
 
                             </td>
 
@@ -233,7 +449,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Tomo/Bis</span>
 
-                                {{ $copia->movimientoRegistral->tomo }}{{ $copia->movimientoRegistral->tomo_bis ? ' / ' . $copia->movimientoRegistral->tomo_bis : ''}}
+                                {{ $copia->tomo }}{{ $copia->tomo_bis ? ' / ' . $copia->tomo_bis : ''}}
 
                             </td>
 
@@ -241,7 +457,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Registro/Bis</span>
 
-                                {{ $copia->movimientoRegistral->registro }}{{ $copia->movimientoRegistral->registro_bis ? ' / ' . $copia->movimientoRegistral->registro_bis : ''}}
+                                {{ $copia->registro }}{{ $copia->registro_bis ? ' / ' . $copia->registro_bis : ''}}
 
                             </td>
 
@@ -249,7 +465,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Distrito</span>
 
-                                {{ $copia->movimientoRegistral->distrito }}
+                                {{ $copia->distrito }}
 
                             </td>
 
@@ -257,7 +473,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Sección</span>
 
-                                {{ $copia->movimientoRegistral->seccion }}
+                                {{ $copia->seccion }}
 
                             </td>
 
@@ -265,7 +481,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Número de páginas</span>
 
-                                {{ $copia->numero_paginas }}
+                                {{ $copia->certificacion->numero_paginas }}
 
                             </td>
 
@@ -275,7 +491,7 @@
 
                                     <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Folio de carpeta</span>
 
-                                    {{ $copia->folio_carpeta_copias ?? 'N/A'}}
+                                    {{ $copia->certificacion->folio_carpeta_copias ?? 'N/A'}}
 
                                 </td>
 
@@ -283,7 +499,7 @@
 
                                     <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Asignado a</span>
 
-                                    {{ $copia->movimientoRegistral->asignadoA->name ?? 'N/A'}}
+                                    {{ $copia->asignadoA->name ?? 'N/A'}}
 
                                 </td>
 
@@ -295,7 +511,7 @@
 
                                     <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Fecha de firma</span>
 
-                                    {{ optional($copia->firma)->format('d-m-Y H:i:s') ?? 'N/A' }}
+                                    {{ optional($copia->certificacion->firma)->format('d-m-Y H:i:s') ?? 'N/A' }}
 
                                 </td>
 
@@ -303,7 +519,7 @@
 
                                     <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Reimpreso en</span>
 
-                                    {{ optional($copia->reimpreso_en)->format('d-m-Y H:i:s') ?? 'N/A' }}
+                                    {{ optional($copia->certificacion->reimpreso_en)->format('d-m-Y H:i:s') ?? 'N/A' }}
 
                                 </td>
 
@@ -311,7 +527,7 @@
 
                                     <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Fecha de entrega</span>
 
-                                    {{ optional($copia->movimientoRegistral->fecha_entrega)->format('d-m-Y') ?? 'N/A' }}
+                                    {{ optional($copia->fecha_entrega)->format('d-m-Y') ?? 'N/A' }}
 
                                 </td>
 
@@ -329,13 +545,13 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Actualizado</span>
 
-                                @if($copia->actualizadoPor != null)
+                                @if($copia->certificacion->actualizadoPor != null)
 
-                                    <span class="font-semibold">Actualizado por: {{$copia->actualizadoPor->name}}</span> <br>
+                                    <span class="font-semibold">Actualizado por: {{$copia->certificacion->actualizadoPor->name}}</span> <br>
 
                                 @endif
 
-                                {{ $copia->updated_at }}
+                                {{ $copia->certificacion->updated_at }}
 
                             </td>
 
@@ -349,10 +565,10 @@
 
                                         @can('Reimprimir documento')
 
-                                            @if ($copia->reimpreso_en == null && $copia->folio_carpeta_copias != null)
+                                            @if ($copia->certificacion->reimpreso_en == null && $copia->certificacion->folio_carpeta_copias != null)
 
                                                 <button
-                                                    wire:click="reimprimir({{ $copia->id }})"
+                                                    wire:click="reimprimir({{ $copia->certificacion->id }})"
                                                     wire:loading.attr="disabled"
                                                     class="md:w-full bg-red-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-red-700 flex justify-center focus:outline-none"
                                                 >
@@ -372,7 +588,7 @@
                                         @can('Rechazar copias certificadas')
 
                                             <button
-                                                wire:click="abrirModalRechazar({{ $copia->id }})"
+                                                wire:click="abrirModalRechazar({{ $copia->certificacion->id }})"
                                                 wire:loading.attr="disabled"
                                                 class="md:w-full bg-red-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-red-700 flex justify-center focus:outline-none"
                                             >
@@ -393,7 +609,7 @@
                                             @if(auth()->user()->hasRole('Supervisor Copias'))
 
                                                 <button
-                                                    wire:click="finalizarSupervisor({{ $copia->id }})"
+                                                    wire:click="finalizarSupervisor({{ $copia->certificacion->id }})"
                                                     wire:loading.attr="disabled"
                                                     class="md:w-full bg-blue-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-blue-700 flex justify-center focus:outline-none"
                                                 >
@@ -409,7 +625,7 @@
                                             @else
 
                                                 <button
-                                                    wire:click="abrirModalEditar({{$copia->id}})"
+                                                    wire:click="abrirModalEditar({{$copia->certificacion->id}})"
                                                     wire:loading.attr="disabled"
                                                     class="md:w-full bg-blue-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-blue-700 flex justify-center focus:outline-none"
                                                 >

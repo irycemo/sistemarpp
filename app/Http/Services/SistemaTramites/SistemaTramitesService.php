@@ -32,6 +32,7 @@ class SistemaTramitesService{
         $response = Http::acceptJson()->asForm()->post($url, [
             'tramite' => $tramite,
             'observaciones' => $observaciones,
+            'estado' => 'rechazado'
         ]);
 
         if($response->status() != 200){

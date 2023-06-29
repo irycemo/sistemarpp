@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Traits\ComponentesTrait;
 use App\Http\Services\SistemaTramites\SistemaTramitesService;
+use App\Models\MovimientoRegistral;
 
 class CopiasSimples extends Component
 {
@@ -218,74 +219,85 @@ class CopiasSimples extends Component
 
         if(auth()->user()->hasRole('Supervisor Copias')){
 
-            $copias = Certificacion::with('movimientoRegistral.asignadoA', 'movimientoRegistral.supervisor', 'actualizadoPor')
-                                        ->whereHas('movimientoRegistral', function($q){
-                                            $q->where('estado', 'nuevo')
-                                                ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
-                                                    $q->where('distrito', 2);
-                                                })
-                                                ->whereRaw('DATE_SUB(`fecha_entrega`, INTERVAL 1 DAY) <= NOW()');
-                                        })
-                                        ->where('servicio', 'DL14')
-                                        ->whereNull('finalizado_en')
-                                        ->where(function($q){
-
-                                            return $q->where('numero_paginas', 'LIKE', '%' . $this->search . '%')
-                                                        ->orWhere(function($q){
-                                                            return $q->whereHas('movimientoRegistral', function($q){
-                                                                return $q->where('solicitante', 'LIKE', '%' . $this->search . '%')
-                                                                            ->orWhere('tomo', 'LIKE', '%' . $this->search . '%')
-                                                                            ->orWhere('registro', 'LIKE', '%' . $this->search . '%');
-                                                            });
-                                                        });
-                                        })
-                                        ->orderBy($this->sort, $this->direction)
-                                        ->paginate($this->pagination);
+            $copias = MovimientoRegistral::with('asignadoA', 'supervisor', 'actualizadoPor', 'certificacion.actualizadoPor')
+                                            ->where(function($q){
+                                                $q->whereHas('asignadoA', function($q){
+                                                        $q->where('name', 'LIKE', '%' . $this->search . '%');
+                                                    })
+                                                    ->orWhereHas('supervisor', function($q){
+                                                        $q->where('name', 'LIKE', '%' . $this->search . '%');
+                                                    })
+                                                    ->orWhere('solicitante', 'LIKE', '%' . $this->search . '%')
+                                                    ->orWhere('tomo', 'LIKE', '%' . $this->search . '%')
+                                                    ->orWhere('registro', 'LIKE', '%' . $this->search . '%')
+                                                    ->orWhere('distrito', 'LIKE', '%' . $this->search . '%')
+                                                    ->orWhere('seccion', 'LIKE', '%' . $this->search . '%')
+                                                    ->orWhere('tramite', 'LIKE', '%' . $this->search . '%');
+                                            })
+                                            ->where('estado', 'nuevo')
+                                            ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
+                                                $q->where('distrito', 2);
+                                            })
+                                            ->whereHas('certificacion', function($q){
+                                                $q->where('servicio', 'DL14')
+                                                    ->whereNull('finalizado_en');
+                                            })
+                                            ->orderBy($this->sort, $this->direction)
+                                            ->paginate($this->pagination);
 
         }elseif(auth()->user()->hasRole('Certificador')){
 
-            $copias = Certificacion::with('movimientoRegistral.asignadoA', 'movimientoRegistral.supervisor', 'actualizadoPor')
-                                        ->whereHas('movimientoRegistral', function($q){
-                                            $q->where('estado', 'nuevo')
-                                                ->where('usuario_asignado', auth()->user()->id)
-                                                ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
-                                                    $q->where('distrito', 2);
-                                                })
-                                                ->whereRaw('DATE_SUB(`fecha_entrega`, INTERVAL 1 DAY) <= NOW()');
-                                        })
-                                        ->where('servicio', 'DL14')
-                                        ->whereNull('finalizado_en')
-                                        ->whereNull('folio_carpeta_copias')
-                                        ->where(function($q){
-
-                                            return $q->where('numero_paginas', 'LIKE', '%' . $this->search . '%')
-                                                        ->orWhere(function($q){
-                                                            return $q->whereHas('movimientoRegistral', function($q){
-                                                                return $q->where('solicitante', 'LIKE', '%' . $this->search . '%')
-                                                                            ->orWhere('tomo', 'LIKE', '%' . $this->search . '%')
-                                                                            ->orWhere('registro', 'LIKE', '%' . $this->search . '%');
-                                                            });
-                                                        });
-                                        })
-                                        ->orderBy($this->sort, $this->direction)
-                                        ->paginate($this->pagination);
+            $copias = MovimientoRegistral::with('asignadoA', 'supervisor', 'actualizadoPor', 'certificacion.actualizadoPor')
+                                            ->where(function($q){
+                                                $q->whereHas('asignadoA', function($q){
+                                                        $q->where('name', 'LIKE', '%' . $this->search . '%');
+                                                    })
+                                                    ->orWhereHas('supervisor', function($q){
+                                                        $q->where('name', 'LIKE', '%' . $this->search . '%');
+                                                    })
+                                                    ->orWhere('solicitante', 'LIKE', '%' . $this->search . '%')
+                                                    ->orWhere('tomo', 'LIKE', '%' . $this->search . '%')
+                                                    ->orWhere('registro', 'LIKE', '%' . $this->search . '%')
+                                                    ->orWhere('distrito', 'LIKE', '%' . $this->search . '%')
+                                                    ->orWhere('seccion', 'LIKE', '%' . $this->search . '%')
+                                                    ->orWhere('tramite', 'LIKE', '%' . $this->search . '%');
+                                            })
+                                            ->where('estado', 'nuevo')
+                                            ->where('usuario_asignado', auth()->user()->id)
+                                            ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
+                                                $q->where('distrito', 2);
+                                            })
+                                            ->whereHas('certificacion', function($q){
+                                                $q->where('servicio', 'DL14')
+                                                    ->whereNull('finalizado_en')
+                                                    ->whereNull('folio_carpeta_copias');
+                                            })
+                                            ->whereRaw('DATE_SUB(`fecha_entrega`, INTERVAL 1 DAY) <= NOW()')
+                                            ->orderBy($this->sort, $this->direction)
+                                            ->paginate($this->pagination);
 
         }else{
 
-            $copias = Certificacion::with('movimientoRegistral.asignadoA', 'movimientoRegistral.supervisor', 'actualizadoPor')
-                                        ->where('servicio', 'DL14')
-                                        ->where(function($q){
-                                            return $q->where('numero_paginas', 'LIKE', '%' . $this->search . '%')
-                                                        ->orWhere(function($q){
-                                                            return $q->whereHas('movimientoRegistral', function($q){
-                                                                return $q->where('solicitante', 'LIKE', '%' . $this->search . '%')
-                                                                            ->orWhere('tomo', 'LIKE', '%' . $this->search . '%')
-                                                                            ->orWhere('registro', 'LIKE', '%' . $this->search . '%');
-                                                            });
-                                                        });
-                                        })
-                                        ->orderBy($this->sort, $this->direction)
-                                        ->paginate($this->pagination);
+            $copias = MovimientoRegistral::with('asignadoA', 'supervisor', 'actualizadoPor', 'certificacion.actualizadoPor')
+                                            ->where(function($q){
+                                                $q->whereHas('asignadoA', function($q){
+                                                        $q->where('name', 'LIKE', '%' . $this->search . '%');
+                                                    })
+                                                    ->orWhereHas('supervisor', function($q){
+                                                        $q->where('name', 'LIKE', '%' . $this->search . '%');
+                                                    })
+                                                    ->orWhere('solicitante', 'LIKE', '%' . $this->search . '%')
+                                                    ->orWhere('tomo', 'LIKE', '%' . $this->search . '%')
+                                                    ->orWhere('registro', 'LIKE', '%' . $this->search . '%')
+                                                    ->orWhere('distrito', 'LIKE', '%' . $this->search . '%')
+                                                    ->orWhere('seccion', 'LIKE', '%' . $this->search . '%')
+                                                    ->orWhere('tramite', 'LIKE', '%' . $this->search . '%');
+                                            })
+                                            ->whereHas('certificacion', function($q){
+                                                $q->where('servicio', 'DL14');
+                                            })
+                                            ->orderBy($this->sort, $this->direction)
+                                            ->paginate($this->pagination);
 
         }
 
