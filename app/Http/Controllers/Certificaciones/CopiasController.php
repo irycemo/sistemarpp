@@ -31,7 +31,7 @@ class CopiasController extends Controller
             $q->where('name', 'Director');
         })->first()->name);
 
-        $distrito = Str::upper(Distrito::where('clave', $certificacion->movimientoRegistral->distrito)->first()->nombre);
+        $distrito = Str::upper($certificacion->movimientoRegistral->distrito);
 
         $registro = $certificacion->movimientoRegistral->registro;
 
@@ -165,7 +165,7 @@ class CopiasController extends Controller
             $q->where('name', 'Director');
         })->first()->name);
 
-        $distrito = Str::upper(Distrito::where('clave', $certificacion->movimientoRegistral->distrito)->first()->nombre);
+        $distrito = Str::upper($certificacion->movimientoRegistral->distrito);
 
         $registro = $certificacion->movimientoRegistral->registro;
 

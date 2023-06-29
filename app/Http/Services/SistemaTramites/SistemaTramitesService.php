@@ -8,12 +8,13 @@ use Illuminate\Support\Facades\Http;
 
 class SistemaTramitesService{
 
-    public function finaliarTramite($tramite){
+    public function finaliarTramite($tramite, $estado){
 
         $url = env('SISTEMA_TRAMITES_FINALIZAR');
 
         $response = Http::acceptJson()->asForm()->post($url, [
-            'tramite' => $tramite
+            'tramite' => $tramite,
+            'estado' => $estado,
         ]);
 
         if($response->status() != 200){

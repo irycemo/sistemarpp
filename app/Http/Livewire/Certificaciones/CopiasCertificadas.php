@@ -92,10 +92,17 @@ class CopiasCertificadas extends Component
 
                 $this->modelo_editar->save();
 
-                (new SistemaTramitesService())->finaliarTramite($this->modelo_editar->movimientoRegistral->tramite);
+                if(auth()->user()->hasRole(['Certificador Oficialia', 'Certificador Juridico'])){
 
-                if(auth()->user()->hasRole(['Certificador Oficialia', 'Certificador Juridico']))
                     $this->dispatchBrowserEvent('imprimir_documento_oficialia', ['documento' => $this->modelo_editar->id]);
+
+                    (new SistemaTramitesService())->finaliarTramite($this->modelo_editar->movimientoRegistral->tramite, 'finalizado');
+
+                }else{
+
+                    (new SistemaTramitesService())->finaliarTramite($this->modelo_editar->movimientoRegistral->tramite, 'concluido');
+
+                }
 
                 $this->resetearTodo();
 

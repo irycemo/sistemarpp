@@ -8,6 +8,7 @@ use App\Models\Certificacion;
 use Illuminate\Support\Facades\Log;
 use App\Http\Traits\ComponentesTrait;
 use App\Http\Services\SistemaTramites\SistemaTramitesService;
+use App\Models\MovimientoRegistral;
 
 class Consultas extends Component
 {
@@ -42,7 +43,7 @@ class Consultas extends Component
 
             $this->modelo_editar->save();
 
-            (new SistemaTramitesService())->finaliarTramite($this->modelo_editar->movimientoRegistral->tramite);
+            (new SistemaTramitesService())->finaliarTramite($this->modelo_editar->movimientoRegistral->tramite, 'finalizado');
 
             $this->resetearTodo();
 
@@ -60,52 +61,51 @@ class Consultas extends Component
 
         if(auth()->user()->hasRole('Administrador')){
 
-            $consultas = Certificacion::with('movimientoRegistral.asignadoA', 'actualizadoPor')
-                                        ->whereIn('servicio', ['DC90', 'DC91', 'DC92', 'DC93'])
-                                        ->whereHas('movimientoRegistral', function($q){
-                                            $q->when(auth()->user()->ubicacion == 'Regional 4', function($q){
-                                                $q->where('distrito', 2);
-                                            });
-                                        })
-                                        ->where(function($q){
-
-                                            return $q->where(function($q){
-                                                            return $q->whereHas('movimientoRegistral', function($q){
-                                                                return $q->where('solicitante', 'LIKE', '%' . $this->search . '%')
-                                                                            ->orWhere('tomo', 'LIKE', '%' . $this->search . '%')
-                                                                            ->orWhere('registro', 'LIKE', '%' . $this->search . '%');
-                                                            });
-                                                        });
-
-                                        })
-                                        ->orderBy($this->sort, $this->direction)
-                                        ->paginate($this->pagination);
+            $consultas = MovimientoRegistral::with('asignadoA', 'actualizadoPor', 'certificacion')
+                                                ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
+                                                    $q->where('distrito', 2);
+                                                })
+                                                ->where(function($q){
+                                                    $q->where('solicitante', 'LIKE', '%' . $this->search . '%')
+                                                        ->orWhere('tomo', 'LIKE', '%' . $this->search . '%')
+                                                        ->orWhere('registro', 'LIKE', '%' . $this->search . '%')
+                                                        ->orWhere('distrito', 'LIKE', '%' . $this->search . '%')
+                                                        ->orWhere('seccion', 'LIKE', '%' . $this->search . '%')
+                                                        ->orWhere('tramite', 'LIKE', '%' . $this->search . '%');
+                                                })
+                                                ->whereHas('asignadoA', function($q){
+                                                    $q->where('name', 'LIKE', '%' . $this->search . '%');
+                                                })
+                                                ->whereHas('certificacion', function($q){
+                                                    $q->whereIn('servicio', ['DC90', 'DC91', 'DC92', 'DC93']);
+                                                })
+                                                ->orderBy($this->sort, $this->direction)
+                                                ->paginate($this->pagination);
 
 
         }else{
 
-            $consultas = Certificacion::with('movimientoRegistral.asignadoA', 'actualizadoPor')
-                                        ->whereHas('movimientoRegistral', function($q){
-                                            $q->where('estado', 'nuevo')
+            $consultas = MovimientoRegistral::with('asignadoA', 'actualizadoPor', 'certificacion')
                                                 ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
                                                     $q->where('distrito', 2);
-                                                });
-                                        })
-                                        ->whereIn('servicio', ['DC90', 'DC91', 'DC92', 'DC93'])
-                                        ->whereNull('finalizado_en')
-                                        ->where(function($q){
-
-                                            return $q->where(function($q){
-                                                            return $q->whereHas('movimientoRegistral', function($q){
-                                                                return $q->where('solicitante', 'LIKE', '%' . $this->search . '%')
-                                                                            ->orWhere('tomo', 'LIKE', '%' . $this->search . '%')
-                                                                            ->orWhere('registro', 'LIKE', '%' . $this->search . '%');
-                                                            });
-                                                        });
-
-                                        })
-                                        ->orderBy($this->sort, $this->direction)
-                                        ->paginate($this->pagination);
+                                                })
+                                                ->where(function($q){
+                                                    $q->where('solicitante', 'LIKE', '%' . $this->search . '%')
+                                                        ->orWhere('tomo', 'LIKE', '%' . $this->search . '%')
+                                                        ->orWhere('registro', 'LIKE', '%' . $this->search . '%')
+                                                        ->orWhere('distrito', 'LIKE', '%' . $this->search . '%')
+                                                        ->orWhere('seccion', 'LIKE', '%' . $this->search . '%')
+                                                        ->orWhere('tramite', 'LIKE', '%' . $this->search . '%');
+                                                })
+                                                ->whereHas('asignadoA', function($q){
+                                                    $q->where('name', 'LIKE', '%' . $this->search . '%');
+                                                })
+                                                ->whereHas('certificacion', function($q){
+                                                    $q->whereIn('servicio', ['DC90', 'DC91', 'DC92', 'DC93'])
+                                                    ->whereNull('finalizado_en');
+                                                })
+                                                ->orderBy($this->sort, $this->direction)
+                                                ->paginate($this->pagination);
 
         }
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Constantes;
 use App\Models\User;
 use App\Models\Certificacion;
 use App\Http\Traits\ModelosTrait;
@@ -58,6 +59,10 @@ class MovimientoRegistral extends Model
 
     public function asignadoA(){
         return $this->belongsTo(User::class, 'usuario_asignado');
+    }
+
+    public function getDistritoAttribute(){
+        return Constantes::DISTRITOS[$this->attributes['distrito']];
     }
 
 }
