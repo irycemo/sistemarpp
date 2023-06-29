@@ -139,6 +139,7 @@ class MovimientoRegistralController extends Controller
             'tomo_bis' => $request->tomo_bis,
             'registro' => $request->registro,
             'registro_bis' => $request->registro_bis,
+            'numero_oficio' => $request->numero_oficio,
         ];
 
     }
@@ -161,7 +162,8 @@ class MovimientoRegistralController extends Controller
             'tomo',
             'tomo_bis',
             'registro',
-            'registro_bis'
+            'registro_bis',
+            'numero_oficio'
         );
 
     }

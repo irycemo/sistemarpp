@@ -30,6 +30,7 @@ class MovimientoRegistral extends Model
         'seccion',
         'distrito',
         'usuario_asignado',
+        'numero_oficio',
         'usuario_supervisor',
         'fecha_entrega',
         'actualizado_por'
