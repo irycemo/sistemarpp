@@ -87,8 +87,6 @@ class CopiasController extends Controller
 
         $numero_oficio = $certificacion->movimientoRegistral->numero_oficio;
 
-        $numero_oficio_letras = $formatter->toWords($certificacion->movimientoRegistral->numero_oficio);
-
         if(auth()->user()->hasRole(['Certificador Oficialia', 'Certificador Juridico'])){
 
             $pdf = Pdf::loadView('certificaciones.copiaCertificadaOficialia', compact(
@@ -112,7 +110,6 @@ class CopiasController extends Controller
                 'mes',
                 'numero_control',
                 'numero_oficio',
-                'numero_oficio_letras',
                 'superviso',
                 'elaboro',
                 'folio_carpeta',
