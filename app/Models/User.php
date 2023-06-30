@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Http\Traits\ModelosTrait;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\MovimientoRegistral;
 use Laravel\Jetstream\HasProfilePhoto;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -76,5 +77,9 @@ class User extends Authenticatable implements Auditable
             'activo' => 'green',
             'inactivo' => 'red',
         ][$this->status] ?? 'gray';
+    }
+
+    public function movimientosRegistralesAsignados(){
+        return $this->hasMany(MovimientoRegistral::class, 'usuario_asignado');
     }
 }

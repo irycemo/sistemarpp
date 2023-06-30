@@ -128,6 +128,7 @@ class MovimientoRegistralController extends Controller
             'solicitante' => $request->nombre_solicitante,
             'tramite' => $request->tramite,
             'fecha_prelacion' => $request->fecha_prelacion,
+            'fecha_pago' => $request->fecha_pago,
             'tipo_servicio' => $request->tipo_servicio,
             'seccion' => $request->seccion,
             'distrito' => $request->distrito,
@@ -157,6 +158,7 @@ class MovimientoRegistralController extends Controller
             'seccion',
             'distrito',
             'fecha_entrega',
+            'fecha_pago',
             'categoria_servicio',
             'numero_notaria',
             'tomo',
@@ -174,46 +176,56 @@ class MovimientoRegistralController extends Controller
 
             if($tipo_servicio != 'extra_urgente')
 
-                $certificador = User::whereHas('roles', function ($q){
-                                                        return $q->where('name', 'Certificador Oficialia');
-                                                    })
-                                            ->where('status', 'activo')
-                                            ->first();
+                $certificadores = User::where('status', 'activo')
+                                        ->whereHas('roles', function($q){
+                                            $q->where('name', 'Certificador Oficialia');
+                                            })
+                                        ->withCount(['movimientosRegistralesAsignados' => function($q){
+                                            $q->where('estado', 'nuevo');
+                                        }])
+                                        ->get();
             else
 
-                $certificador = User::inRandomOrder()
-                                        ->whereHas('roles', function ($q){
-                                                    return $q->where('name', 'Certificador Juridico');
-                                                })
-                                        ->where('status', 'activo')
+                $certificadores = User::where('status', 'activo')
                                         ->when($distrito == 2, function($q){
                                             $q->where('ubicacion', 'Regional 4');
                                         })
                                         ->when($distrito != 2, function($q){
                                             $q->where('ubicacion', '!=', 'Regional 4');
                                         })
-                                        ->first();
+                                        ->whereHas('roles', function($q){
+                                            $q->where('name', 'Certificador Juridico');
+                                            })
+                                        ->withCount(['movimientosRegistralesAsignados' => function($q){
+                                            $q->where('estado', 'nuevo');
+                                        }])
+                                        ->get();
 
         }else{
 
-            $certificador = User::inRandomOrder()->where('status', 'activo')
-                                            ->when($distrito == 2, function($q){
-                                                $q->where('ubicacion', 'Regional 4');
+            $certificadores = User::where('status', 'activo')
+                                        ->when($distrito == 2, function($q){
+                                            $q->where('ubicacion', 'Regional 4');
+                                        })
+                                        ->when($distrito != 2, function($q){
+                                            $q->where('ubicacion', '!=', 'Regional 4');
+                                        })
+                                        ->whereHas('roles', function($q){
+                                            $q->where('name', 'Certificador');
                                             })
-                                            ->when($distrito != 2, function($q){
-                                                $q->where('ubicacion', '!=', 'Regional 4');
-                                            })
-                                            ->whereHas('roles', function($q){
-                                                $q->where('name', 'Certificador');
-                                            })
-                                            ->first();
+                                        ->withCount(['movimientosRegistralesAsignados' => function($q){
+                                            $q->where('estado', 'nuevo');
+                                        }])
+                                        ->get();
 
         }
 
-        if(!$certificador){
+        if($certificadores->count() == 0){
 
             throw new CertificadorNoEncontradoException('No se encontraron certificadores para asignar al movimiento registral.');
         }
+
+        $certificador = $certificadores->sortBy('movimientos_registrales_asignados_count')->first();
 
         return $certificador->id;
 

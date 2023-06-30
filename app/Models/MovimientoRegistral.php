@@ -25,6 +25,7 @@ class MovimientoRegistral extends Model
         'registro_bis',
         'tramite',
         'fecha_prelacion',
+        'fecha_pago',
         'tipo_servicio',
         'solicitante',
         'seccion',

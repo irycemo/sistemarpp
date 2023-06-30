@@ -32,6 +32,7 @@ class MovimientoRegistralRequest extends FormRequest
             'seccion' => 'required',
             'distrito' => 'required',
             'fecha_entrega' => 'required',
+            'fecha_pago' => 'nullable',
             'categoria_servicio' => 'required',
             'servicio' => 'required',
             'numero_oficio' => 'nullable',

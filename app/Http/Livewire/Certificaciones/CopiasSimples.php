@@ -242,6 +242,7 @@ class CopiasSimples extends Component
                                                 $q->where('servicio', 'DL14')
                                                     ->whereNull('finalizado_en');
                                             })
+                                            ->whereRaw('DATE_ADD(`fecha_pago`, INTERVAL 2 DAY) <= NOW()')
                                             ->orderBy($this->sort, $this->direction)
                                             ->paginate($this->pagination);
 
@@ -272,7 +273,7 @@ class CopiasSimples extends Component
                                                     ->whereNull('finalizado_en')
                                                     ->whereNull('folio_carpeta_copias');
                                             })
-                                            ->whereRaw('DATE_SUB(`fecha_entrega`, INTERVAL 1 DAY) <= NOW()')
+                                            ->whereRaw('DATE_ADD(`fecha_pago`, INTERVAL 2 DAY) <= NOW()')
                                             ->orderBy($this->sort, $this->direction)
                                             ->paginate($this->pagination);
 

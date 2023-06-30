@@ -70,7 +70,7 @@ class Constantes{
         4 => '04 Apatzingán',
         5 => '05 Hidalgo',
         6 => '06 Tacámbaro',
-        7 => '07 Páztcuaro',
+        7 => '07 Pátzcuaro',
         8 => '08 Zitácuaro',
         9 => '09 Jiquilpan',
         10 => '10 Zinapécuaro',
