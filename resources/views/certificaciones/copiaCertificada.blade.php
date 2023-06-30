@@ -138,7 +138,7 @@
             <div>
 
                 <p class="parrafo">
-                    EL CIUDADANO <strong>@if($distrito == 'URUAPAN') L.A. SANDRO MEDINA MORALES COORDINADOR REGIONAL URUAPAN @else LICENCIADO EN DERECHO {{ $director }}, DIRECTOR DEL REGISTRO PÚBLICO DE LA PROPIEDAD @endif </strong>
+                    EL CIUDADANO <strong>@if($distrito == '02 URUAPAN') L.A. SANDRO MEDINA MORALES COORDINADOR REGIONAL URUAPAN @else LICENCIADO EN DERECHO {{ $director }}, DIRECTOR DEL REGISTRO PÚBLICO DE LA PROPIEDAD @endif </strong>
                     EN EL ESTADO DE MICHOACÁN DE OCAMPO QUE ACTUA CONFORME A LA LEY, CERTIFICA QUE LA PRESENTE COPIA ES
                     FIELMENTE TOMADA DE LA QUE OBRE EN EL REGISTRO NÚMERO <strong>{{ $registro }}</strong> <strong>({{ $registro_letras }})</strong>
                     DEL TOMO <strong>{{ $tomo }}</strong> <strong>({{ $tomo_letras }})</strong> DEL LIBRO DE <STRONG>{{ $seccion }}</STRONG> CORRESPONDIENTE AL
@@ -148,7 +148,7 @@
                 </p>
 
                 <p class="parrafo">
-                    SE HACE LA SIGUIENTE CERTIFICACIÓN EN @if($distrito == 'URUAPAN') URUAPAN DEL PROGRESO @else MORELIA @endif MICHOACÁN, A LAS {{ $hora }} ({{ $hora_letras }}) HORAS {{ $minutos }} ({{ $minutos_letras }})
+                    SE HACE LA SIGUIENTE CERTIFICACIÓN EN @if($distrito == '02 URUAPAN') URUAPAN DEL PROGRESO @else MORELIA @endif MICHOACÁN, A LAS {{ $hora }} ({{ $hora_letras }}) HORAS {{ $minutos }} ({{ $minutos_letras }})
                     MINUTOS DEL DÍA {{ $dia }} ({{ $dia_letras }}) DE {{ $mes }} DEL {{ $año }} ({{ $año_letras }}).
                 </p>
 
@@ -161,7 +161,7 @@
                 </p>
 
                 <p class="borde">
-                    @if($distrito == 'URUAPAN' )L.A. SANDRO MEDINA MORALES @else {{ $director }} @endif
+                    @if($distrito == '02 URUAPAN' )L.A. SANDRO MEDINA MORALES @else {{ $director }} @endif
                 </p>
 
             </div>

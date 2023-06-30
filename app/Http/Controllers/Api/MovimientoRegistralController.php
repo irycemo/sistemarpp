@@ -233,22 +233,27 @@ class MovimientoRegistralController extends Controller
 
     public function obtenerUsuarioConsulta($distrito){
 
-        $usuario = User::inRandomOrder()->where('status', 'activo')
-                                            ->when($distrito == 2, function($q){
-                                                $q->where('ubicacion', 'Regional 4');
-                                            })
-                                            ->when($distrito != 2, function($q){
-                                                $q->where('ubicacion', '!=', 'Regional 4');
-                                            })
-                                            ->whereHas('roles', function($q){
-                                                $q->where('name', 'Consulta');
-                                            })
-                                            ->first();
+        $usuarios = User::where('status', 'activo')
+                                ->when($distrito == 2, function($q){
+                                    $q->where('ubicacion', 'Regional 4');
+                                })
+                                ->when($distrito != 2, function($q){
+                                    $q->where('ubicacion', '!=', 'Regional 4');
+                                })
+                                ->whereHas('roles', function($q){
+                                    $q->where('name', 'Consulta');
+                                    })
+                                ->withCount(['movimientosRegistralesAsignados' => function($q){
+                                    $q->where('estado', 'nuevo');
+                                }])
+                                ->get();
 
-        if(!$usuario){
+        if($usuarios->count() == 0){
 
-            throw new CertificadorNoEncontradoException('No se encontraron usuarios de consulta para asignar al movimiento registral.');
+            throw new CertificadorNoEncontradoException('No se encontraron usuario para asignar al movimiento registral.');
         }
+
+        $usuario = $usuarios->sortBy('movimientos_registrales_asignados_count')->first();
 
         return $usuario->id;
 
