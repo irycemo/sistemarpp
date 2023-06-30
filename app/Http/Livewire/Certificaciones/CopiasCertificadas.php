@@ -70,13 +70,6 @@ class CopiasCertificadas extends Component
 
         }
 
-        if($this->modelo_editar->movimientoRegistral->fecha_entrega > now()){
-
-            $this->dispatchBrowserEvent('mostrarMensaje', ['error', "La fecha de entrega de este trámite es " . $this->modelo_editar->movimientoRegistral->fecha_entrega->format('d-m-Y')]);
-            return;
-
-        }
-
         try {
 
             DB::transaction(function () use ($modelo){
@@ -124,13 +117,6 @@ class CopiasCertificadas extends Component
     public function finalizar(){
 
         $this->validate();
-
-        if($this->modelo_editar->movimientoRegistral->fecha_entrega > now()){
-
-            $this->dispatchBrowserEvent('mostrarMensaje', ['error', "La fecha de entrega de este trámite es " . $this->modelo_editar->movimientoRegistral->fecha_entrega->format('d-m-Y')]);
-            return;
-
-        }
 
         try{
 
@@ -193,13 +179,6 @@ class CopiasCertificadas extends Component
 
         if($this->modelo_editar->isNot($modelo))
             $this->modelo_editar = $modelo;
-
-        if($this->modelo_editar->movimientoRegistral->fecha_entrega > now()){
-
-            $this->dispatchBrowserEvent('mostrarMensaje', ['error', "La fecha de entrega de este trámite es " . $this->modelo_editar->movimientoRegistral->fecha_entrega->format('d-m-Y')]);
-            return;
-
-        }
 
         try {
 
