@@ -178,7 +178,7 @@ class MovimientoRegistralController extends Controller
 
                 $certificadores = User::where('status', 'activo')
                                         ->whereHas('roles', function($q){
-                                            $q->where('name', 'Certificador Oficialia');
+                                            $q->where('name', 'Certificador Juridico');
                                             })
                                         ->withCount(['movimientosRegistralesAsignados' => function($q){
                                             $q->where('estado', 'nuevo');
@@ -194,7 +194,7 @@ class MovimientoRegistralController extends Controller
                                             $q->where('ubicacion', '!=', 'Regional 4');
                                         })
                                         ->whereHas('roles', function($q){
-                                            $q->where('name', 'Certificador Juridico');
+                                            $q->where('name', 'Certificador Oficialia');
                                             })
                                         ->withCount(['movimientosRegistralesAsignados' => function($q){
                                             $q->where('estado', 'nuevo');

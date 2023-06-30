@@ -76,6 +76,9 @@ class Consultas extends Component
                                                 ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
                                                     $q->where('distrito', 2);
                                                 })
+                                                ->when(auth()->user()->ubicacion != 'Regional 4', function($q){
+                                                    $q->where('distrito', '!=', 2);
+                                                })
                                                 ->whereHas('certificacion', function($q){
                                                     $q->whereIn('servicio', ['DC90', 'DC91', 'DC92', 'DC93']);
                                                 })
@@ -99,6 +102,9 @@ class Consultas extends Component
                                                 })
                                                 ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
                                                     $q->where('distrito', 2);
+                                                })
+                                                ->when(auth()->user()->ubicacion != 'Regional 4', function($q){
+                                                    $q->where('distrito', '!=', 2);
                                                 })
                                                 ->whereHas('certificacion', function($q){
                                                     $q->whereIn('servicio', ['DC90', 'DC91', 'DC92', 'DC93'])

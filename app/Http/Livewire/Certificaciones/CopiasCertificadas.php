@@ -234,6 +234,9 @@ class CopiasCertificadas extends Component
                                                 ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
                                                     $q->where('distrito', 2);
                                                 })
+                                                ->when(auth()->user()->ubicacion != 'Regional 4', function($q){
+                                                    $q->where('distrito', '!=', 2);
+                                                })
                                                 ->whereHas('certificacion', function($q){
                                                     $q->where('servicio', 'DL13')
                                                         ->whereNull('finalizado_en');
@@ -263,6 +266,9 @@ class CopiasCertificadas extends Component
                                                 ->where('estado', 'nuevo')
                                                 ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
                                                     $q->where('distrito', 2);
+                                                })
+                                                ->when(auth()->user()->ubicacion != 'Regional 4', function($q){
+                                                    $q->where('distrito', '!=', 2);
                                                 })
                                                 ->whereHas('certificacion', function($q){
                                                     $q->where('servicio', 'DL13')
