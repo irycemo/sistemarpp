@@ -73,12 +73,6 @@ class Consultas extends Component
                                                         ->orWhere('seccion', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere('tramite', 'LIKE', '%' . $this->search . '%');
                                                 })
-                                                ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
-                                                    $q->where('distrito', 2);
-                                                })
-                                                ->when(auth()->user()->ubicacion != 'Regional 4', function($q){
-                                                    $q->where('distrito', '!=', 2);
-                                                })
                                                 ->whereHas('certificacion', function($q){
                                                     $q->whereIn('servicio', ['DC90', 'DC91', 'DC92', 'DC93']);
                                                 })
@@ -100,8 +94,15 @@ class Consultas extends Component
                                                         ->orWhere('seccion', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere('tramite', 'LIKE', '%' . $this->search . '%');
                                                 })
+                                                ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
+                                                    $q->where('distrito', 2);
+                                                })
+                                                ->when(auth()->user()->ubicacion != 'Regional 4', function($q){
+                                                    $q->where('distrito', '!=', 2);
+                                                })
                                                 ->whereHas('certificacion', function($q){
-                                                    $q->whereIn('servicio', ['DC90', 'DC91', 'DC92', 'DC93']);
+                                                    $q->whereIn('servicio', ['DC90', 'DC91', 'DC92', 'DC93'])
+                                                    ->whereNull('finalizado_en');
                                                 })
                                                 ->orderBy($this->sort, $this->direction)
                                                 ->paginate($this->pagination);
