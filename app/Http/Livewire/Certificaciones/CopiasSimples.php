@@ -74,8 +74,9 @@ class CopiasSimples extends Component
             'fecha_inicio' => 'required',
         ]);
 
-        $fecha_final = $this->fecha_final;
-        $fecha_inicio = $this->fecha_inicio;
+        $fecha_final = $this->fecha_final . ' 23:59:59';
+        $fecha_inicio = $this->fecha_inicio . ' 00:00:00';
+        $servicio = 'DL14';
 
         $carga = MovimientoRegistral::with('certificacion')
                                         ->where('estado', 'nuevo')
@@ -90,6 +91,7 @@ class CopiasSimples extends Component
             'fecha_inicio',
             'fecha_final',
             'carga',
+            'servicio'
         ))->output();
 
         return response()->streamDownload(
