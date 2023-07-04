@@ -39,7 +39,8 @@ class MovimientoRegistral extends Model
 
     protected $casts = [
         'fecha_entrega' => 'date',
-        'fecha_prelacion' => 'datetime'
+        'fecha_prelacion' => 'datetime',
+        'fecha_pago' => 'datetime'
     ];
 
     public function getEstadoColorAttribute()
