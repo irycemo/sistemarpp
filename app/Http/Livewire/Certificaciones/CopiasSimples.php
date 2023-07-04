@@ -123,11 +123,15 @@ class CopiasSimples extends Component
 
     public function finalizarSupervisor(Certificacion $modelo){
 
-        if(($modelo->movimientoRegistral->tipo_servicio == 'ordinario' && $this->calcularDiaElaboracion($modelo) <= now()) == false){
+        if($modelo->movimientoRegistral->tipo_servicio == 'ordinario'){
 
-            $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El trámite puede elaborarse apartir del " . $this->calcularDiaElaboracion($modelo)->format('d-m-Y')]);
+            if(!($this->calcularDiaElaboracion($modelo) <= now())){
 
-            return;
+                $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El trámite puede elaborarse apartir del " . $this->calcularDiaElaboracion($modelo)->format('d-m-Y')]);
+
+                return;
+
+            }
 
         }
 
