@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Certificaciones;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Certificacion;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -20,6 +21,9 @@ class CopiasSimples extends Component
     public Certificacion $modelo_editar;
     public $observaciones;
     public $modalRechazar;
+    public $modalCarga;
+    public $fecha_inicio;
+    public $fecha_final;
 
     protected function rules(){
         return [
@@ -60,6 +64,38 @@ class CopiasSimples extends Component
 
         if($this->modelo_editar->isNot($modelo))
             $this->modelo_editar = $modelo;
+
+    }
+
+    public function imprimirCarga(){
+
+        $this->validate([
+            'fecha_final' => 'required',
+            'fecha_inicio' => 'required',
+        ]);
+
+        $fecha_final = $this->fecha_final;
+        $fecha_inicio = $this->fecha_inicio;
+
+        $carga = MovimientoRegistral::with('certificacion')
+                                        ->where('estado', 'nuevo')
+                                        ->whereBetween('created_at', [$fecha_inicio, $fecha_final])
+                                        ->where('usuario_asignado', auth()->user()->id)
+                                        ->whereHas('certificacion', function ($q){
+                                            $q->where('servicio', 'DL14');
+                                        })
+                                        ->get();
+
+        $pdf = Pdf::loadView('certificaciones.cargaTrabajo', compact(
+            'fecha_inicio',
+            'fecha_final',
+            'carga',
+        ))->output();
+
+        return response()->streamDownload(
+            fn () => print($pdf),
+            'carga_de_trabajo.pdf'
+        );
 
     }
 
@@ -225,7 +261,7 @@ class CopiasSimples extends Component
 
     public function mount(){
 
-        array_push($this->fields, 'modalRechazar', 'observaciones');
+        array_push($this->fields, 'modalRechazar', 'observaciones', 'modalCarga');
 
         $this->modelo_editar = $this->crearModeloVacio();
 

@@ -21,6 +21,15 @@
 
             </div>
 
+            <button wire:click="$set('modalCarga', '!modalCarga')" wire:loading.attr="disabled" class="bg-gray-500 hover:shadow-lg hover:bg-gray-700 float-right text-sm py-2 px-4 text-white rounded-full focus:outline-none hidden md:block">
+
+                <img wire:loading wire:target="modalCarga" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
+                Imprimir carga de trabajo
+
+            </button>
+
+            <button wire:click="$set('modalCarga', '!modalCarga')" class="bg-gray-500 hover:shadow-lg hover:bg-gray-700 float-right text-sm py-2 px-4 text-white rounded-full focus:outline-none md:hidden">+</button>
+
         </div>
 
     </div>
@@ -841,6 +850,94 @@
                     <img wire:loading wire:target="rechazar" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
 
                     Rechazar
+                </button>
+
+                <button
+                    wire:click="resetearTodo"
+                    wire:loading.attr="disabled"
+                    wire:target="resetearTodo"
+                    type="button"
+                    class="bg-red-400 hover:shadow-lg text-white font-bold px-4 py-2 rounded-full text-sm mb-2 hover:bg-red-700 flaot-left focus:outline-none">
+                    Cerrar
+                </button>
+
+            </div>
+
+        </x-slot>
+
+    </x-dialog-modal>
+
+    <x-dialog-modal wire:model="modalCarga" maxWidth="sm">
+
+        <x-slot name="title">
+
+            Carga de trabajo
+
+        </x-slot>
+
+        <x-slot name="content">
+
+            <div class="flex flex-col md:flex-row justify-between md:space-x-3 mb-5">
+
+                <div class="flex-auto ">
+
+                    <div>
+
+                        <Label>Fecha inicial</Label>
+                    </div>
+
+                    <div>
+
+                        <input type="date" class="bg-white rounded text-sm w-full" wire:model.defer="fecha_inicio">
+
+                    </div>
+
+                    <div>
+
+                        @error('fecha_inicio') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+
+                    </div>
+
+                </div>
+
+                <div class="flex-auto ">
+
+                    <div>
+
+                        <Label>Fecha final</Label>
+                    </div>
+
+                    <div>
+
+                        <input type="date" class="bg-white rounded text-sm w-full" wire:model.defer="fecha_final">
+
+                    </div>
+
+                    <div>
+
+                        @error('fecha_final') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </x-slot>
+
+        <x-slot name="footer">
+
+            <div class="float-righ">
+
+                <button
+                    wire:click="imprimirCarga"
+                    wire:loading.attr="disabled"
+                    wire:target="imprimirCarga"
+                    class="bg-blue-400 hover:shadow-lg text-white font-bold px-4 py-2 rounded-full text-sm mb-2 hover:bg-blue-700 flaot-left mr-1 focus:outline-none">
+
+                    <img wire:loading wire:target="imprimirCarga" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
+
+                    Imprimir
                 </button>
 
                 <button

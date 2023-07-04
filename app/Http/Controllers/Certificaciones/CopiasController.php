@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Certificaciones;
 
 use App\Models\User;
-use App\Models\Distrito;
 use Illuminate\Support\Str;
 use App\Models\Certificacion;
 use Barryvdh\DomPDF\Facade\Pdf;
