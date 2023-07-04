@@ -101,7 +101,9 @@ class CopiasSimples extends Component
                                         ->whereBetween('created_at', [$fecha_inicio, $fecha_final])
                                         ->where('usuario_asignado', auth()->user()->id)
                                         ->whereHas('certificacion', function ($q){
-                                            $q->where('servicio', 'DL14');
+                                            $q->where('servicio', 'DL14')
+                                                    ->whereNull('finalizado_en')
+                                                    ->whereNull('folio_carpeta_copias');
                                         })
                                         ->get();
 
