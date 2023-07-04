@@ -32,7 +32,9 @@
                         <thead>
 
                             <tr>
-
+                                <th>
+                                    Número de control
+                                </th>
                                 <th>
                                     Tipo de servicio
                                 </th>
@@ -65,6 +67,7 @@
 
                                 <tr>
 
+                                    <td>{{ $item->tramite }}</td>
                                     <td>{{ $item->tipo_servicio }}</td>
                                     <td>{{ $item->tomo }}</td>
                                     <td>{{ $item->registro }}</td>
