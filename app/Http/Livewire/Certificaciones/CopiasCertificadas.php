@@ -27,7 +27,7 @@ class CopiasCertificadas extends Component
 
     protected function rules(){
         return [
-            'modelo_editar.folio_carpeta_copias' => 'required|numeric|unique:certificacions,folio_carpeta_copias,' . $this->modelo_editar->id,
+            'modelo_editar.folio_carpeta_copias' => 'required|numeric|min:1|unique:certificacions,folio_carpeta_copias,' . $this->modelo_editar->id,
          ];
     }
 
