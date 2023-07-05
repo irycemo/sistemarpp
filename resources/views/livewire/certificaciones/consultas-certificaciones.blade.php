@@ -101,6 +101,16 @@
 
                         </th>
 
+                        @if(auth()->user()->hasRole('Administrador'))
+
+                            <th class="px-3 py-3 hidden lg:table-cell">
+
+                                Acciones
+
+                            </th>
+
+                        @endif
+
                     </tr>
 
                 </thead>
@@ -190,6 +200,29 @@
 
                         </td>
 
+                        @if(auth()->user()->hasRole('Administrador'))
+
+                            <td class="px-3 py-3 w-full lg:w-auto p-3 text-gray-800 text-center lg:text-left lg:border-0 border border-b block lg:table-cell relative lg:static">
+
+                                <button
+                                    wire:click="$set('modal', '!modal')"
+                                    wire:loading.attr="disabled"
+                                    class="md:w-full bg-blue-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-blue-700 flex justify-center focus:outline-none"
+                                >
+
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 mr-3">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    </svg>
+
+                                    <p>Corregir</p>
+
+                                </button>
+
+                            </td>
+
+                        @endif
+
                     </tr>
 
                 </tbody>
@@ -217,5 +250,63 @@
         </div>
 
     @endif
+
+    <x-dialog-modal wire:model="modal" maxWidth="sm">
+
+        <x-slot name="title">
+            Corregir certificación
+        </x-slot>
+
+        <x-slot name="content">
+
+            <div class="flex flex-col md:flex-row justify-between md:space-x-3 mb-5">
+
+                <div class="flex-auto mr-1 ">
+
+                    <div>
+
+                        <Label>Número de paginas</Label>
+
+                    </div>
+
+                    <div>
+
+                        <input type="number" class="bg-white rounded text-sm w-full" wire:model.defer="paginas">
+
+                    </div>
+
+                    <div>
+
+                        @error('paginas') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </x-slot>
+
+        <x-slot name="footer">
+
+            <x-secondary-button
+                wire:click="$toggle('modal')"
+                wire:loading.attr="disabled"
+            >
+                No
+            </x-secondary-button>
+
+            <x-danger-button
+                class="ml-2"
+                wire:click="save"
+                wire:loading.attr="disabled"
+                wire:target="save"
+            >
+                Corregir
+            </x-danger-button>
+
+        </x-slot>
+
+    </x-dialog-modal>
 
 </div>
