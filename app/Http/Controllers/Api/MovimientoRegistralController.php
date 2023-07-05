@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Exceptions\CertificadorNoEncontradoException;
-use App\Exceptions\SupervisorNoEncontradoException;
 use App\Models\User;
 use App\Models\Certificacion;
 use Illuminate\Support\Facades\DB;
 use App\Models\MovimientoRegistral;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MovimientoRegistralRequest;
+use App\Exceptions\SupervisorNoEncontradoException;
+use App\Exceptions\CertificadorNoEncontradoException;
 
 class MovimientoRegistralController extends Controller
 {
+
     public function store(MovimientoRegistralRequest $request)
     {
 
@@ -44,6 +46,8 @@ class MovimientoRegistralController extends Controller
 
         } catch (\Throwable $th) {
 
+            Log::error("Error al crear movimiento registral desde Sistema Trámites. " . $th->getMessage());
+
             return response()->json([
                 'result' => 'error',
                 'data' => $th->getMessage(),
@@ -64,13 +68,11 @@ class MovimientoRegistralController extends Controller
 
                 $movimiento_registral = MovimientoRegistral::findOrFail($request->movimiento_registral);
 
-                $movimiento_registral->update(['estado' => 'nuevo']);
+                $movimiento_registral->update($this->requestMovimiento($request) + ['estado' => 'nuevo']);
 
                 if($request->categoria_servicio == 'Certificaciones'){
 
-                    $movimiento_registral->certificacion->update([
-                        'numero_paginas' => $movimiento_registral->certificacion->numero_paginas + $request->numero_paginas
-                    ]);
+                    $movimiento_registral->certificacion->update($this->requestTramtie($request));
 
                     $movimiento_registral->load('certificacion');
 
@@ -86,6 +88,8 @@ class MovimientoRegistralController extends Controller
             ], 200);
 
         } catch (\Throwable $th) {
+
+            Log::error("Error al actualizar movimiento registral desde Sistema Trámites. " . $th->getMessage());
 
             return response()->json([
                 'result' => 'error',
@@ -165,7 +169,8 @@ class MovimientoRegistralController extends Controller
             'tomo_bis',
             'registro',
             'registro_bis',
-            'numero_oficio'
+            'numero_oficio',
+            'movimiento_registral'
         );
 
     }
