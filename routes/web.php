@@ -11,12 +11,13 @@ use App\Http\Livewire\Admin\Tenencias;
 use App\Http\Livewire\Admin\Municipios;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ValidacionController;
 use App\Http\Controllers\SetPasswordController;
+use App\Http\Livewire\Certificaciones\Consultas;
 use App\Http\Livewire\Certificaciones\CopiasSimples;
 use App\Http\Livewire\Certificaciones\CopiasCertificadas;
 use App\Http\Controllers\Certificaciones\CopiasController;
-use App\Http\Controllers\ValidacionController;
-use App\Http\Livewire\Certificaciones\Consultas;
+use App\Http\Livewire\Certificaciones\ConsultasCertificaciones;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +60,9 @@ Route::group(['middleware' => ['auth', 'esta.activo']], function(){
     Route::get('copias_certificadas', CopiasCertificadas::class)->middleware('permission:Copias Certificadas')->name('copias_certificadas');
     Route::get('copia_certificada/{certificacion}', [CopiasController::class, 'copiaCertificada'])->name('copia_certificada');
 
-    Route::get('consultas', Consultas::class)->middleware('permission:Consultas')->name('consultas');
+    Route::get('indices_y_tomos', Consultas::class)->middleware('permission:Indices y tomos')->name('indices_y_tomos');
+
+    Route::get('consultas', ConsultasCertificaciones::class)->middleware('permission:Consultas')->name('consultas');
 
     Route::get('manual', ManualController::class)->name('manual');
 

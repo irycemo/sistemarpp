@@ -193,7 +193,7 @@ class CopiasSimples extends Component
 
             if(!($this->calcularDiaElaboracion($this->modelo_editar) <= now())){
 
-                $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El trámite puede elaborarse apartir del " . $this->calcularDiaElaboracion($modelo)->format('d-m-Y')]);
+                $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El trámite puede elaborarse apartir del " . $this->calcularDiaElaboracion($this->modelo_editar)->format('d-m-Y')]);
 
                 return;
 
@@ -228,7 +228,7 @@ class CopiasSimples extends Component
 
             if(!($this->calcularDiaElaboracion($this->modelo_editar) <= now())){
 
-                $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El trámite puede elaborarse apartir del " . $this->calcularDiaElaboracion($modelo)->format('d-m-Y')]);
+                $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El trámite puede elaborarse apartir del " . $this->calcularDiaElaboracion($this->modelo_editar)->format('d-m-Y')]);
 
                 return;
 

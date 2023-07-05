@@ -241,7 +241,7 @@ class CopiasCertificadas extends Component
 
             DB::transaction(function (){
 
-                $observaciones = auth()->user()->name . ' rechaza el ' . now() . ', con motivo: ' . '<|>' . $this->observaciones ;
+                $observaciones = auth()->user()->name . ' rechaza el ' . now() . ', con motivo: ' . $this->observaciones ;
 
                 (new SistemaTramitesService())->rechazarTramite($this->modelo_editar->movimientoRegistral->tramite, $observaciones);
 
