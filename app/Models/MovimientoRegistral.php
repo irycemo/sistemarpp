@@ -49,6 +49,7 @@ class MovimientoRegistral extends Model
             'nuevo' => 'blue-400',
             'concluido' => 'gray-400',
             'rechazado' => 'red-400',
+            'elaborado' => 'green-400',
         ][$this->estado] ?? 'gray-400';
     }
 
