@@ -365,7 +365,7 @@ class CopiasSimples extends Component
                                                     ->orWhere('seccion', 'LIKE', '%' . $this->search . '%')
                                                     ->orWhere('tramite', 'LIKE', '%' . $this->search . '%');
                                             })
-                                            ->where('estado', 'nuevo')
+                                            ->where('estado', 'elaborado')
                                             ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
                                                 $q->where('distrito', 2);
                                             })
@@ -393,7 +393,7 @@ class CopiasSimples extends Component
                                                     ->orWhere('seccion', 'LIKE', '%' . $this->search . '%')
                                                     ->orWhere('tramite', 'LIKE', '%' . $this->search . '%');
                                             })
-                                            ->where('estado', 'nuevo')
+                                            ->where('estado', 'elaborado')
                                             ->where('usuario_asignado', auth()->user()->id)
                                             ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
                                                 $q->where('distrito', 2);

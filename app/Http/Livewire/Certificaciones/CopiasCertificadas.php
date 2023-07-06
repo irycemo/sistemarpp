@@ -362,7 +362,7 @@ class CopiasCertificadas extends Component
                                                         ->orWhere('seccion', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere('tramite', 'LIKE', '%' . $this->search . '%');
                                                 })
-                                                ->where('estado', 'nuevo')
+                                                ->where('estado', 'elaborado')
                                                 ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
                                                     $q->where('distrito', 2);
                                                 })
@@ -394,7 +394,7 @@ class CopiasCertificadas extends Component
                                                         ->orWhere('tramite', 'LIKE', '%' . $this->search . '%');
                                                 })
                                                 ->where('usuario_asignado', auth()->user()->id)
-                                                ->where('estado', 'nuevo')
+                                                ->where('estado', 'elaborado')
                                                 ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
                                                     $q->where('distrito', 2);
                                                 })
