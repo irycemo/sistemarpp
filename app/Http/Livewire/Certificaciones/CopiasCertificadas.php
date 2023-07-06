@@ -200,15 +200,23 @@ class CopiasCertificadas extends Component
 
         try{
 
-            $this->modelo_editar->actualizado_por = auth()->user()->id;
+            DB::transaction(function (){
 
-            $this->modelo_editar->save();
+                $this->modelo_editar->movimientoRegistral->estado = 'elaborado';
 
-            $this->dispatchBrowserEvent('imprimir_documento', ['documento' => $this->modelo_editar->id]);
+                $this->modelo_editar->movimientoRegistral->save();
 
-            $this->dispatchBrowserEvent('mostrarMensaje', ['success', "El trámite se finalizó con éxito."]);
+                $this->modelo_editar->actualizado_por = auth()->user()->id;
 
-            $this->resetearTodo();
+                $this->modelo_editar->save();
+
+                $this->dispatchBrowserEvent('imprimir_documento', ['documento' => $this->modelo_editar->id]);
+
+                $this->dispatchBrowserEvent('mostrarMensaje', ['success', "El trámite se finalizó con éxito."]);
+
+                $this->resetearTodo();
+
+            });
 
         } catch (\Throwable $th) {
 

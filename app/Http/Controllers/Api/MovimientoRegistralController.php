@@ -25,7 +25,7 @@ class MovimientoRegistralController extends Controller
             DB::transaction(function () use($request, &$data){
 
 
-                $movimiento_registral = MovimientoRegistral::create($this->requestMovimiento($request));
+                $movimiento_registral = MovimientoRegistral::create($this->requestMovimientoCrear($request));
 
                 if($request->categoria_servicio == 'Certificaciones'){
 
@@ -65,10 +65,9 @@ class MovimientoRegistralController extends Controller
 
             DB::transaction(function () use($request, &$data){
 
-
                 $movimiento_registral = MovimientoRegistral::findOrFail($request->movimiento_registral);
 
-                $movimiento_registral->update($this->requestMovimiento($request) + ['estado' => 'nuevo']);
+                $movimiento_registral->update($this->requestMovimientoActualizar($request));
 
                 if($request->categoria_servicio == 'Certificaciones'){
 
@@ -126,7 +125,7 @@ class MovimientoRegistralController extends Controller
 
     }
 
-    public function requestMovimiento($request){
+    public function requestMovimientoCrear($request){
 
         return [
             'folio_real' => $request->folio_real,
@@ -141,6 +140,22 @@ class MovimientoRegistralController extends Controller
             'fecha_entrega' => $request->fecha_entrega,
             'usuario_asignado' => $this->obtenerUsuarioAsignado($request->servicio, $request->distrito, $request->solicitante, $request->tipo_servicio),
             'usuario_supervisor' => $this->obtenerSupervisor($request->distrito),
+            'estado' => 'nuevo',
+            'tomo' => $request->tomo,
+            'tomo_bis' => $request->tomo_bis,
+            'registro' => $request->registro,
+            'registro_bis' => $request->registro_bis,
+            'numero_oficio' => $request->numero_oficio,
+        ];
+
+    }
+
+    public function requestMovimientoActualizar($request){
+
+        return [
+            'solicitante' => $request->nombre_solicitante,
+            'seccion' => $request->seccion,
+            'distrito' => $request->distrito,
             'estado' => 'nuevo',
             'tomo' => $request->tomo,
             'tomo_bis' => $request->tomo_bis,
