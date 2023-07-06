@@ -72,7 +72,9 @@ class MovimientoRegistralController extends Controller
 
                 if($request->categoria_servicio == 'Certificaciones'){
 
-                    $movimiento_registral->certificacion->update($this->requestTramtie($request));
+                    $movimiento_registral->certificacion->update([
+                        'numero_paginas' => $movimiento_registral->certificacion->numero_paginas + $request->numero_paginas
+                    ]);
 
                     $movimiento_registral->load('certificacion');
 
