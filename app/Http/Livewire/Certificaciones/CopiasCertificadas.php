@@ -360,7 +360,8 @@ class CopiasCertificadas extends Component
                                                         ->orWhere('registro', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere('distrito', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere('seccion', 'LIKE', '%' . $this->search . '%')
-                                                        ->orWhere('tramite', 'LIKE', '%' . $this->search . '%');
+                                                        ->orWhere('tramite', 'LIKE', '%' . $this->search . '%')
+                                                        ->orWhere('estado', 'LIKE', '%' . $this->search . '%');
                                                 })
                                                 ->where('estado', 'elaborado')
                                                 ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
@@ -391,10 +392,11 @@ class CopiasCertificadas extends Component
                                                         ->orWhere('registro', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere('distrito', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere('seccion', 'LIKE', '%' . $this->search . '%')
-                                                        ->orWhere('tramite', 'LIKE', '%' . $this->search . '%');
+                                                        ->orWhere('tramite', 'LIKE', '%' . $this->search . '%')
+                                                        ->orWhere('estado', 'LIKE', '%' . $this->search . '%');
                                                 })
                                                 ->where('usuario_asignado', auth()->user()->id)
-                                                ->where('estado', 'elaborado')
+                                                ->where('estado', 'nuevo')
                                                 ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
                                                     $q->where('distrito', 2);
                                                 })
@@ -425,7 +427,8 @@ class CopiasCertificadas extends Component
                                                         ->orWhere('registro', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere('distrito', 'LIKE', '%' . $this->search . '%')
                                                         ->orWhere('seccion', 'LIKE', '%' . $this->search . '%')
-                                                        ->orWhere('tramite', 'LIKE', '%' . $this->search . '%');
+                                                        ->orWhere('tramite', 'LIKE', '%' . $this->search . '%')
+                                                        ->orWhere('estado', 'LIKE', '%' . $this->search . '%');
                                                 })
                                                 ->whereHas('certificacion', function($q){
                                                     $q->where('servicio', 'DL13');
