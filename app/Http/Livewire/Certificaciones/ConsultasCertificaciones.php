@@ -3,7 +3,10 @@
 namespace App\Http\Livewire\Certificaciones;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
 use App\Models\MovimientoRegistral;
+use Illuminate\Support\Facades\Log;
+use App\Http\Services\SistemaTramites\SistemaTramitesService;
 
 class ConsultasCertificaciones extends Component
 {
@@ -11,7 +14,9 @@ class ConsultasCertificaciones extends Component
     public $certificacion;
     public $search;
     public $modal;
+    public $modalRechazar;
     public $paginas;
+    public $observaciones;
 
     public function save(){
 
@@ -48,6 +53,43 @@ class ConsultasCertificaciones extends Component
         $this->modal = false;
 
         $this->reset('paginas');
+
+    }
+
+    public function rechazar(){
+
+        $this->validate([
+            'observaciones' => 'required'
+        ]);
+
+        try {
+
+            DB::transaction(function (){
+
+                $observaciones = auth()->user()->name . ' rechaza el ' . now() . ', con motivo: ' . $this->observaciones ;
+
+                (new SistemaTramitesService())->rechazarTramite($this->certificacion->tramite, $observaciones);
+
+                $this->certificacion->update(['estado' => 'rechazado']);
+
+                $this->certificacion->actualizado_por = auth()->user()->id;
+
+                $this->certificacion->certificacion->observaciones = $this->certificacion->certificacion->observaciones . $observaciones;
+
+                $this->certificacion->certificacion->save();
+
+                $this->certificacion->save();
+
+                $this->dispatchBrowserEvent('mostrarMensaje', ['success', "El trámite se rechazó con éxito."]);
+
+                $this->modalRechazar = false;
+
+            });
+
+        } catch (\Throwable $th) {
+            Log::error("Error al rechazar trámite de copias certificadas por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
+            $this->dispatchBrowserEvent('mostrarMensaje', ['error', "Ha ocurrido un error."]);
+        }
 
     }
 

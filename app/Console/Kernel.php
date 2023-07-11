@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
 
         $schedule->command('expirar:consultas')->daily();
+        $schedule->command('reasignar:usuario')->everyMinute();
     }
 
     /**

@@ -44,7 +44,7 @@ class ExpirarConsultas extends Command
 
                 $movimiento->update(['estado' => 'expirado']);
 
-                (new SistemaTramitesService())->finaliarTramite($movimiento->tramite);
+                (new SistemaTramitesService())->finaliarTramite($movimiento->tramite, 'expirado');
 
             }
 

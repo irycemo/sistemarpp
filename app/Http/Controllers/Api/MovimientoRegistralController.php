@@ -101,12 +101,12 @@ class MovimientoRegistralController extends Controller
 
     }
 
-    public function obtenerUsuarioAsignado($servicio, $distrito, $solicitante, $tipo_servicio){
+    public function obtenerUsuarioAsignado($servicio, $distrito, $solicitante, $tipo_servicio, $random){
 
         /* Certificaciones: Copias simples, Copias certificadas */
         if($servicio == 'DL13' || $servicio == 'DL14'){
 
-            return $this->obtenerCertificador($distrito, $solicitante, $tipo_servicio);
+            return $this->obtenerCertificador($distrito, $solicitante, $tipo_servicio, $random);
 
         }
 
@@ -138,7 +138,7 @@ class MovimientoRegistralController extends Controller
             'seccion' => $request->seccion,
             'distrito' => $request->distrito,
             'fecha_entrega' => $request->fecha_entrega,
-            'usuario_asignado' => $this->obtenerUsuarioAsignado($request->servicio, $request->distrito, $request->solicitante, $request->tipo_servicio),
+            'usuario_asignado' => $this->obtenerUsuarioAsignado($request->servicio, $request->distrito, $request->solicitante, $request->tipo_servicio, false),
             'usuario_supervisor' => $this->obtenerSupervisor($request->distrito),
             'estado' => 'nuevo',
             'tomo' => $request->tomo,
@@ -192,7 +192,7 @@ class MovimientoRegistralController extends Controller
 
     }
 
-    public function obtenerCertificador($distrito, $solicitante, $tipo_servicio){
+    public function obtenerCertificador($distrito, $solicitante, $tipo_servicio, $random){
 
         if($distrito != 2 && $solicitante == 'Oficialia de partes'){
 
@@ -245,6 +245,14 @@ class MovimientoRegistralController extends Controller
         if($certificadores->count() == 0){
 
             throw new CertificadorNoEncontradoException('No se encontraron certificadores para asignar al movimiento registral.');
+        }
+
+        if($random){
+
+            $certificador = $certificadores->shuffle()->first();
+
+            return $certificador->id;
+
         }
 
         $certificador = $certificadores->sortBy('movimientos_registrales_asignados_count')->first();

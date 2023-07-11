@@ -210,7 +210,6 @@
                                     class="md:w-full bg-blue-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-blue-700 flex justify-center focus:outline-none"
                                 >
 
-
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 mr-3">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                     </svg>
@@ -218,6 +217,24 @@
                                     <p>Corregir</p>
 
                                 </button>
+
+                                @if($certificacion->estado == 'nuevo')
+
+                                    <button
+                                        wire:click="$set('modalRechazar', '!modalRechazar')"
+                                        wire:loading.attr="disabled"
+                                        class="md:w-full mt-1 bg-red-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-red-700 flex justify-center focus:outline-none"
+                                    >
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 mr-3">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+
+                                        <p>Recahzar</p>
+
+                                    </button>
+
+                                @endif
 
                             </td>
 
@@ -304,6 +321,73 @@
             >
                 Corregir
             </x-danger-button>
+
+        </x-slot>
+
+    </x-dialog-modal>
+
+    <x-dialog-modal wire:model="modalRechazar" maxWidth="sm">
+
+        <x-slot name="title">
+
+            Rechazar
+
+        </x-slot>
+
+        <x-slot name="content">
+
+            <div class="flex flex-col md:flex-row justify-between md:space-x-3 mb-5">
+
+                <div class="flex-auto ">
+
+                    <div>
+
+                        <Label>Observaciones</Label>
+                    </div>
+
+                    <div>
+
+                        <textarea rows="5" class="bg-white rounded text-sm w-full" wire:model.defer="observaciones"></textarea>
+
+                    </div>
+
+                    <div>
+
+                        @error('observaciones') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </x-slot>
+
+        <x-slot name="footer">
+
+            <div class="float-righ">
+
+                <button
+                    wire:click="rechazar"
+                    wire:loading.attr="disabled"
+                    wire:target="rechazar"
+                    class="bg-blue-400 hover:shadow-lg text-white font-bold px-4 py-2 rounded-full text-sm mb-2 hover:bg-blue-700 flaot-left mr-1 focus:outline-none">
+
+                    <img wire:loading wire:target="rechazar" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
+
+                    Rechazar
+                </button>
+
+                <button
+                    wire:click="$set('modalRechazar',false)"
+                    wire:loading.attr="disabled"
+                    wire:target="$set('modalRechazar',false)"
+                    type="button"
+                    class="bg-red-400 hover:shadow-lg text-white font-bold px-4 py-2 rounded-full text-sm mb-2 hover:bg-red-700 flaot-left focus:outline-none">
+                    Cerrar
+                </button>
+
+            </div>
 
         </x-slot>
 
