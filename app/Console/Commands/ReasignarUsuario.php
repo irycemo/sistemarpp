@@ -2,10 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Controllers\Api\MovimientoRegistralController;
 use App\Models\Certificacion;
-use App\Models\MovimientoRegistral;
 use Illuminate\Console\Command;
+use App\Models\MovimientoRegistral;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Api\MovimientoRegistralController;
 
 class ReasignarUsuario extends Command
 {
@@ -29,44 +30,57 @@ class ReasignarUsuario extends Command
     public function handle()
     {
 
-        $ids = Certificacion::whereHas('movimientoRegistral', function($q){
-                                                                            $q->where('estado', 'nuevo')
-                                                                                ->where('fecha_entrega', '<=', now()->toDateString());
-                                                                        })
-                                                                        ->pluck('movimiento_registral_id');
+        try {
+
+            $tramites = [];
+
+            $ids = Certificacion::whereHas('movimientoRegistral', function($q){
+                                                                                $q->where('estado', 'nuevo')
+                                                                                    ->where('fecha_entrega', '<=', now()->toDateString());
+                                                                            })
+                                                                            ->pluck('movimiento_registral_id');
 
 
-        foreach($ids as $id){
+            foreach($ids as $id){
 
-            $movimientoRegistral = MovimientoRegistral::findOrFail($id);
-
-            $nuevoUsuario = (new MovimientoRegistralController())->obtenerUsuarioAsignado(
-                $movimientoRegistral->certificacion->servicio,
-                $movimientoRegistral->getRawOriginal('distrito'),
-                $movimientoRegistral->solicitante,
-                $movimientoRegistral->tipo_servicio,
-                false
-            );
-
-            while($nuevoUsuario == $movimientoRegistral->usuario_asignado){
+                $movimientoRegistral = MovimientoRegistral::findOrFail($id);
 
                 $nuevoUsuario = (new MovimientoRegistralController())->obtenerUsuarioAsignado(
-                                                                                            $movimientoRegistral->certificacion->servicio,
-                                                                                            $movimientoRegistral->getRawOriginal('distrito'),
-                                                                                            $movimientoRegistral->solicitante,
-                                                                                            $movimientoRegistral->tipo_servicio,
-                                                                                            true
-                                                                                        );
+                    $movimientoRegistral->certificacion->servicio,
+                    $movimientoRegistral->getRawOriginal('distrito'),
+                    $movimientoRegistral->solicitante,
+                    $movimientoRegistral->tipo_servicio,
+                    false
+                );
+
+                while($nuevoUsuario == $movimientoRegistral->usuario_asignado){
+
+                    $nuevoUsuario = (new MovimientoRegistralController())->obtenerUsuarioAsignado(
+                                                                                                $movimientoRegistral->certificacion->servicio,
+                                                                                                $movimientoRegistral->getRawOriginal('distrito'),
+                                                                                                $movimientoRegistral->solicitante,
+                                                                                                $movimientoRegistral->tipo_servicio,
+                                                                                                true
+                                                                                            );
+
+                }
+
+                if($nuevoUsuario != $movimientoRegistral->usuario_asignado){
+
+                    $movimientoRegistral->update(['usuario_asignado' => $nuevoUsuario]);
+
+                    array_push($tramites, $movimientoRegistral->tramite);
+
+                }
+
+                info('Tramites reasignados: ' . $tramites);
 
             }
 
-            if($nuevoUsuario != $movimientoRegistral->usuario_asignado){
-
-                $movimientoRegistral->update(['usuario_asignado' => $nuevoUsuario]);
-
-            }
-
+        } catch (\Throwable $th) {
+            Log::error("Error al reasignar trámites. " . $th);
         }
+
 
     }
 }
