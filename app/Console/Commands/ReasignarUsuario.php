@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use App\Models\MovimientoRegistral;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Api\MovimientoRegistralController;
+use App\Http\Services\SistemaTramites\AsignacionService;
 
 class ReasignarUsuario extends Command
 {
@@ -30,6 +31,8 @@ class ReasignarUsuario extends Command
     public function handle()
     {
 
+        $asignacionService = new AsignacionService();
+
         try {
 
             $tramites = [];
@@ -45,7 +48,7 @@ class ReasignarUsuario extends Command
 
                 $movimientoRegistral = MovimientoRegistral::findOrFail($id);
 
-                $nuevoUsuario = (new MovimientoRegistralController())->obtenerUsuarioAsignado(
+                $nuevoUsuario = (new MovimientoRegistralController($asignacionService))->obtenerUsuarioAsignado(
                     $movimientoRegistral->certificacion->servicio,
                     $movimientoRegistral->getRawOriginal('distrito'),
                     $movimientoRegistral->solicitante,
@@ -55,7 +58,7 @@ class ReasignarUsuario extends Command
 
                 while($nuevoUsuario == $movimientoRegistral->usuario_asignado){
 
-                    $nuevoUsuario = (new MovimientoRegistralController())->obtenerUsuarioAsignado(
+                    $nuevoUsuario = (new MovimientoRegistralController($asignacionService))->obtenerUsuarioAsignado(
                                                                                                 $movimientoRegistral->certificacion->servicio,
                                                                                                 $movimientoRegistral->getRawOriginal('distrito'),
                                                                                                 $movimientoRegistral->solicitante,
