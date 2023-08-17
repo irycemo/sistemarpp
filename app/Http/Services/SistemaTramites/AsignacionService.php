@@ -126,7 +126,7 @@ class AsignacionService{
 
         }else if($certificadores->count() == 1){
 
-            return $certificadores->fist()->id;
+            return $certificadores->first()->id;
 
         }else{
 

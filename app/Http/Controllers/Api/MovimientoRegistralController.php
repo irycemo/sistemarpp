@@ -46,7 +46,7 @@ class MovimientoRegistralController extends Controller
 
         } catch (\Throwable $th) {
 
-            Log::error("Error al crear movimiento registral desde Sistema Trámites. " . $th->getMessage());
+            Log::error("Error al crear movimiento registral desde Sistema Trámites. " . $th);
 
             return response()->json([
                 'result' => 'error',
