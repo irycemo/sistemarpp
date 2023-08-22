@@ -54,7 +54,7 @@ class AsignacionService{
 
         }else if($usuarios->count() == 1){
 
-            return $usuarios->fist()->id;
+            return $usuarios->first()->id;
 
         }else{
 
