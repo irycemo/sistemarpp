@@ -400,6 +400,9 @@ class CopiasSimples extends Component
                                             ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
                                                 $q->where('distrito', 2);
                                             })
+                                            ->when(auth()->user()->ubicacion != 'Regional 4', function($q){
+                                                $q->where('distrito', '!=', 2);
+                                            })
                                             ->whereHas('certificacion', function($q){
                                                 $q->where('servicio', 'DL14')
                                                     ->whereNull('finalizado_en')
