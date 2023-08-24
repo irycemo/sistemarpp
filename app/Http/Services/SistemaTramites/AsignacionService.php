@@ -71,18 +71,18 @@ class AsignacionService{
 
         if($distrito != 2 && $solicitante == 'Oficialia de partes'){
 
-            if($tipo_servicio != 'extra_urgente')
+            if($tipo_servicio == 'ordinario')
 
                 $certificadores = User::where('status', 'activo')
                                         ->whereHas('roles', function($q){
-                                            $q->where('name', 'Certificador Juridico');
+                                            $q->where('name', 'Certificador Oficialia');
                                         })
                                         ->get();
             else
 
                 $certificadores = User::where('status', 'activo')
                                         ->whereHas('roles', function($q){
-                                            $q->where('name', 'Certificador Oficialia');
+                                            $q->where('name', 'Certificador Juridico');
                                         })
                                         ->get();
 
