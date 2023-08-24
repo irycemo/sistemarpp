@@ -18,6 +18,8 @@ class AsignacionService{
 
         foreach ($usuarios as $usuario) {
 
+            $usuario->load('movimientosRegistralesAsignados');
+
             if($usuario->movimientosRegistralesAsignados->count() == 0)
                 return $usuario->id;
 
