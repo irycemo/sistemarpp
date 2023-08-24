@@ -74,25 +74,13 @@ class AsignacionService{
                 $certificadores = User::where('status', 'activo')
                                         ->whereHas('roles', function($q){
                                             $q->where('name', 'Certificador Juridico');
-                                            })
-                                        ->with('movimientosRegistralesAsignados', function($q){
-                                            $q->where('estado', 'nuevo');
                                         })
                                         ->get();
             else
 
                 $certificadores = User::where('status', 'activo')
-                                        ->when($distrito == 2, function($q){
-                                            $q->where('ubicacion', 'Regional 4');
-                                        })
-                                        ->when($distrito != 2, function($q){
-                                            $q->where('ubicacion', '!=', 'Regional 4');
-                                        })
                                         ->whereHas('roles', function($q){
                                             $q->where('name', 'Certificador Oficialia');
-                                            })
-                                        ->with('movimientosRegistralesAsignados', function($q){
-                                            $q->where('estado', 'nuevo');
                                         })
                                         ->get();
 
@@ -107,17 +95,14 @@ class AsignacionService{
                                         })
                                         ->whereHas('roles', function($q){
                                             $q->where('name', 'Certificador');
-                                            })
-                                        ->with('movimientosRegistralesAsignados', function($q){
-                                            $q->where('estado', 'nuevo');
                                         })
                                         ->get();
 
         }
 
         if($certificadores->count() == 0){
-
             throw new CertificadorNoEncontradoException('No se encontraron certificadores para asignar al movimiento registral.');
+
         }else if($random){
 
             $certificador = $certificadores->shuffle()->first();
