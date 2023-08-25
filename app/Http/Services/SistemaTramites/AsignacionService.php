@@ -18,8 +18,6 @@ class AsignacionService{
 
         foreach ($usuarios as $usuario) {
 
-            $usuario->load('movimientosRegistralesAsignados');
-
             if($usuario->movimientosRegistralesAsignados->count() == 0)
                 return $usuario->id;
 
@@ -35,7 +33,7 @@ class AsignacionService{
     public function obtenerUsuarioConsulta($distrito):int
     {
 
-        $usuarios = User::where('status', 'activo')
+        $usuarios = User::with('movimientosRegistralesAsignados')->where('status', 'activo')
                                 ->when($distrito == 2, function($q){
                                     $q->where('ubicacion', 'Regional 4');
                                 })
@@ -73,14 +71,14 @@ class AsignacionService{
 
             if($tipo_servicio == 'ordinario')
 
-                $certificadores = User::where('status', 'activo')
+                $certificadores = User::with('movimientosRegistralesAsignados')->where('status', 'activo')
                                         ->whereHas('roles', function($q){
                                             $q->where('name', 'Certificador Oficialia');
                                         })
                                         ->get();
             else
 
-                $certificadores = User::where('status', 'activo')
+                $certificadores = User::with('movimientosRegistralesAsignados')->where('status', 'activo')
                                         ->whereHas('roles', function($q){
                                             $q->where('name', 'Certificador Juridico');
                                         })
@@ -88,7 +86,7 @@ class AsignacionService{
 
         }else{
 
-            $certificadores = User::where('status', 'activo')
+            $certificadores = User::with('movimientosRegistralesAsignados')->where('status', 'activo')
                                         ->when($distrito == 2, function($q){
                                             $q->where('ubicacion', 'Regional 4');
                                         })
