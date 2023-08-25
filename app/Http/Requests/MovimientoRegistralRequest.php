@@ -47,7 +47,8 @@ class MovimientoRegistralRequest extends FormRequest
             'numero_escritura' => 'nullable',
             'numero_notaria' => 'nullable',
             'valor_propiedad' => 'nullable',
-            'movimiento_registral' => 'nullable'
+            'movimiento_registral' => 'nullable',
+            'observaciones' => 'nullable'
         ];
     }
 }

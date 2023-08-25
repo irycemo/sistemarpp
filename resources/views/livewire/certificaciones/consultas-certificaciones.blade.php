@@ -101,6 +101,12 @@
 
                         </th>
 
+                        <th class="px-3 py-3 hidden lg:table-cell">
+
+                            Observaciones
+
+                        </th>
+
                         @if(auth()->user()->hasRole('Administrador'))
 
                             <th class="px-3 py-3 hidden lg:table-cell">
@@ -200,6 +206,18 @@
 
                         </td>
 
+                        <td class="px-3 py-3 w-full lg:w-auto p-3 text-gray-800 text-center lg:text-left lg:border-0 border border-b block lg:table-cell relative lg:static">
+
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Observaciones</span>
+
+                            @if($certificacion->certificacion)
+
+                                {{ $certificacion->certificacion->observaciones ?? 'N/A' }}
+
+                            @endif
+
+                        </td>
+
                         @if(auth()->user()->hasRole('Administrador'))
 
                             <td class="px-3 py-3 w-full lg:w-auto p-3 text-gray-800 text-center lg:text-left lg:border-0 border border-b block lg:table-cell relative lg:static">
@@ -218,6 +236,20 @@
 
                                 </button>
 
+                                <button
+                                    wire:click="$set('modal2', '!modal2')"
+                                    wire:loading.attr="disabled"
+                                    class="md:w-full mt-1 bg-blue-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-blue-700 flex justify-center focus:outline-none"
+                                >
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-3">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                                    </svg>
+
+                                    <p>Reasignar</p>
+
+                                </button>
+
                                 @if($certificacion->estado == 'nuevo')
 
                                     <button
@@ -225,9 +257,8 @@
                                         wire:loading.attr="disabled"
                                         class="md:w-full mt-1 bg-red-400 hover:shadow-lg text-white text-xs md:text-sm px-3 py-1 items-center rounded-full mr-2 hover:bg-red-700 flex justify-center focus:outline-none"
                                     >
-
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 mr-3">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-3">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
 
                                         <p>Recahzar</p>
@@ -382,6 +413,83 @@
                     wire:click="$set('modalRechazar',false)"
                     wire:loading.attr="disabled"
                     wire:target="$set('modalRechazar',false)"
+                    type="button"
+                    class="bg-red-400 hover:shadow-lg text-white font-bold px-4 py-2 rounded-full text-sm mb-2 hover:bg-red-700 flaot-left focus:outline-none">
+                    Cerrar
+                </button>
+
+            </div>
+
+        </x-slot>
+
+    </x-dialog-modal>
+
+    <x-dialog-modal wire:model="modal2" maxWidth="sm">
+
+        <x-slot name="title">
+
+            Reasignar
+
+        </x-slot>
+
+        <x-slot name="content">
+
+            <div class="flex flex-col md:flex-row justify-between md:space-x-3 mb-5">
+
+                <div class="flex-auto ">
+
+                    <div>
+
+                        <Label>Usuarios</Label>
+                    </div>
+
+                    <div>
+
+                        <select class="bg-white rounded text-sm w-full" wire:model.defer="usuario">
+
+                            <option value="" selected>Seleccione una opción</option>
+
+                            @foreach ($usuarios as $usuario)
+
+                                <option value="{{ $usuario->id }}" selected>{{ $usuario->name }}</option>
+
+                            @endforeach
+
+                        </select>
+
+                    </div>
+
+                    <div>
+
+                        @error('usuario') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </x-slot>
+
+        <x-slot name="footer">
+
+            <div class="float-righ">
+
+                <button
+                    wire:click="reasignar"
+                    wire:loading.attr="disabled"
+                    wire:target="reasignar"
+                    class="bg-blue-400 hover:shadow-lg text-white font-bold px-4 py-2 rounded-full text-sm mb-2 hover:bg-blue-700 flaot-left mr-1 focus:outline-none">
+
+                    <img wire:loading wire:target="reasignar" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
+
+                    Reasignar
+                </button>
+
+                <button
+                    wire:click="$set('modal2',false)"
+                    wire:loading.attr="disabled"
+                    wire:target="$set('modal2',false)"
                     type="button"
                     class="bg-red-400 hover:shadow-lg text-white font-bold px-4 py-2 rounded-full text-sm mb-2 hover:bg-red-700 flaot-left focus:outline-none">
                     Cerrar

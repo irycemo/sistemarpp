@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Certificaciones;
 
+use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use App\Models\MovimientoRegistral;
@@ -14,9 +15,12 @@ class ConsultasCertificaciones extends Component
     public $certificacion;
     public $search;
     public $modal;
+    public $modal2;
     public $modalRechazar;
     public $paginas;
     public $observaciones;
+    public $usuarios;
+    public $usuario;
 
     public function save(){
 
@@ -93,9 +97,44 @@ class ConsultasCertificaciones extends Component
 
     }
 
+    public function reasignar(){
+
+        $this->validate([
+            'usuario' => 'required'
+        ]);
+
+        try {
+
+            DB::transaction(function (){
+
+                $this->certificacion->update(['usuario_asignado' => $this->usuario]);
+
+                $this->dispatchBrowserEvent('mostrarMensaje', ['success', "El trámite se reasigno con éxito."]);
+
+                $this->modal2 = false;
+
+            });
+
+        } catch (\Throwable $th) {
+            Log::error("Error al reasignar trámite por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
+            $this->dispatchBrowserEvent('mostrarMensaje', ['error', "Ha ocurrido un error."]);
+        }
+
+    }
+
     public function consultar(){
 
         $this->certificacion = MovimientoRegistral::where('tramite', $this->search)->first();
+
+    }
+
+    public function mount(){
+
+        $this->usuarios = User::whereHas('roles', function($q){
+                                        $q->where('name', 'Certificador');
+                                    })
+                                    ->orderBy('name')
+                                    ->get();
 
     }
 
