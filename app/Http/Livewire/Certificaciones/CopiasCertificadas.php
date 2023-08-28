@@ -41,13 +41,17 @@ class CopiasCertificadas extends Component
 
     public function abrirModalEditar(Certificacion $modelo){
 
-        if($modelo->movimientoRegistral->tipo_servicio == 'ordinario'){
+        if(!$this->modelo_editar->movimientoRegistral->asignadoA->hasRoles(['Certificador Juridico', 'Certificador Oficialia'])){
 
-            if(!($this->calcularDiaElaboracion($modelo) <= now())){
+            if($this->modelo_editar->movimientoRegistral->tipo_servicio == 'ordinario'){
 
-                $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El trámite puede elaborarse apartir del " . $this->calcularDiaElaboracion($modelo)->format('d-m-Y')]);
+                if(!($this->calcularDiaElaboracion($this->modelo_editar) <= now())){
 
-                return;
+                    $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El trámite puede elaborarse apartir del " . $this->calcularDiaElaboracion($this->modelo_editar)->format('d-m-Y')]);
+
+                    return;
+
+                }
 
             }
 
@@ -64,13 +68,17 @@ class CopiasCertificadas extends Component
 
     public function abrirModalRechazar(Certificacion $modelo){
 
-        if($modelo->movimientoRegistral->tipo_servicio == 'ordinario'){
+        if(!$this->modelo_editar->movimientoRegistral->asignadoA->hasRoles(['Certificador Juridico', 'Certificador Oficialia'])){
 
-            if(!($this->calcularDiaElaboracion($modelo) <= now())){
+            if($this->modelo_editar->movimientoRegistral->tipo_servicio == 'ordinario'){
 
-                $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El trámite puede elaborarse apartir del " . $this->calcularDiaElaboracion($modelo)->format('d-m-Y')]);
+                if(!($this->calcularDiaElaboracion($this->modelo_editar) <= now())){
 
-                return;
+                    $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El trámite puede elaborarse apartir del " . $this->calcularDiaElaboracion($this->modelo_editar)->format('d-m-Y')]);
+
+                    return;
+
+                }
 
             }
 
@@ -126,13 +134,17 @@ class CopiasCertificadas extends Component
         if($this->modelo_editar->isNot($modelo))
             $this->modelo_editar = $modelo;
 
-        if($modelo->movimientoRegistral->tipo_servicio == 'ordinario'){
+        if(!$this->modelo_editar->movimientoRegistral->asignadoA->hasRoles(['Certificador Juridico', 'Certificador Oficialia'])){
 
-            if(!($this->calcularDiaElaboracion($modelo) <= now())){
+            if($this->modelo_editar->movimientoRegistral->tipo_servicio == 'ordinario'){
 
-                $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El trámite puede elaborarse apartir del " . $this->calcularDiaElaboracion($modelo)->format('d-m-Y')]);
+                if(!($this->calcularDiaElaboracion($this->modelo_editar) <= now())){
 
-                return;
+                    $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El trámite puede elaborarse apartir del " . $this->calcularDiaElaboracion($this->modelo_editar)->format('d-m-Y')]);
+
+                    return;
+
+                }
 
             }
 
@@ -184,13 +196,17 @@ class CopiasCertificadas extends Component
 
     public function finalizar(){
 
-        if($this->modelo_editar->movimientoRegistral->tipo_servicio == 'ordinario'){
+        if(!$this->modelo_editar->movimientoRegistral->asignadoA->hasRoles(['Certificador Juridico', 'Certificador Oficialia'])){
 
-            if(!($this->calcularDiaElaboracion($this->modelo_editar) <= now())){
+            if($this->modelo_editar->movimientoRegistral->tipo_servicio == 'ordinario'){
 
-                $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El trámite puede elaborarse apartir del " . $this->calcularDiaElaboracion($modelo)->format('d-m-Y')]);
+                if(!($this->calcularDiaElaboracion($this->modelo_editar) <= now())){
 
-                return;
+                    $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El trámite puede elaborarse apartir del " . $this->calcularDiaElaboracion($this->modelo_editar)->format('d-m-Y')]);
+
+                    return;
+
+                }
 
             }
 
@@ -229,13 +245,17 @@ class CopiasCertificadas extends Component
 
     public function rechazar(){
 
-        if($this->modelo_editar->movimientoRegistral->tipo_servicio == 'ordinario'){
+        if(!$this->modelo_editar->movimientoRegistral->asignadoA->hasRoles(['Certificador Juridico', 'Certificador Oficialia'])){
 
-            if(!($this->calcularDiaElaboracion($this->modelo_editar) <= now())){
+            if($this->modelo_editar->movimientoRegistral->tipo_servicio == 'ordinario'){
 
-                $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El trámite puede elaborarse apartir del " . $this->calcularDiaElaboracion($modelo)->format('d-m-Y')]);
+                if(!($this->calcularDiaElaboracion($this->modelo_editar) <= now())){
 
-                return;
+                    $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El trámite puede elaborarse apartir del " . $this->calcularDiaElaboracion($this->modelo_editar)->format('d-m-Y')]);
+
+                    return;
+
+                }
 
             }
 
@@ -280,13 +300,17 @@ class CopiasCertificadas extends Component
         if($this->modelo_editar->isNot($modelo))
             $this->modelo_editar = $modelo;
 
-        if($this->modelo_editar->movimientoRegistral->tipo_servicio == 'ordinario'){
+        if(!$this->modelo_editar->movimientoRegistral->asignadoA->hasRoles(['Certificador Juridico', 'Certificador Oficialia'])){
 
-            if(!($this->calcularDiaElaboracion($this->modelo_editar) <= now())){
+            if($this->modelo_editar->movimientoRegistral->tipo_servicio == 'ordinario'){
 
-                $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El trámite puede elaborarse apartir del " . $this->calcularDiaElaboracion($modelo)->format('d-m-Y')]);
+                if(!($this->calcularDiaElaboracion($this->modelo_editar) <= now())){
 
-                return;
+                    $this->dispatchBrowserEvent('mostrarMensaje', ['error', "El trámite puede elaborarse apartir del " . $this->calcularDiaElaboracion($this->modelo_editar)->format('d-m-Y')]);
+
+                    return;
+
+                }
 
             }
 
