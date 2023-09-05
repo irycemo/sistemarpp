@@ -723,7 +723,7 @@
 
                     <tr>
 
-                        <td colspan="16" class="py-2 px-5">
+                        <td colspan="17" class="py-2 px-5">
                             {{ $copias->links()}}
                         </td>
 
