@@ -41,7 +41,7 @@ class CopiasCertificadas extends Component
 
     public function abrirModalEditar(Certificacion $modelo){
 
-        if(!$modelo->movimientoRegistral->asignadoA->hasRole(['Certificador Juridico', 'Certificador Oficialia'])){
+        if(!auth()->user()->hasRole(['Certificador Juridico', 'Certificador Oficialia'])){
 
             if($modelo->movimientoRegistral->tipo_servicio == 'ordinario'){
 
@@ -68,7 +68,7 @@ class CopiasCertificadas extends Component
 
     public function abrirModalRechazar(Certificacion $modelo){
 
-        if(!$modelo->movimientoRegistral->asignadoA->hasRole(['Certificador Juridico', 'Certificador Oficialia'])){
+        if(!auth()->user()->hasRole(['Certificador Juridico', 'Certificador Oficialia'])){
 
             if($modelo->movimientoRegistral->tipo_servicio == 'ordinario'){
 
@@ -134,7 +134,7 @@ class CopiasCertificadas extends Component
         if($this->modelo_editar->isNot($modelo))
             $this->modelo_editar = $modelo;
 
-        if(!$modelo->movimientoRegistral->asignadoA->hasRole(['Certificador Juridico', 'Certificador Oficialia'])){
+        if(!auth()->user()->hasRole(['Certificador Juridico', 'Certificador Oficialia'])){
 
             if($modelo->movimientoRegistral->tipo_servicio == 'ordinario'){
 
@@ -196,7 +196,7 @@ class CopiasCertificadas extends Component
 
     public function finalizar(){
 
-        if(!$this->modelo_editar->movimientoRegistral->asignadoA->hasRole(['Certificador Juridico', 'Certificador Oficialia'])){
+        if(!auth()->user()->hasRole(['Certificador Juridico', 'Certificador Oficialia'])){
 
             if($this->modelo_editar->movimientoRegistral->tipo_servicio == 'ordinario'){
 
@@ -245,7 +245,7 @@ class CopiasCertificadas extends Component
 
     public function rechazar(){
 
-        if(!$this->modelo_editar->movimientoRegistral->asignadoA->hasRole(['Certificador Juridico', 'Certificador Oficialia'])){
+        if(!auth()->user()->hasRole(['Certificador Juridico', 'Certificador Oficialia'])){
 
             if($this->modelo_editar->movimientoRegistral->tipo_servicio == 'ordinario'){
 
@@ -300,7 +300,7 @@ class CopiasCertificadas extends Component
         if($this->modelo_editar->isNot($modelo))
             $this->modelo_editar = $modelo;
 
-        if(!$modelo->movimientoRegistral->asignadoA->hasRole(['Certificador Juridico', 'Certificador Oficialia'])){
+        if(!auth()->user()->hasRole(['Certificador Juridico', 'Certificador Oficialia'])){
 
             if($modelo->movimientoRegistral->tipo_servicio == 'ordinario'){
 

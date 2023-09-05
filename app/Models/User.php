@@ -82,4 +82,8 @@ class User extends Authenticatable implements Auditable
     public function movimientosRegistralesAsignados(){
         return $this->hasMany(MovimientoRegistral::class, 'usuario_asignado');
     }
+
+    public function ultimoMovimientoRegistralAsignado(){
+        return $this->hasOne(MovimientoRegistral::class, 'usuario_asignado')->latest();
+    }
 }

@@ -384,6 +384,12 @@
 
                         </th>
 
+                        <th class="px-3 py-3 hidden lg:table-cell">
+
+                            Observaciones
+
+                        </th>
+
                         <th wire:click="order('created_at')" class="cursor-pointer px-3 py-3 hidden lg:table-cell">
 
                             Registro
@@ -581,6 +587,14 @@
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Fecha de entrega</span>
 
                                 {{ optional($copia->fecha_entrega)->format('d-m-Y') ?? 'N/A' }}
+
+                            </td>
+
+                            <td class="px-3 py-3 w-full lg:w-auto p-3 text-gray-800 text-center lg:text-left lg:border-0 border border-b block lg:table-cell relative lg:static">
+
+                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Observaciones</span>
+
+                                {{ $copia->certificacion->observaciones ?? 'N/A' }}
 
                             </td>
 

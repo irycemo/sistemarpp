@@ -11,18 +11,18 @@ class AsignacionService{
     public function obtenerUltimoUsuarioConAsignacion($usuarios):int
     {
 
-        if($usuarios->first()->movimientosRegistralesAsignados->count() == 0)
+        if($usuarios->first()->ultimoMovimientoRegistralAsignado->count() == 0)
             return $usuarios->first()->id;
 
-        $ultimoMR = $usuarios->first()->movimientosRegistralesAsignados->last();
+        $ultimoMR = $usuarios->first()->ultimoMovimientoRegistralAsignado;
 
         foreach ($usuarios as $usuario) {
 
-            if($usuario->movimientosRegistralesAsignados->count() == 0)
+            if($usuario->ultimoMovimientoRegistralAsignado->count() == 0)
                 return $usuario->id;
 
-            if($ultimoMR->created_at > $usuario->movimientosRegistralesAsignados->last()->created_at)
-                $ultimoMR = $usuario->movimientosRegistralesAsignados->last();
+            if($ultimoMR->created_at > $usuario->ultimoMovimientoRegistralAsignado->created_at)
+                $ultimoMR = $usuario->ultimoMovimientoRegistralAsignado;
 
         }
 
@@ -71,14 +71,14 @@ class AsignacionService{
 
             if($tipo_servicio == 'ordinario')
 
-                $certificadores = User::with('movimientosRegistralesAsignados')->where('status', 'activo')
+                $certificadores = User::with('ultimoMovimientoRegistralAsignado')->where('status', 'activo')
                                         ->whereHas('roles', function($q){
                                             $q->where('name', 'Certificador Oficialia');
                                         })
                                         ->get();
             else
 
-                $certificadores = User::with('movimientosRegistralesAsignados')->where('status', 'activo')
+                $certificadores = User::with('ultimoMovimientoRegistralAsignado')->where('status', 'activo')
                                         ->whereHas('roles', function($q){
                                             $q->where('name', 'Certificador Juridico');
                                         })
@@ -86,7 +86,7 @@ class AsignacionService{
 
         }else{
 
-            $certificadores = User::with('movimientosRegistralesAsignados')->where('status', 'activo')
+            $certificadores = User::with('ultimoMovimientoRegistralAsignado')->where('status', 'activo')
                                         ->when($distrito == 2, function($q){
                                             $q->where('ubicacion', 'Regional 4');
                                         })
