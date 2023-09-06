@@ -19,7 +19,7 @@ class SistemaTramitesService{
 
         if($response->status() != 200){
 
-            throw new ErrorAlEnviarTramiteConcluidoASistemaTramites('Error al enviar tramite concluido al sistema trámites.' . $response);
+            throw new ErrorAlEnviarTramiteConcluidoASistemaTramites('Error al enviar trámite actualizado al sistema trámites.' . $response);
 
         }
 

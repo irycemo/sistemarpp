@@ -33,7 +33,8 @@ class ExpirarConsultas extends Command
         try {
 
             $ids = Certificacion::whereHas('movimientoRegistral', function($q){
-                                                                                $q->where('estado', 'nuevo');
+                                                                                $q->where('estado', 'nuevo')
+                                                                                    ->whereDate('created_at', '>', $this->calcularDia());
                                                                             })
                                                                             ->whereIn('servicio', ['DC92', 'DC91', 'DC90'])
                                                                             ->pluck('movimiento_registral_id');
@@ -51,6 +52,26 @@ class ExpirarConsultas extends Command
         } catch (\Throwable $th) {
             Log::error("Error al concluir trámites de consulta en tarea programada. " . $th);
         }
+
+    }
+
+    public function calcularDia(){
+
+        $actual = now();
+
+            for ($i=3; $i < 0; $i--) {
+
+                $actual->subDay();
+
+                while($actual->isWeekend()){
+
+                    $actual->subDay();
+
+                }
+
+            }
+
+            return $actual->toDateString();
 
     }
 }
