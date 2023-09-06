@@ -79,7 +79,7 @@ class Constantes{
         13 => '13 Huetamo',
         14 => '14 Maravatío',
         15 => '15 Salazar',
-        16 => '16 Puruániro',
+        16 => '16 Puruándiro',
         17 => '17 Coalcoman',
         18 => '18 Ario De Rosales',
         19 => '19 Tanhuato'
