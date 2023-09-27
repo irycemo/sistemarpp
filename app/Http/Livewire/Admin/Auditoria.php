@@ -26,6 +26,7 @@ class Auditoria extends Component
     public $modelos = [
         'App\Models\User',
         'App\Models\MovimientoRegistral',
+        'App\Models\Certificacion',
     ];
 
     public function ver($audit){

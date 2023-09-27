@@ -25,8 +25,4 @@ class Certificacion extends Model implements Auditable
     public function movimientoRegistral(){
         return $this->belongsTo(MovimientoRegistral::class);
     }
-
-    protected $auditEvents = [
-        'updated',
-    ];
 }
