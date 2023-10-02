@@ -11,14 +11,14 @@ class AsignacionService{
     public function obtenerUltimoUsuarioConAsignacion($usuarios):int
     {
 
-        if($usuarios->first()->ultimoMovimientoRegistralAsignado->count() == 0)
+        if(!$usuarios->first()->ultimoMovimientoRegistralAsignado)
             return $usuarios->first()->id;
 
         $ultimoMR = $usuarios->first()->ultimoMovimientoRegistralAsignado;
 
         foreach ($usuarios as $usuario) {
 
-            if($usuario->ultimoMovimientoRegistralAsignado->count() == 0)
+            if(!$usuario->ultimoMovimientoRegistralAsignado)
                 return $usuario->id;
 
             if($ultimoMR->created_at > $usuario->ultimoMovimientoRegistralAsignado->created_at)
