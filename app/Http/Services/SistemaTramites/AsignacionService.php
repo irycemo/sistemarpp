@@ -12,18 +12,20 @@ class AsignacionService{
     public function obtenerUltimoUsuarioConAsignacion($usuarios):int
     {
 
-        $ids = [];
+        $movimientos = [];
 
         foreach ($usuarios as $usuario) {
 
             if(!$usuario->ultimoMovimientoRegistralAsignado)
                 return $usuario->id;
 
-            array_push($ids, $usuario->ultimoMovimientoRegistralAsignado->id);
+            array_push($movimientos, $usuario->ultimoMovimientoRegistralAsignado);
 
         }
 
-        return MovimientoRegistral::whereIn('id', $ids)->orderBy('created_at')->first()->usuario_asignado;
+        return collect($movimientos)->sortBy('created_at')->first()->usuario_asignado;
+
+        /* return MovimientoRegistral::whereIn('id', $ids)->orderBy('created_at')->first()->usuario_asignado; */
 
     }
 
