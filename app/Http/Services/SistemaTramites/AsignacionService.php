@@ -5,28 +5,25 @@ namespace App\Http\Services\SistemaTramites;
 use App\Models\User;
 use App\Exceptions\SupervisorNoEncontradoException;
 use App\Exceptions\CertificadorNoEncontradoException;
+use App\Models\MovimientoRegistral;
 
 class AsignacionService{
 
     public function obtenerUltimoUsuarioConAsignacion($usuarios):int
     {
 
-        if(!$usuarios->first()->ultimoMovimientoRegistralAsignado)
-            return $usuarios->first()->id;
-
-        $ultimoMR = $usuarios->first()->ultimoMovimientoRegistralAsignado;
+        $ids = [];
 
         foreach ($usuarios as $usuario) {
 
             if(!$usuario->ultimoMovimientoRegistralAsignado)
                 return $usuario->id;
 
-            if($ultimoMR->created_at > $usuario->ultimoMovimientoRegistralAsignado->created_at)
-                $ultimoMR = $usuario->ultimoMovimientoRegistralAsignado;
+            array_push($ids, $usuario->ultimoMovimientoRegistralAsignado->id);
 
         }
 
-        return $ultimoMR->usuario_asignado;
+        return MovimientoRegistral::whereIn('id', $ids)->orderBy('created_at')->first()->usuario_asignado;
 
     }
 
