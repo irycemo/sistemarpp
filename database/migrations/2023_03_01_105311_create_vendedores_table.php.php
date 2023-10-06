@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('propietarios', function (Blueprint $table) {
+
+        Schema::create('vendedores', function (Blueprint $table) {
             $table->id();
             $table->foreignId('persona_id')->constrained();
             $table->foreignId('predio_id')->constrained();
-            $table->string('tipo');
-            $table->unsignedDecimal('porcentaje', 15,2);
-            $table->foreignId('creado_por')->nullable()->references('id')->on('users');
-            $table->foreignId('actualizado_por')->nullable()->references('id')->on('users');
+            $table->unsignedDecimal('usufructo', 15,2)->nullable();
+            $table->unsignedDecimal('nuda', 15,2)->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('propietarios');
+        Schema::dropIfExists('vendedores');
     }
 };

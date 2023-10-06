@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vendedores', function (Blueprint $table) {
+        Schema::create('colindancias', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('persona_id')->constrained();
             $table->foreignId('predio_id')->constrained();
-            $table->unsignedDecimal('usufructo', 15,2)->nullable();
-            $table->unsignedDecimal('nuda', 15,2)->nullable();
+            $table->string('viento');
+            $table->unsignedDecimal('longitud', 15, 8);
+            $table->text('descripcion');
+            $table->foreignId('creado_por')->nullable()->references('id')->on('users');
+            $table->foreignId('actualizado_por')->nullable()->references('id')->on('users');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vendedores');
+        Schema::dropIfExists('colindancias');
     }
 };

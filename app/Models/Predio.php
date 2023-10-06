@@ -12,9 +12,8 @@ class Predio extends Model
 
     use HasFactory;
 
-    public function propietarios():HasMany
-    {
-        return $this->hasMany(Propietario::class);
+    public function colindancias(){
+        return $this->morphMany(Colindancia::class, 'colindanciaable');
     }
 
 }
